@@ -49,10 +49,11 @@ public class MyDiscoveryListener implements DiscoveryListener {
 
 
             UUID[] uuidSet = new UUID[1];
-            uuidSet[0] = new UUID(0x1105); //OBEX Object Push service
+            uuidSet[0] = new UUID(0x1106); //OBEX Object Push service
+            // 0x1105 : OBEXObjectPushServiceClass_UUID, 00001105-0000-1000-8000-00805F9B34FB
 
             int[] attrIDs = new int[]{
-                    0x0100 // Service name
+                    0x0100 // L2CAP_PROTOCOL_UUID : 00000100-0000-1000-8000-00805F9B34FB
             };
 
             for (RemoteDevice device : listener.devices) {
@@ -112,6 +113,8 @@ public class MyDiscoveryListener implements DiscoveryListener {
     public void servicesDiscovered(int transID, ServiceRecord[] servRecord) {
         for (int i = 0; i < servRecord.length; i++) {
             String url = servRecord[i].getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
+//            ServiceRecord.NOAUTHENTICATE_NOENCRYPT
+
             if (url == null) {
                 continue;
             }
@@ -145,7 +148,8 @@ public class MyDiscoveryListener implements DiscoveryListener {
 
             HeaderSet hsOperation = clientSession.createHeaderSet();
             hsOperation.setHeader(HeaderSet.NAME, "Hello.txt");
-            hsOperation.setHeader(HeaderSet.TYPE, "text");
+            hsOperation.setHeader(HeaderSet.TYPE, "text/plain");
+
 
             //Create PUT Operation
             Operation putOperation = clientSession.put(hsOperation);
