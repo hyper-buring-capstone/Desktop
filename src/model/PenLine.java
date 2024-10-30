@@ -27,10 +27,11 @@ public class PenLine {
     Color penColor;
     float width; //펜 두께
 
-    List<int[]> pointList=new ArrayList<>(); //x, y 좌표
+    List<Integer> xList=new ArrayList<Integer>(); // x좌표
+    List<Integer> yList=new ArrayList<Integer>(); // y좌표
 
     public void addPoint(int x, int y){
-        int[] point=new int[2];
-        pointList.add(point);
+        xList.add(x);
+        yList.add(y);
     }
 }

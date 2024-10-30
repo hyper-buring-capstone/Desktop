@@ -1,11 +1,7 @@
-/*
- *
- * webnautes@naver.com
- *
- * 참고
- * http://www.kotemaru.org/2013/10/30/android-bluetooth-sample.html
- */
 
+import drawing.JPanelPaintExample;
+
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -32,6 +28,15 @@ public class Server{
 
     public static void main(String[] args){
 
+
+        JPanelPaintExample jPanelPaintExample=new JPanelPaintExample();
+
+        jPanelPaintExample.addLine(130,130,200,230);
+        jPanelPaintExample.addLine(10,100,200,100);
+
+
+       // jPanelPaintExample.drawLine(100,200,200,250);
+     //   jPanelPaintExample.drawLine(10,10,100,200);
 
         log("Local Bluetooth device...\n");
 
