@@ -29,4 +29,8 @@ public class PenLine {
 
     List<int[]> pointList=new ArrayList<>(); //x, y 좌표
 
+    public void addPoint(int x, int y){
+        int[] point=new int[2];
+        pointList.add(point);
+    }
 }
