@@ -2,6 +2,7 @@
 import drawing.JPanelPaintExample;
 import global.BtParser;
 import global.MsgType;
+import model.EraserPoint;
 import model.PenLine;
 import service.DrawService;
 
@@ -183,7 +184,8 @@ class ServerRunable implements Runnable{
 
             int beforeX=0, beforeY=0;
             PenLine penLine = null;
-            DrawService drawService=new DrawService(penLine,jPanelPaintExample);
+            EraserPoint eraserPoint = null;
+            DrawService drawService=new DrawService(penLine, eraserPoint, jPanelPaintExample, false);
             try {
 
                 Reader mReader = new BufferedReader(new InputStreamReader

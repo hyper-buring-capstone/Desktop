@@ -21,7 +21,7 @@ public class BtParser {
             return MsgType.END;
         }
 
-        //둘 다 아니면 point라고 가정함.
+        //다 아니면 point라고 가정함.
         else{
 
             return MsgType.POINT;
