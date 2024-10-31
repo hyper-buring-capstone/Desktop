@@ -3,6 +3,7 @@ import drawing.JPanelPaintExample;
 import global.BtParser;
 import global.MsgType;
 import model.PenLine;
+import service.DrawService;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -182,6 +183,7 @@ class ServerRunable implements Runnable{
 
             int beforeX=0, beforeY=0;
             PenLine penLine = null;
+            DrawService drawService=new DrawService(penLine,jPanelPaintExample);
             try {
 
                 Reader mReader = new BufferedReader(new InputStreamReader
@@ -230,29 +232,7 @@ class ServerRunable implements Runnable{
                     /**
                      * 모바일에서 "10 20" 이런 식으로 보내면 (0,0) (10,20)을 잇는 직선 생성하는 테스트 코드임.
                      */
-                    if(BtParser.getMsgType(recvMessage).equals(MsgType.HEADER)){
-                        penLine=new PenLine(); //새 선 객체 생성함.
-                    }
-                    else if(BtParser.getMsgType(recvMessage).equals(MsgType.END)){
-
-                    }
-                    else if(BtParser.getMsgType(recvMessage).equals(MsgType.POINT)){
-
-                        penLine.addPoint(BtParser.getX(recvMessage), BtParser.getY(recvMessage));
-                        int size=penLine.getXList().size();
-                        jPanelPaintExample.addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray()
-                                , penLine.getYList().stream().mapToInt(Integer::intValue).toArray()
-                                , size);
-
-                    }
-//                    String[] parsedMsg=recvMessage.split("\r")[0].split(" "); //테스트용. 공백으로 분리
-//
-//                    int x=Integer.parseInt(parsedMsg[0]);
-//                    int y=Integer.parseInt(parsedMsg[1]);
-//
-//                    jPanelPaintExample.addLine(beforeX,beforeY,x,y);
-//                    beforeX=x;
-//                    beforeY=y;
+                    drawService.drawProcess(recvMessage, jPanelPaintExample);
 
                     Sender(recvMessage);
                 }
