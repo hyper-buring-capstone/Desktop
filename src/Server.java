@@ -1,5 +1,8 @@
 
 import drawing.JPanelPaintExample;
+import global.BtParser;
+import global.MsgType;
+import model.PenLine;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -29,14 +32,6 @@ public class Server{
     public static void main(String[] args){
 
 
-        JPanelPaintExample jPanelPaintExample=new JPanelPaintExample();
-
-        jPanelPaintExample.addLine(130,130,200,230);
-        jPanelPaintExample.addLine(10,100,200,100);
-
-
-       // jPanelPaintExample.drawLine(100,200,200,250);
-     //   jPanelPaintExample.drawLine(10,10,100,200);
 
         log("Local Bluetooth device...\n");
 
@@ -98,6 +93,13 @@ class ServerRunable implements Runnable{
         log("Server is now running.");
 
 
+        JPanelPaintExample jPanelPaintExample=new JPanelPaintExample();
+
+//        jPanelPaintExample.addLine(130,130,200,230);
+//        jPanelPaintExample.addLine(10,100,200,100);
+//
+//        jPanelPaintExample.addPolyLine(new int[]{10,50, 120,60},new int[]{10,70, 220,20},4);
+
 
         while(true){
 
@@ -116,7 +118,7 @@ class ServerRunable implements Runnable{
             log("현재 접속 중인 클라이언트 수: " + count);
 
 
-            new Receiver(mStreamConnection).start();
+            new Receiver(mStreamConnection, jPanelPaintExample).start();
         }
 
     }
@@ -129,11 +131,15 @@ class ServerRunable implements Runnable{
         private OutputStream mOutputStream = null;
         private String mRemoteDeviceString = null;
         private StreamConnection mStreamConnection = null;
+        JPanelPaintExample jPanelPaintExample;
 
 
-        Receiver(StreamConnection streamConnection){
+        Receiver(StreamConnection streamConnection, JPanelPaintExample jPanelPaintExample){
+
 
             mStreamConnection = streamConnection;
+            this.jPanelPaintExample=jPanelPaintExample;
+
 
             try {
 
@@ -172,7 +178,10 @@ class ServerRunable implements Runnable{
 
         @Override
         public void run() {
+        //연결된 뒤의 동작
 
+            int beforeX=0, beforeY=0;
+            PenLine penLine = null;
             try {
 
                 Reader mReader = new BufferedReader(new InputStreamReader
@@ -214,8 +223,36 @@ class ServerRunable implements Runnable{
 
                     if ( isDisconnected ) break;
 
-                    String recvMessage = stringBuilder.toString();
+                    String recvMessage = stringBuilder.toString(); //받은 문자
                     log( mRemoteDeviceString + ": " + recvMessage );
+
+
+                    /**
+                     * 모바일에서 "10 20" 이런 식으로 보내면 (0,0) (10,20)을 잇는 직선 생성하는 테스트 코드임.
+                     */
+                    if(BtParser.getMsgType(recvMessage).equals(MsgType.HEADER)){
+                        penLine=new PenLine(); //새 선 객체 생성함.
+                    }
+                    else if(BtParser.getMsgType(recvMessage).equals(MsgType.END)){
+
+                    }
+                    else if(BtParser.getMsgType(recvMessage).equals(MsgType.POINT)){
+
+                        penLine.addPoint(BtParser.getX(recvMessage), BtParser.getY(recvMessage));
+                        int size=penLine.getXList().size();
+                        jPanelPaintExample.addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray()
+                                , penLine.getYList().stream().mapToInt(Integer::intValue).toArray()
+                                , size);
+
+                    }
+//                    String[] parsedMsg=recvMessage.split("\r")[0].split(" "); //테스트용. 공백으로 분리
+//
+//                    int x=Integer.parseInt(parsedMsg[0]);
+//                    int y=Integer.parseInt(parsedMsg[1]);
+//
+//                    jPanelPaintExample.addLine(beforeX,beforeY,x,y);
+//                    beforeX=x;
+//                    beforeY=y;
 
                     Sender(recvMessage);
                 }

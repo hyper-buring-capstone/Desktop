@@ -18,14 +18,15 @@ public class JPanelPaintExample extends JFrame {
 
         setVisible(true);
 
-        // 예시 선 추가
-        drawPanel.addLine(10, 10, 100, 200);
-        drawPanel.addLine(100, 200, 200, 100);
     }
 
     public void addLine(int x1, int y1, int x2, int y2){
 
-        drawPanel.addLine(x1,y2,x2,y2);
+        drawPanel.addLine(x1,y1,x2,y2);
+    }
+
+    public void addPolyLine(int[] xList, int[] yList, int n){
+        drawPanel.addPolyLine(xList, yList, n);
     }
 
 
