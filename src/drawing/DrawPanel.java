@@ -15,7 +15,7 @@ class DrawPanel extends JPanel {
 
     public DrawPanel() {
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
-        canvas = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
+        canvas = new BufferedImage(390, 870, BufferedImage.TYPE_INT_ARGB);
         setBackground(Color.WHITE);
     }
 
@@ -41,6 +41,9 @@ class DrawPanel extends JPanel {
     public void addPolyLine(int[] xList, int[] yList, int n){
         Graphics2D g2d = canvas.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // 선의 굵기 설정 (예: 5픽셀)
+        g2d.setStroke(new BasicStroke(5));
+        
         g2d.setColor(Color.BLUE);
         g2d.drawPolyline(xList,yList,n);
         g2d.dispose();

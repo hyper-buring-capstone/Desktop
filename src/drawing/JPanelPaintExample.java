@@ -10,7 +10,7 @@ public class JPanelPaintExample extends JFrame {
     public JPanelPaintExample() {
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 300);
+        setSize(390, 870);
 
         // DrawPanel을 하나만 추가
         drawPanel = new DrawPanel();
