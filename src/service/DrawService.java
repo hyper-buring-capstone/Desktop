@@ -5,6 +5,7 @@ import drawing.DrawFrame;
 import global.BtParser;
 import global.MsgType;
 import lombok.AllArgsConstructor;
+import model.EraserPoint;
 import model.PenLine;
 
 /**

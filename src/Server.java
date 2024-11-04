@@ -1,4 +1,7 @@
 
+import global.BtParser;
+import global.MsgType;
+import model.EraserPoint;
 import drawing.DrawFrame;
 import model.PenLine;
 import service.DrawService;
