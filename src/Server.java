@@ -239,7 +239,7 @@ class ServerRunable implements Runnable{
 
                     //Sender(recvMessage);
                     long endTime = System.nanoTime(); // 성능 측정 완료
-                    System.out.println("최종 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+                   // System.out.println("최종 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
 
                 }
 

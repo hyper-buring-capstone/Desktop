@@ -66,7 +66,7 @@ class DrawPanel extends JPanel {
         long startTime = System.nanoTime(); // 성능 측정 시작
         g2d.drawPolyline(xList,yList,n);
         long endTime = System.nanoTime(); // 성능 측정 완료
-        System.out.println("알짜시간 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+        //System.out.println("알짜시간 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
         repaint();
 
     }
