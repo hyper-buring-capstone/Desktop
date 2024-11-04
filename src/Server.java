@@ -199,8 +199,9 @@ class ServerRunable implements Runnable{
 
 
                 while(true){
+                	long startTime = System.nanoTime(); // 성능 측정 시작
 
-                    log("ready");
+                    //log("ready");
 
 
                     StringBuilder stringBuilder = new StringBuilder();
@@ -228,7 +229,7 @@ class ServerRunable implements Runnable{
                     if ( isDisconnected ) break;
 
                     String recvMessage = stringBuilder.toString(); //받은 문자
-                    log( mRemoteDeviceString + ": " + recvMessage );
+                    //log( mRemoteDeviceString + ": " + recvMessage );
 
 
                     /**
@@ -236,7 +237,10 @@ class ServerRunable implements Runnable{
                      */
                     drawService.drawProcess(recvMessage, jPanelPaintExample);
 
-                    Sender(recvMessage);
+                    //Sender(recvMessage);
+                    long endTime = System.nanoTime(); // 성능 측정 완료
+                    System.out.println("최종 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+
                 }
 
             } catch (IOException e) {
@@ -247,6 +251,7 @@ class ServerRunable implements Runnable{
 
 
         void Sender(String msg){
+        	long startTime = System.nanoTime(); // 성능 측정 시작
 
             PrintWriter printWriter = new PrintWriter(new BufferedWriter
                     (new OutputStreamWriter(mOutputStream,
@@ -256,13 +261,21 @@ class ServerRunable implements Runnable{
             printWriter.flush();
 
             log( "Me : " + msg );
+            long endTime = System.nanoTime(); // 성능 측정 완료
+            System.out.println("Sender 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+
         }
     }
 
 
     private static void log(String msg) {
+    	long startTime = System.nanoTime(); // 성능 측정 시작
+
 
         System.out.println("["+(new Date()) + "] " + msg);
+        long endTime = System.nanoTime(); // 성능 측정 완료
+        System.out.println("로그 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+
     }
 
 }  

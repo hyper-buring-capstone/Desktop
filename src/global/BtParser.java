@@ -32,7 +32,6 @@ public class BtParser {
     }
 
     public static int getX(String msg){
-    	System.out.println("message is " + msg);
         if( !getMsgType(msg).equals(MsgType.POINT)){ //점 데이터가 아니면 예외처리 해야 함.
             return -1;
         }
