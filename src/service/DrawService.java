@@ -24,6 +24,7 @@ public class DrawService {
         	if(msg.split(":")[1].split("\r")[0].equals("DRAWING")) {
                 penLine=new PenLine(); //새 선 객체 생성함.
                 jPanelPaintExample.callAddPenLine(penLine);
+                jPanelPaintExample.createGraphics();
         	}
         	else if(msg.split(":")[1].split("\r")[0].equals("ERASER")) {
         		eraserPoint = new EraserPoint(); // 새 지우개 포인트 생성.
@@ -32,6 +33,7 @@ public class DrawService {
         }
         else if(BtParser.getMsgType(msg).equals(MsgType.END)){
         	isEraser = false;
+        	jPanelPaintExample.disposeGraphics();
         }
         else if(BtParser.getMsgType(msg).equals(MsgType.POINT)){
         	if(!isEraser) {

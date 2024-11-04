@@ -11,12 +11,22 @@ import java.util.List;
 class DrawPanel extends JPanel {
     private final BufferedImage canvas;
     private List<PenLine> penLineList=new ArrayList<>();
+    private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
 
 
     public DrawPanel() {
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
         canvas = new BufferedImage(390, 870, BufferedImage.TYPE_INT_ARGB);
         setBackground(Color.WHITE);
+    }
+    
+    public void createGraphics() {
+    	g2d = canvas.createGraphics(); // Graphics2D 객체 생성
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    }
+    
+    public void disposeGraphics() {
+    	g2d.dispose(); // 사용이 끝나면 Graphics2D 객체를 해제
     }
 
     public void addPenLine(PenLine penLine){
@@ -51,13 +61,12 @@ class DrawPanel extends JPanel {
     }
 
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
-        Graphics2D g2d = canvas.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setStroke(new BasicStroke(width));
-        
         g2d.setColor(Color.BLUE);
+        long startTime = System.nanoTime(); // 성능 측정 시작
         g2d.drawPolyline(xList,yList,n);
-        g2d.dispose();
+        long endTime = System.nanoTime(); // 성능 측정 완료
+        System.out.println("알짜시간 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
         repaint();
 
     }
