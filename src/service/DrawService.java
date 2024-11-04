@@ -37,11 +37,28 @@ public class DrawService {
         	if(!isEraser) {
                 penLine.addPoint(BtParser.getX(msg), BtParser.getY(msg));
                 int size=penLine.getXList().size();
-                jPanelPaintExample.addPolyLine(
-                		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
-                		penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
-                		size,
-                		penLine.getWidth());	
+//                jPanelPaintExample.addPolyLine(
+//                		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
+//                		penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
+//                		size,
+//                		penLine.getWidth());
+                long startTime = System.nanoTime(); // 성능 측정 시작
+                if (size >= 2) {
+                	jPanelPaintExample.addPolyLine(
+                		penLine.getXList().subList(size - 2, size).stream().mapToInt(Integer::intValue).toArray(),
+                		penLine.getYList().subList(size - 2, size).stream().mapToInt(Integer::intValue).toArray(),
+		        		2,
+		        		penLine.getWidth());
+                } else {
+                	jPanelPaintExample.addPolyLine(
+		        		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
+		        		penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
+		        		size,
+		        		penLine.getWidth());
+                }
+                long endTime = System.nanoTime(); // 성능 측정 완료
+                System.out.println("Method 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+
         	}
         	else {
         		eraserPoint.movePoint(BtParser.getX(msg), BtParser.getY(msg));
