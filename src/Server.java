@@ -226,7 +226,7 @@ class ServerRunable implements Runnable{
                     if ( isDisconnected ) break;
 
                     String recvMessage = stringBuilder.toString(); //받은 문자
-                    log( mRemoteDeviceString + ": " + recvMessage );
+                   // log( mRemoteDeviceString + ": " + recvMessage );
 
 
                     /**
@@ -234,7 +234,7 @@ class ServerRunable implements Runnable{
                      */
                     drawService.drawProcess(recvMessage, drawFrame);
 
-                    Sender(recvMessage);
+                  //  Sender(recvMessage);
                 }
 
             } catch (IOException e) {
@@ -260,7 +260,7 @@ class ServerRunable implements Runnable{
 
     private static void log(String msg) {
 
-        System.out.println("["+(new Date()) + "] " + msg);
+      //  System.out.println("["+(new Date()) + "] " + msg);
     }
 
 }  

@@ -30,6 +30,8 @@ public class DrawService {
     public  void drawProcess(String msg, DrawFrame drawFrame){
         if(BtParser.getMsgType(msg).equals(MsgType.HEADER)){
             penLine=new PenLine(); //새 선 객체 생성함.
+            oldX=0;
+            oldY=0;
         }
         else if(BtParser.getMsgType(msg).equals(MsgType.END)){
 //        	int size=penLine.getXList().size();
