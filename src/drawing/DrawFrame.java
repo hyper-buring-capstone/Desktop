@@ -1,13 +1,11 @@
 package drawing;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
-public class JPanelPaintExample extends JFrame {
+public class DrawFrame extends JFrame {
     private final DrawPanel drawPanel;
 
-    public JPanelPaintExample() {
+    public DrawFrame() {
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(390, 870);

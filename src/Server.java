@@ -1,11 +1,8 @@
 
-import drawing.JPanelPaintExample;
-import global.BtParser;
-import global.MsgType;
+import drawing.DrawFrame;
 import model.PenLine;
 import service.DrawService;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -94,7 +91,7 @@ class ServerRunable implements Runnable{
         log("Server is now running.");
 
 
-        JPanelPaintExample jPanelPaintExample=new JPanelPaintExample();
+        DrawFrame drawFrame =new DrawFrame();
 
 //        jPanelPaintExample.addLine(130,130,200,230);
 //        jPanelPaintExample.addLine(10,100,200,100);
@@ -119,7 +116,7 @@ class ServerRunable implements Runnable{
             log("현재 접속 중인 클라이언트 수: " + count);
 
 
-            new Receiver(mStreamConnection, jPanelPaintExample).start();
+            new Receiver(mStreamConnection, drawFrame).start();
         }
 
     }
@@ -132,14 +129,14 @@ class ServerRunable implements Runnable{
         private OutputStream mOutputStream = null;
         private String mRemoteDeviceString = null;
         private StreamConnection mStreamConnection = null;
-        JPanelPaintExample jPanelPaintExample;
+        DrawFrame drawFrame;
 
 
-        Receiver(StreamConnection streamConnection, JPanelPaintExample jPanelPaintExample){
+        Receiver(StreamConnection streamConnection, DrawFrame drawFrame){
 
 
             mStreamConnection = streamConnection;
-            this.jPanelPaintExample=jPanelPaintExample;
+            this.drawFrame = drawFrame;
 
 
             try {
@@ -183,7 +180,7 @@ class ServerRunable implements Runnable{
 
             int beforeX=0, beforeY=0;
             PenLine penLine = null;
-            DrawService drawService=new DrawService(penLine,jPanelPaintExample);
+            DrawService drawService=new DrawService(penLine, drawFrame);
             try {
 
                 Reader mReader = new BufferedReader(new InputStreamReader
@@ -232,7 +229,7 @@ class ServerRunable implements Runnable{
                     /**
                      * 모바일에서 "10 20" 이런 식으로 보내면 (0,0) (10,20)을 잇는 직선 생성하는 테스트 코드임.
                      */
-                    drawService.drawProcess(recvMessage, jPanelPaintExample);
+                    drawService.drawProcess(recvMessage, drawFrame);
 
                     Sender(recvMessage);
                 }
