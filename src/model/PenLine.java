@@ -53,6 +53,16 @@ public class PenLine {
         }
     }
     
+    public int[] getX2List() {
+    	int size = xList.size();
+    	return new int[] {xList.get(size-2), xList.get(size-1)};
+    }
+    
+    public int[] getY2List() {
+    	int size = yList.size();
+    	return new int[] {yList.get(size-2), yList.get(size-1)};
+    }
+    
     public boolean isBoxContains(float boxMinX, float boxMaxX, float boxMinY, float boxMaxY) {
     	if(boxMinX < maxX && boxMaxX > minX) {
     		if(boxMinY < maxY && boxMaxY > minY) {

@@ -46,11 +46,16 @@ public class DrawService {
 //                		penLine.getWidth());
                 long startTime = System.nanoTime(); // 성능 측정 시작
                 if (size >= 2) {
+//                	jPanelPaintExample.addPolyLine(
+//                		penLine.getXList().subList(size - 2, size).stream().mapToInt(Integer::intValue).toArray(),
+//                		penLine.getYList().subList(size - 2, size).stream().mapToInt(Integer::intValue).toArray(),
+//		        		2,
+//		        		penLine.getWidth());
                 	jPanelPaintExample.addPolyLine(
-                		penLine.getXList().subList(size - 2, size).stream().mapToInt(Integer::intValue).toArray(),
-                		penLine.getYList().subList(size - 2, size).stream().mapToInt(Integer::intValue).toArray(),
-		        		2,
-		        		penLine.getWidth());
+                    		penLine.getX2List(),
+                    		penLine.getY2List(),
+    		        		2,
+    		        		penLine.getWidth());
                 } else {
                 	jPanelPaintExample.addPolyLine(
 		        		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
