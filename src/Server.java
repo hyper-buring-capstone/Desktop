@@ -95,7 +95,12 @@ class ServerRunable implements Runnable{
         log("Server is now running.");
 
 
-        JPanelPaintExample jPanelPaintExample=new JPanelPaintExample();
+        JPanelPaintExample jPanelPaintExample= null;
+        try {
+            jPanelPaintExample = new JPanelPaintExample();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 //        jPanelPaintExample.addLine(130,130,200,230);
 //        jPanelPaintExample.addLine(10,100,200,100);

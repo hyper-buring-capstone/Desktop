@@ -17,7 +17,11 @@ class DrawPanel extends JPanel {
     public DrawPanel() {
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
         canvas = new BufferedImage(390, 870, BufferedImage.TYPE_INT_ARGB);
-        setBackground(Color.WHITE);
+        setLayout(null);
+        setBackground(new Color(0,0,0,0));
+        setBounds(0,0,700,800);
+
+//        setOpaque(true);
     }
     
     public void createGraphics() {
@@ -35,7 +39,7 @@ class DrawPanel extends JPanel {
 
 
     public void addPoint(int x1, int y1){
-
+        
     }
     
     public void tempEraserPoint(int x, int y, float width) {
