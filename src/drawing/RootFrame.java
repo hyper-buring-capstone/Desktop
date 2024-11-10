@@ -44,8 +44,7 @@ public class RootFrame extends JFrame {
 
 
         add(jLayeredPane, BorderLayout.CENTER);
-        add(topLayeredPane, BorderLayout.SOUTH);
-        add(new NextPageBtn(pdfPanel), BorderLayout.NORTH);
+        add(topLayeredPane, BorderLayout.NORTH);
         setVisible(true);
 
     }

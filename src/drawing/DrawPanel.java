@@ -71,14 +71,26 @@ class DrawPanel extends JPanel {
         g2d.drawPolyline(xList,yList,n);
         long endTime = System.nanoTime(); // 성능 측정 완료
         //System.out.println("알짜시간 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-        repaint(100,100,1000,800);
+        repaint();
     }
     
     public void reCanvas(float width) {
-    	Graphics2D g2d = canvas.createGraphics();
-        g2d.setColor(Color.WHITE);
+
+//    	Graphics2D g2d = canvas.createGraphics();
+//        g2d.setColor( new Color(0,0,0,0));
+//        g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        Graphics2D g2d = canvas.createGraphics();
+        g2d.setComposite(AlphaComposite.Clear);  // 전체 지우기 위해 Clear 컴포지트 설정
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
         
+//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//        g2d.setStroke(new BasicStroke(width));
+//        g2d.setColor(Color.BLACK);
+
+
+        // 그리기 설정 초기화
+        g2d.setComposite(AlphaComposite.SrcOver); // 다시 그릴 수 있도록 컴포지트 설정
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setStroke(new BasicStroke(width));
         g2d.setColor(Color.BLUE);
@@ -91,9 +103,20 @@ class DrawPanel extends JPanel {
             		penLine.getXList().size());
     	}
         
-        
+        repaint();
         g2d.dispose(); // 리소스 해제
         repaint(); // 다시 그리기
+    }
+
+    public void reCanvas2(float width){
+
+
+        for(PenLine penLine: penLineList){
+            addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
+                    penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
+                    penLine.getXList().size(),
+                    width);
+        }
     }
     
     public void eraseLine(int x, int y, float width) {
@@ -105,13 +128,18 @@ class DrawPanel extends JPanel {
     	Iterator<PenLine> iterator = penLineList.iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
-    	    if (penLine.isBoxContains(minX, maxX, minY, maxY)) {
+    	    if (penLine.isBoxContains(minX, maxX, minY, maxY)) { //이 조건 굳이 필요?
     	        if (penLine.isOverlapping(x, y, width)) {
+
     	            iterator.remove();
-    	            reCanvas(penLine.getWidth());
+                    reCanvas(penLine.getWidth());
+                  //  repaint();
+
+    	            //reCanvas(penLine.getWidth());
     	        }
     	    }
     	}
+
     }
 
 
@@ -119,7 +147,7 @@ class DrawPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         setLayout(null);
-        setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
+        setBackground(new Color(0,0,0,0)); // alpha 값 0이면 투명화.
         g.drawImage(canvas, 0, 0, null); // BufferedImage에 그린 내용을 패널에 표시
     }
 }
