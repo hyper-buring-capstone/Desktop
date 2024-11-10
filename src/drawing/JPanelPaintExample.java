@@ -2,6 +2,7 @@ package drawing;
 
 import javax.swing.*;
 
+import drawing.button.NextPageBtn;
 import model.PenLine;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -39,16 +40,22 @@ public class JPanelPaintExample extends JFrame {
         TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel);
 
 
-        jLayeredPane.add(pdfPanel, Integer.valueOf(1)); // pdf를 밑에 배치
-        jLayeredPane.add(drawPanel, Integer.valueOf(2)); // 드로잉을 그 위에 배치
+        jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
+        jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
 
 
         add(jLayeredPane, BorderLayout.CENTER);
-        add(topLayeredPane, BorderLayout.NORTH);
+        add(topLayeredPane, BorderLayout.SOUTH);
+        add(new NextPageBtn(pdfPanel), BorderLayout.NORTH);
         setVisible(true);
 
     }
-    
+
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
+    }
+
     public void createGraphics() {
     	drawPanel.createGraphics();
     }
@@ -67,10 +74,13 @@ public class JPanelPaintExample extends JFrame {
         drawPanel.addPolyLine(xList, yList, n, width);
         long endTime = System.nanoTime(); // 성능 측정 완료
         //System.out.println("real time 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+
+        repaint(); //트러불 8번 관련 해결
     }
     
     public void eraseLine(int x, int y, float width) {
     	drawPanel.eraseLine(x, y, width);
+        repaint();
     }
 
     public void callAddPenLine(PenLine penLine) {

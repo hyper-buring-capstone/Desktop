@@ -47,6 +47,7 @@ public class PdfPanel extends JPanel {
     public void goOtherPage(int num){
         if(num>=0 && num<imageList.size()){
             pageNum=num;
+            repaint();
         }
     }
 

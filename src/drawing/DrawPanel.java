@@ -18,7 +18,7 @@ class DrawPanel extends JPanel {
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
         canvas = new BufferedImage(390, 870, BufferedImage.TYPE_INT_ARGB);
         setLayout(null);
-        setBackground(new Color(0,0,0,0));
+        setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
         setBounds(0,0,700,800);
 
 //        setOpaque(true);
@@ -71,8 +71,7 @@ class DrawPanel extends JPanel {
         g2d.drawPolyline(xList,yList,n);
         long endTime = System.nanoTime(); // 성능 측정 완료
         //System.out.println("알짜시간 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-        repaint();
-
+        repaint(100,100,1000,800);
     }
     
     public void reCanvas(float width) {
@@ -119,6 +118,8 @@ class DrawPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        setLayout(null);
+        setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
         g.drawImage(canvas, 0, 0, null); // BufferedImage에 그린 내용을 패널에 표시
     }
 }

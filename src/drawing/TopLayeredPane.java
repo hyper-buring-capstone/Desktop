@@ -8,30 +8,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TopLayeredPane extends JLayeredPane {
+public class TopLayeredPane extends JPanel {
     PdfPanel pdfPanel;
     TopLayeredPane(PdfPanel pdfPanel){
         this.pdfPanel=pdfPanel; //버튼 조작을 위해 객체 받음.
 
         setSize(1000, 100);
         setBackground(Color.black);
-        setLayout(new FlowLayout());
+        setLayout(new BorderLayout());
 
 
-        JButton nextPageBtn=new NextPageBtn();
-        JButton prevPageBtn=new PrevPageBtn();
+        JButton nextPageBtn=new NextPageBtn(pdfPanel);
+        JButton prevPageBtn=new PrevPageBtn(pdfPanel);
 
-        ActionListener nextPageAction=new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
-            }
-        };
-
-        nextPageBtn.addActionListener(nextPageAction);
-
-        add(prevPageBtn);
-        add(nextPageBtn);
+        add(prevPageBtn, BorderLayout.WEST,Integer.valueOf(0));
+        add(nextPageBtn, BorderLayout.EAST, Integer.valueOf(0));
 
 
 
