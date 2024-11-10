@@ -8,15 +8,14 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class JPanelPaintExample extends JFrame {
+public class RootFrame extends JFrame {
     private final DrawPanel drawPanel;
     PdfPanel pdfPanel;
 
-    public JPanelPaintExample() throws IOException {
+    public RootFrame() throws IOException {
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
