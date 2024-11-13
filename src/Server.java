@@ -6,6 +6,7 @@ import service.DrawService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.*;
 import java.io.IOException;
 
 import javax.bluetooth.BluetoothStateException;
@@ -23,8 +24,12 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Date;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Server{
 
@@ -188,6 +193,37 @@ class ServerRunable implements Runnable{
             PenLine penLine = null;
             EraserPoint eraserPoint = null;
             DrawService drawService=new DrawService(penLine, eraserPoint, rootFrame, false);
+            
+            // 임시 파일 전송 코드
+            String filePath = "C:\\Users\\PC\\Desktop\\1주차_강의자료.pdf";
+
+            File file = new File(filePath);
+
+            if (!file.exists()) {
+                System.err.println("파일이 존재하지 않습니다: " + filePath);
+                return;
+            }
+
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+
+                // 파일을 작은 조각으로 나누어 전송
+                //while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                for(int i = 0; i < 3; i++) {
+//                    mOutputStream.write(buffer, 0, bytesRead);
+//                    mOutputStream.flush();  // 전송 후 버퍼를 비운다
+                	Sender(buffer);
+                }
+
+                System.out.println("PDF 파일 전송 완료: " + filePath);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // 임시 파일 전송 코드 끝
+            Sender("END");
+            
             try {
 
                 Reader mReader = new BufferedReader(new InputStreamReader
@@ -265,6 +301,17 @@ class ServerRunable implements Runnable{
             log( "Me : " + msg );
             long endTime = System.nanoTime(); // 성능 측정 완료
             System.out.println("Sender 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+
+        }
+        
+        // byte 전송
+        void Sender(byte[] msg){
+        	try {
+        		mOutputStream.write(msg);
+                mOutputStream.flush(); // 버퍼 비우기
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
     }
