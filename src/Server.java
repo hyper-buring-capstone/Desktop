@@ -195,7 +195,7 @@ class ServerRunable implements Runnable{
             DrawService drawService=new DrawService(penLine, eraserPoint, rootFrame, false);
             
             // 임시 파일 전송 코드
-            String filePath = "C:\\Users\\PC\\Desktop\\1주차_강의자료.pdf";
+            String filePath = "C:\\Users\\rlagu\\OneDrive\\문서\\programming\\dummyAsset\\randomImage.jpg";
 
             File file = new File(filePath);
 
@@ -307,6 +307,7 @@ class ServerRunable implements Runnable{
         // byte 전송
         void Sender(byte[] msg){
         	try {
+                System.out.println(Arrays.toString(msg));
         		mOutputStream.write(msg);
                 mOutputStream.flush(); // 버퍼 비우기
             } catch (IOException e) {

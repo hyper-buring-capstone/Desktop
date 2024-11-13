@@ -28,7 +28,8 @@ public class RootFrame extends JFrame {
         jLayeredPane.setLayout(null);
 
         //PDF Panel 추가
-        File file=new File("C:\\Users\\PC\\Desktop\\1주차_강의자료.pdf");
+        File file=new File("C:\\Users\\rlagu\\OneDrive\\문서\\programming\\dummyAsset\\dummyImage1.pdf");
+
         PDDocument document = Loader.loadPDF(file); //파일 document에 연결
         pdfPanel=new PdfPanel(document); // 새 pdf 패널 객체 생성
 
