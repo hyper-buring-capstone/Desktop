@@ -29,4 +29,10 @@ public class Note {
         this.title=title;
         modified_at= LocalDateTime.now(); //현재 시간으로 자동 설정.
     }
+
+    public Note(String title, LocalDateTime localDateTime){
+        this.thumbNail=null;
+        this.title=title;
+        modified_at= localDateTime; //현재 시간으로 자동 설정.
+    }
 }

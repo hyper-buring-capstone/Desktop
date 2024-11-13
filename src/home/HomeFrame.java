@@ -1,6 +1,8 @@
 package home;
 
+import lombok.Getter;
 import model.Note;
+import service.FileService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,10 @@ import java.util.List;
  */
 public class HomeFrame extends JFrame {
 
+    @Getter
+    NoteListPanel noteListPanel;
+
+
     public HomeFrame(){
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,9 +26,11 @@ public class HomeFrame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        HomeBtnPanel homeBtnPanel=new HomeBtnPanel(); //상단 버튼 패널
-        NoteListPanel noteListPanel=new NoteListPanel(getDummyNotes()); //노트 리스트 패널
+        FileService.initDirectory(); //디렉토리 구조 초기화.
 
+
+        noteListPanel=new NoteListPanel(); //노트 리스트 패널
+        HomeBtnPanel homeBtnPanel=new HomeBtnPanel(noteListPanel); //상단 버튼 패널
 
         add(homeBtnPanel, BorderLayout.NORTH);
         add(noteListPanel, BorderLayout.CENTER);
@@ -31,6 +39,13 @@ public class HomeFrame extends JFrame {
 
 
         setVisible(true);
+    }
+
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
+
+
     }
 
     public static void main(String[] args){

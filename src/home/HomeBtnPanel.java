@@ -11,10 +11,15 @@ import java.awt.*;
  */
 public class HomeBtnPanel extends JPanel {
 
-    public HomeBtnPanel(){
+    public HomeBtnPanel(NoteListPanel noteListPanel){
 
         setLayout(new FlowLayout());
 
-        add(new FileOpenBtn());
+        add(new FileOpenBtn(noteListPanel));
+    }
+
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
     }
 }

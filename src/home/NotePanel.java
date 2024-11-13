@@ -41,6 +41,7 @@ public class NotePanel extends JButton {
     }
 
 
+    // 클릭 시 pdf창 열리도록 설정.
     ActionListener actionListener=new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
