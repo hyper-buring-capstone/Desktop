@@ -17,7 +17,7 @@ import java.util.List;
 public class NoteListPanel extends JPanel {
 
     List<NotePanel> notePanelList=new ArrayList<>();
-    List<Note> noteList=new ArrayList<>();
+    List<Note> noteList;
 
     //노트 리스트를 받아서 NotePanel 리스트를 생성하고 이를 모두 add.
     public NoteListPanel(){
@@ -30,7 +30,9 @@ public class NoteListPanel extends JPanel {
         //노트 각각에 대한 패널 생성
         noteList=FileService.loadNoteList();
         for(Note note:noteList){
-            add(new NotePanel(note)); //gui에 삽입
+            NotePanel notePanel=new NotePanel(note);
+            notePanelList.add(notePanel);
+            add(notePanel); //gui에 삽입
         }
 
 
@@ -44,18 +46,29 @@ public class NoteListPanel extends JPanel {
 
 
 
+    }
 
-
+    public void releaseNote(){
+        for(NotePanel notePanel:notePanelList){
+            remove(notePanel);
+        }
     }
 
     public void refresh(){
-        repaint();
+
+        releaseNote();
+        noteList=FileService.loadNoteList();
+        for(Note note:noteList){
+            NotePanel notePanel=new NotePanel(note);
+            notePanelList.add(notePanel);
+            add(notePanel); //gui에 삽입
+        }
+        revalidate();
+        //repaint();
     }
 
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
-        g.drawRect(0,0,100,100);
-        noteList=FileService.loadNoteList();
     }
 }

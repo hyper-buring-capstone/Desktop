@@ -40,6 +40,10 @@ public class NotePanel extends JButton {
         setVisible(true);
     }
 
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
+    }
 
     // 클릭 시 pdf창 열리도록 설정.
     ActionListener actionListener=new ActionListener() {

@@ -41,12 +41,11 @@ public class HomeFrame extends JFrame {
         setVisible(true);
     }
 
-    @Override
-    public void paintComponents(Graphics g) {
-        super.paintComponents(g);
-
-
-    }
+//    @Override
+//    public void paintComponents(Graphics g) {
+//        super.paintComponents(g);
+//        remove(noteListPanel);
+//    }
 
     public static void main(String[] args){
 

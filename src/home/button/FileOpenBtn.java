@@ -77,7 +77,6 @@ public class FileOpenBtn extends JButton {
 
 
             //패널 리스트를 재호출해서 새로고침
-            noteListPanel.repaint();
             noteListPanel.refresh();
 
 
@@ -87,7 +86,6 @@ public class FileOpenBtn extends JButton {
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
-        getParent().repaint();
 
     }
 }
