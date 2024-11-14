@@ -1,8 +1,11 @@
 package drawing;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import drawing.button.NextPageBtn;
+import model.Note;
 import model.PenLine;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -15,7 +18,7 @@ public class RootFrame extends JFrame {
     private final DrawPanel drawPanel;
     PdfPanel pdfPanel;
 
-    public RootFrame() throws IOException {
+    public RootFrame(Note note) throws IOException {
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
@@ -23,29 +26,41 @@ public class RootFrame extends JFrame {
         setLayout(new BorderLayout());
 
 
+        //layeredPane 설정
         JLayeredPane jLayeredPane=new JLayeredPane();
-        jLayeredPane.setSize(new Dimension(1000, 800));
-        jLayeredPane.setLayout(null);
+//        jLayeredPane.setMaximumSize(new Dimension(1000, 8000));
+//        jLayeredPane.setPreferredSize(new Dimension(1000, 8000));
+       // jLayeredPane.setLayout(new FlowLayout());
+        jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jLayeredPane.setBorder(new TitledBorder(new LineBorder(Color.red,3),"jlayredPane")); //디버깅용
+        jLayeredPane.setLayout(new OverlayLayout(jLayeredPane));
 
         //PDF Panel 추가
-        File file=new File("C:\\Users\\kimdh\\Desktop\\2024-1학기(3-1)\\수치해석\\hw5.pdf");
-        PDDocument document = Loader.loadPDF(file); //파일 document에 연결
-        pdfPanel=new PdfPanel(document); // 새 pdf 패널 객체 생성
+        pdfPanel=new PdfPanel(note); // 새 pdf 패널 객체 생성
 
-        // DrawPanel을 하나만 추가
-        drawPanel = new DrawPanel();
+        // DrawPanel을 하나만 추가]
         // DrawPanel 페이지 사이즈 설정
+        drawPanel = new DrawPanel(note);
         drawPanel.setMaxPageNum(pdfPanel.getImageListSize());
+
 
         // 상단 버튼 레이아웃 추가
         TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel, drawPanel);
-
+        jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
         jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
 
+        //스크롤 페인
+        JScrollPane jScrollPane=new JScrollPane(jLayeredPane);
+        jScrollPane.setVerticalScrollBarPolicy(jScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setHorizontalScrollBarPolicy(jScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
+//        jScrollPane.setMaximumSize(new Dimension(1000,8000));
+//        jScrollPane.setPreferredSize(new Dimension(1000,8000));
 
-        add(jLayeredPane, BorderLayout.CENTER);
+
+        add(jScrollPane, BorderLayout.CENTER);
         add(topLayeredPane, BorderLayout.NORTH);
         setVisible(true);
 

@@ -1,13 +1,19 @@
 package drawing;
 
 import lombok.Getter;
+import model.Note;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,28 +21,51 @@ import java.util.List;
 public class PdfPanel extends JPanel {
 
     Image image;
-
+    int width=0;
+    int height=0;
     @Getter
     int pageNum;
 
     List<Image> imageList;
 
-    public PdfPanel(PDDocument pdDocument) throws IOException { //pdf 객체를 받아 이미지로 가지고 있게 됨.
+    public PdfPanel(Note note) throws IOException { //pdf 객체를 받아 이미지로 가지고 있게 됨.
         imageList=new ArrayList<>();
         pageNum=0;
+        String title=note.getTitle();
 
-        PDFRenderer pdfRenderer=new PDFRenderer(pdDocument);
-        int dpi = 300;  // 고해상도를 원하면 더 높여도 되긴함(근데 300 이상으론 크게 의미 없더라. 아마도 확대할 때는 필요할지도)
+        //자체 설정
+        //setAlignmentX(Component.CENTER_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
 
-        for (int i = 0; i < pdDocument.getNumberOfPages(); i++) {
-            // renderImageWithDPI로 DPI를 설정하여 고해상도 이미지 생성
-            imageList.add(pdfRenderer.renderImageWithDPI(i, dpi));
+        //디버깅용
+        setBorder(new TitledBorder(new LineBorder(Color.BLUE,3),"PDFPanel"));
+
+
+        //이미지 로딩
+        File[] files=new File("C:\\drawing\\data\\"+title+"\\images").listFiles(); //이미지 폴더에 접근
+        for(File file:files){
+            imageList.add(ImageIO.read(file));
         }
 
-        setLayout(null);
-        setBounds(0,0,1000,800);
+        //이미지 사이즈
+
+        if(!imageList.isEmpty()){
+            width=imageList.getFirst().getWidth(null);
+            height=imageList.getFirst().getHeight(null);
+        }
+
+        width=note.getThumbNail().getWidth(null);
+        height=note.getThumbNail().getHeight(null);
+
+
+        //setLayout(null);
+        //setBounds(0,0,1000, 1000*height/width);
+
+
+        setPreferredSize(new Dimension(1000, 1000*height/width));
+        setMaximumSize(new Dimension(1000, 1000*height/width));
+        setVisible(true);
     }
-    
+
     public int getImageListSize() {
     	return imageList.size();
     }
@@ -44,36 +73,17 @@ public class PdfPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+       // setLayout(null);
+        //setBounds(0,0,width,height);
+//        int parentW=getParent().getWidth();
+        int parentW=1000;
+        setMaximumSize(new Dimension(parentW, parentW*height/width));
+        setPreferredSize(new Dimension(parentW, parentW*height/width));
+        g.drawImage(imageList.get(pageNum), 0,0,parentW, parentW*height/width,null);
 
-        Image img = imageList.get(pageNum);
-        int panelWidth = getWidth();
-        int panelHeight = getHeight()-100; // 여백 추가
-
-        // 원본 이미지 크기
-        int imgWidth = img.getWidth(null);
-        int imgHeight = img.getHeight(null);
-
-        // 비율 유지하며 패널에 맞춰 조정된 이미지 크기
-        double imgAspect = (double) imgWidth / imgHeight;
-        double panelAspect = (double) panelWidth / panelHeight;
-
-        int drawWidth, drawHeight;
-        int xOffset = 0, yOffset = 0;
-
-        // 패널의 비율에 따라 너비 또는 높이를 맞추고 여백을 계산
-        if (panelAspect > imgAspect) {
-            drawHeight = panelHeight;
-            drawWidth = (int) (drawHeight * imgAspect);
-            xOffset = (panelWidth - drawWidth) / 2;  // 좌우 여백 계산
-        } else {
-            drawWidth = panelWidth;
-            drawHeight = (int) (drawWidth / imgAspect);
-            yOffset = (panelHeight - drawHeight) / 2;  // 상하 여백 계산
-        }
-
-        // 이미지 그리기 (여백 포함하여 중앙에 위치)
-        g.drawImage(img, xOffset, yOffset, drawWidth, drawHeight, null);
+        setVisible(true);
     }
+
 
     public void goOtherPage(int num){
         if(num>=0 && num<imageList.size()){
