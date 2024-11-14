@@ -34,6 +34,8 @@ public class RootFrame extends JFrame {
 
         // DrawPanel을 하나만 추가
         drawPanel = new DrawPanel();
+        // DrawPanel 페이지 사이즈 설정
+        drawPanel.setMaxPageNum(pdfPanel.getImageListSize());
 
         // 상단 버튼 레이아웃 추가
         TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel, drawPanel);

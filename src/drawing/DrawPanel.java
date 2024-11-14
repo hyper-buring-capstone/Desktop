@@ -14,6 +14,7 @@ public class DrawPanel extends JPanel {
     private List<List<PenLine>> penLineLists = new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
     private int pageNum;
+    private int maxPageNum;
 
 
     public DrawPanel() {
@@ -27,18 +28,22 @@ public class DrawPanel extends JPanel {
 //        setOpaque(true);
     }
     
+    public void setMaxPageNum(int maxPageNum) {
+    	this.maxPageNum = maxPageNum;
+    }
+    
     public int getPageNum() {
     	return pageNum;
     }
     
     public void setPageNum(int newPageNum) {
-        while (newPageNum >= penLineLists.size()) {
-            // 부족한 인덱스를 채우기 위해 빈 ArrayList 추가
-            penLineLists.add(new ArrayList<>());
-        }
-        if(pageNum != newPageNum) {
+        if(newPageNum>=0 && newPageNum<maxPageNum) {
+            while (newPageNum >= penLineLists.size()) {
+                // 부족한 인덱스를 채우기 위해 빈 ArrayList 추가
+                penLineLists.add(new ArrayList<>());
+            }
         	pageNum = newPageNum;
-        	reCanvas(5); // width는 받지 않도록 구현 필요(선마다 width 다를 수 있음)
+        	reCanvas();
         }
     }
     
@@ -92,7 +97,7 @@ public class DrawPanel extends JPanel {
         repaint();
     }
     
-    public void reCanvas(float width) {
+    public void reCanvas() {
 
 //    	Graphics2D g2d = canvas.createGraphics();
 //        g2d.setColor( new Color(0,0,0,0));
@@ -110,11 +115,11 @@ public class DrawPanel extends JPanel {
         // 그리기 설정 초기화
         g2d.setComposite(AlphaComposite.SrcOver); // 다시 그릴 수 있도록 컴포지트 설정
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setStroke(new BasicStroke(width));
         g2d.setColor(Color.BLUE);
         Iterator<PenLine> iterator = penLineLists.get(pageNum).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
+            g2d.setStroke(new BasicStroke(penLine.getWidth()));
     	    g2d.drawPolyline(
     	    		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
             		penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
@@ -150,7 +155,7 @@ public class DrawPanel extends JPanel {
     	        if (penLine.isOverlapping(x, y, width)) {
 
     	            iterator.remove();
-                    reCanvas(penLine.getWidth());
+                    reCanvas();
                   //  repaint();
 
     	            //reCanvas(penLine.getWidth());

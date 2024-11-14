@@ -34,6 +34,10 @@ public class PdfPanel extends JPanel {
         setLayout(null);
         setBounds(0,0,1000,800);
     }
+    
+    public int getImageListSize() {
+    	return imageList.size();
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
