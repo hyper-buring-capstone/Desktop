@@ -66,6 +66,7 @@ public class PdfPanel extends JPanel {
         super.paintComponent(g);
        // setLayout(null);
         //setBounds(0,0,width,height);
+
         g.drawImage(imageList.get(pageNum), 0,0,1000, 1000*height/width,null);
 
         setVisible(true);

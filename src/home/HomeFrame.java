@@ -20,6 +20,7 @@ public class HomeFrame extends JFrame {
 
 
     public HomeFrame(){
+        //자체 설정
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
@@ -32,8 +33,16 @@ public class HomeFrame extends JFrame {
         noteListPanel=new NoteListPanel(); //노트 리스트 패널
         HomeBtnPanel homeBtnPanel=new HomeBtnPanel(noteListPanel); //상단 버튼 패널
 
+        //스크롤 기능
+        JScrollPane jScrollPane=new JScrollPane(noteListPanel);
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
+
+
+
         add(homeBtnPanel, BorderLayout.NORTH);
-        add(noteListPanel, BorderLayout.CENTER);
+        add(jScrollPane, BorderLayout.CENTER);
 
 
 

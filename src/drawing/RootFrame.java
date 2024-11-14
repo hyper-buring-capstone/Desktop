@@ -28,7 +28,7 @@ public class RootFrame extends JFrame {
 
         //layeredPane 설정
         JLayeredPane jLayeredPane=new JLayeredPane();
-        jLayeredPane.setSize(new Dimension(1000, 800));
+        jLayeredPane.setMaximumSize(new Dimension(1000, 800));
        // jLayeredPane.setLayout(new FlowLayout());
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         jLayeredPane.setBorder(new TitledBorder(new LineBorder(Color.red,3),"jlayredPane")); //디버깅용
@@ -47,8 +47,14 @@ public class RootFrame extends JFrame {
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
         jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
 
+        //스크롤 페인
+        JScrollPane jScrollPane=new JScrollPane(jLayeredPane);
+        jScrollPane.setVerticalScrollBarPolicy(jScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setHorizontalScrollBarPolicy(jScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
 
-        add(jLayeredPane, BorderLayout.CENTER);
+
+        add(jScrollPane, BorderLayout.CENTER);
         add(topLayeredPane, BorderLayout.NORTH);
         setVisible(true);
 

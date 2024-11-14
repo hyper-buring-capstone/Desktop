@@ -1,5 +1,6 @@
 package home.button;
 
+import global.BaseButton;
 import home.NoteListPanel;
 import home.NotePanel;
 import org.apache.pdfbox.Loader;
@@ -23,11 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FileOpenBtn extends JButton {
+public class FileOpenBtn extends BaseButton {
 
     NoteListPanel noteListPanel;
     public FileOpenBtn(NoteListPanel noteListPanel){
-        super("File Open");
+        setText("File Open");
         this.noteListPanel=noteListPanel;
         addActionListener(actionListener);
 

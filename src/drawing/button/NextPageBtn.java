@@ -1,15 +1,15 @@
 package drawing.button;
 
 import drawing.PdfPanel;
+import global.BaseButton;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class NextPageBtn extends JButton {
+public class NextPageBtn extends BaseButton {
 
     public NextPageBtn(PdfPanel pdfPanel){
-        super("다음 페이지");
+        setText("다음 페이지");
 
         ActionListener actionListener=new ActionListener() {
             @Override

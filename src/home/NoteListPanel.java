@@ -24,6 +24,7 @@ public class NoteListPanel extends JPanel {
 
         //자체 패널 설정 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); //세로 방향으로 나열
+        setBackground(Color.white);
 
         setBorder(new TitledBorder(new LineBorder(Color.red, 3),"notePanelList")); //테두리 설정(디버깅)
 
