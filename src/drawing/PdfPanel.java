@@ -49,8 +49,8 @@ public class PdfPanel extends JPanel {
         //이미지 사이즈
 
         if(!imageList.isEmpty()){
-            width=imageList.getFirst().getWidth(null);
-            height=imageList.getFirst().getHeight(null);
+            width=imageList.get(0).getWidth(null);
+            height=imageList.get(0).getHeight(null);
         }
 
         width=note.getThumbNail().getWidth(null);

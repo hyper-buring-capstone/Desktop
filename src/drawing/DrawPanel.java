@@ -25,6 +25,7 @@ public class DrawPanel extends JPanel {
     private int maxPageNum;
     int width;
     int height;
+    private final int scale = 5;
 
 
     public DrawPanel(Note note) {
@@ -35,7 +36,7 @@ public class DrawPanel extends JPanel {
 
 
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
-        canvas = new BufferedImage(300, 700, BufferedImage.TYPE_INT_ARGB);
+        canvas = new BufferedImage(300*scale, 700*scale, BufferedImage.TYPE_INT_ARGB);
         setLayout(null);
         setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
        // setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -65,6 +66,7 @@ public class DrawPanel extends JPanel {
     public void createGraphics() {
     	g2d = canvas.createGraphics(); // Graphics2D 객체 생성
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
     
     public void disposeGraphics() {
@@ -103,10 +105,12 @@ public class DrawPanel extends JPanel {
     }
 
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
-        g2d.setStroke(new BasicStroke(width));
-        g2d.setColor(Color.BLUE);
+        g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.setColor(Color.BLACK);
         long startTime = System.nanoTime(); // 성능 측정 시작
-        g2d.drawPolyline(xList,yList,n);
+        g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
+        		Arrays.stream(yList).map(y -> y * 5).toArray(),
+        		n);
         long endTime = System.nanoTime(); // 성능 측정 완료
         //System.out.println("알짜시간 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
         repaint();
@@ -118,6 +122,7 @@ public class DrawPanel extends JPanel {
 //        g2d.setColor( new Color(0,0,0,0));
 //        g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Graphics2D g2d = canvas.createGraphics();
+//    	createGraphics();
         g2d.setComposite(AlphaComposite.Clear);  // 전체 지우기 위해 Clear 컴포지트 설정
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -130,14 +135,15 @@ public class DrawPanel extends JPanel {
         // 그리기 설정 초기화
         g2d.setComposite(AlphaComposite.SrcOver); // 다시 그릴 수 있도록 컴포지트 설정
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(Color.BLUE);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setColor(Color.BLACK);
         Iterator<PenLine> iterator = penLineLists.get(pageNum).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
-            g2d.setStroke(new BasicStroke(penLine.getWidth()));
+            g2d.setStroke(new BasicStroke(penLine.getWidth()*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     	    g2d.drawPolyline(
-    	    		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
-            		penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
+    	    		penLine.getXList().stream().mapToInt(x -> x*5).toArray(),
+            		penLine.getYList().stream().mapToInt(y -> y*5).toArray(),
             		penLine.getXList().size());
     	}
         
@@ -186,6 +192,6 @@ public class DrawPanel extends JPanel {
         super.paintComponent(g);
         setLayout(null);
         setBackground(new Color(0,0,0,0)); // alpha 값 0이면 투명화.
-        g.drawImage(canvas, 0, 0, null); // BufferedImage에 그린 내용을 패널에 표시
+        g.drawImage(canvas, 0, 0, canvas.getWidth()/scale, canvas.getHeight()/scale, null); // BufferedImage에 그린 내용을 패널에 표시
     }
 }
