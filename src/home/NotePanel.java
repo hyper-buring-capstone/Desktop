@@ -1,7 +1,8 @@
 package home;
 
-import drawing.RootFrame;
+import drawing.NoteFrame;
 import global.BaseButton;
+import global.ServerRunable;
 import model.Note;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class NotePanel extends BaseButton {
     public NotePanel(Note note){
         //생성자
         this.note=note;
+
 
         // 패널 자체 설정
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -57,14 +59,31 @@ public class NotePanel extends BaseButton {
     ActionListener actionListener=new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+
             //기존 창 닫고
 
-            // 노트 창 오픈
+
+
+            //서버
+            Runnable r = null;
             try {
-                RootFrame rootFrame=new RootFrame(note);
+                r = new ServerRunable(new NoteFrame(note));
+
+                Thread thread = new Thread(r);
+                thread.start();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+
+
+
+            // 노트 창 오픈
+            // 서버 오픈
+//            try {
+//                NoteFrame noteFrame =new NoteFrame(note);
+//            } catch (IOException ex) {
+//                throw new RuntimeException(ex);
+//            }
         }
     };
 

@@ -16,6 +16,7 @@ public class PrevPageBtn extends BaseButton {
             public void actionPerformed(ActionEvent e) {
                 drawPanel.setPageNum(drawPanel.getPageNum()-1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()-1);
+                getParent().getParent().repaint();
             }
         };
 

@@ -1,5 +1,7 @@
 package drawing;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.Note;
 import model.PenLine;
 
@@ -17,7 +19,9 @@ public class DrawPanel extends JPanel {
     //private List<PenLine> penLineList=new ArrayList<>();
     private List<List<PenLine>> penLineLists = new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
+    @Getter
     private int pageNum;
+    @Setter
     private int maxPageNum;
     int width;
     int height;
@@ -45,14 +49,6 @@ public class DrawPanel extends JPanel {
         //setPreferredSize(new Dimension(390, 870));
 
 //        setOpaque(true);
-    }
-    
-    public void setMaxPageNum(int maxPageNum) {
-    	this.maxPageNum = maxPageNum;
-    }
-
-    public int getPageNum() {
-    	return pageNum;
     }
 
     public void setPageNum(int newPageNum) {

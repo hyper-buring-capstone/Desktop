@@ -17,6 +17,7 @@ public class NextPageBtn extends BaseButton {
             public void actionPerformed(ActionEvent e) {
                 drawPanel.setPageNum(drawPanel.getPageNum()+1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
+                getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
             }
         };
 

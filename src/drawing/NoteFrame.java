@@ -4,21 +4,17 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import drawing.button.NextPageBtn;
 import model.Note;
 import model.PenLine;
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 
-public class RootFrame extends JFrame {
+public class NoteFrame extends JFrame {
     private final DrawPanel drawPanel;
     PdfPanel pdfPanel;
 
-    public RootFrame(Note note) throws IOException {
+    public NoteFrame(Note note) throws IOException {
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
