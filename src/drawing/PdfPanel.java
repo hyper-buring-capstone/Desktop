@@ -40,11 +40,35 @@ public class PdfPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setLayout(null);
-        setBounds(0, 0, getWidth(), getHeight());  // 패널 크기에 맞게 조정
 
-        Image img = imageList.get(pageNum); // JPanel 크기에 맞게 이미지 크기 조정
-        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);  // 패널 크기에 맞게 이미지 크기 조정
+        Image img = imageList.get(pageNum);
+        int panelWidth = getWidth();
+        int panelHeight = getHeight()-100; // 여백 추가
+
+        // 원본 이미지 크기
+        int imgWidth = img.getWidth(null);
+        int imgHeight = img.getHeight(null);
+
+        // 비율 유지하며 패널에 맞춰 조정된 이미지 크기
+        double imgAspect = (double) imgWidth / imgHeight;
+        double panelAspect = (double) panelWidth / panelHeight;
+
+        int drawWidth, drawHeight;
+        int xOffset = 0, yOffset = 0;
+
+        // 패널의 비율에 따라 너비 또는 높이를 맞추고 여백을 계산
+        if (panelAspect > imgAspect) {
+            drawHeight = panelHeight;
+            drawWidth = (int) (drawHeight * imgAspect);
+            xOffset = (panelWidth - drawWidth) / 2;  // 좌우 여백 계산
+        } else {
+            drawWidth = panelWidth;
+            drawHeight = (int) (drawWidth / imgAspect);
+            yOffset = (panelHeight - drawHeight) / 2;  // 상하 여백 계산
+        }
+
+        // 이미지 그리기 (여백 포함하여 중앙에 위치)
+        g.drawImage(img, xOffset, yOffset, drawWidth, drawHeight, null);
     }
 
     public void goOtherPage(int num){
