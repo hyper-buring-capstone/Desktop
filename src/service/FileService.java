@@ -117,7 +117,9 @@ public class FileService {
                 }
                 reader.close();
 
-                noteList.add(new Note(metaData.get(1),  LocalDateTime.parse(metaData.get(2))));
+                String title=metaData.get(1);
+                Image image=ImageIO.read(new File("c:\\drawing\\data\\"+title+"\\images\\0.jpg"));
+                noteList.add(new Note(image,title,LocalDateTime.parse(metaData.get(2)))); //노트 생성
             }catch(IOException e){
                 e.printStackTrace(); //추후 예외처리 할 것. 파일이 삭제되거나 하는 문제?
             }

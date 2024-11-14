@@ -28,7 +28,8 @@ public class RootFrame extends JFrame {
 
         //layeredPane 설정
         JLayeredPane jLayeredPane=new JLayeredPane();
-        jLayeredPane.setMaximumSize(new Dimension(1000, 800));
+//        jLayeredPane.setMaximumSize(new Dimension(1000, 8000));
+//        jLayeredPane.setPreferredSize(new Dimension(1000, 8000));
        // jLayeredPane.setLayout(new FlowLayout());
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         jLayeredPane.setBorder(new TitledBorder(new LineBorder(Color.red,3),"jlayredPane")); //디버깅용
@@ -38,7 +39,7 @@ public class RootFrame extends JFrame {
         pdfPanel=new PdfPanel(note); // 새 pdf 패널 객체 생성
 
         // DrawPanel을 하나만 추가
-        drawPanel = new DrawPanel();
+        drawPanel = new DrawPanel(note);
 
         // 상단 버튼 레이아웃 추가
         TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel);
@@ -52,6 +53,8 @@ public class RootFrame extends JFrame {
         jScrollPane.setVerticalScrollBarPolicy(jScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setHorizontalScrollBarPolicy(jScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
+//        jScrollPane.setMaximumSize(new Dimension(1000,8000));
+//        jScrollPane.setPreferredSize(new Dimension(1000,8000));
 
 
         add(jScrollPane, BorderLayout.CENTER);

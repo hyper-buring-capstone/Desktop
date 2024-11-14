@@ -24,6 +24,12 @@ public class Note {
         modified_at= LocalDateTime.now(); //현재 시간으로 자동 설정.
     }
 
+    public Note(Image thumbNail, String title, LocalDateTime localDateTime){
+        this.thumbNail=thumbNail;
+        this.title=title;
+        modified_at= localDateTime; //현재 시간으로 자동 설정.
+    }
+
     public Note(String title){
         this.thumbNail=null;
         this.title=title;

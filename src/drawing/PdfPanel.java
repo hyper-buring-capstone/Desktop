@@ -53,8 +53,13 @@ public class PdfPanel extends JPanel {
             height=imageList.getFirst().getHeight(null);
         }
 
+        width=note.getThumbNail().getWidth(null);
+        height=note.getThumbNail().getHeight(null);
+
+
         //setLayout(null);
         //setBounds(0,0,1000, 1000*height/width);
+
 
         setPreferredSize(new Dimension(1000, 1000*height/width));
         setMaximumSize(new Dimension(1000, 1000*height/width));
@@ -66,8 +71,11 @@ public class PdfPanel extends JPanel {
         super.paintComponent(g);
        // setLayout(null);
         //setBounds(0,0,width,height);
-
-        g.drawImage(imageList.get(pageNum), 0,0,1000, 1000*height/width,null);
+//        int parentW=getParent().getWidth();
+        int parentW=1000;
+        setMaximumSize(new Dimension(parentW, parentW*height/width));
+        setPreferredSize(new Dimension(parentW, parentW*height/width));
+        g.drawImage(imageList.get(pageNum), 0,0,parentW, parentW*height/width,null);
 
         setVisible(true);
     }

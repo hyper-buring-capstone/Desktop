@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.File;
 import java.util.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -15,17 +16,26 @@ class DrawPanel extends JPanel {
     private final BufferedImage canvas;
     private List<PenLine> penLineList=new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
+    int width;
+    int height;
 
 
-    public DrawPanel() {
+    public DrawPanel(Note note) {
+        //노트 데이터로부터 폭과 높이 불러오기
+        Image thumbnail=note.getThumbNail();
+        width=thumbnail.getWidth(null);
+        height=thumbnail.getHeight(null);
+
+
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
-        canvas = new BufferedImage(390, 870, BufferedImage.TYPE_INT_ARGB);
+        canvas = new BufferedImage(300, 700, BufferedImage.TYPE_INT_ARGB);
         setLayout(null);
         setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
        // setAlignmentX(Component.CENTER_ALIGNMENT);
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
-        setSize(new Dimension(390, 870));
-        setMaximumSize(new Dimension(390, 870));
+        setSize(new Dimension(300, 700));
+        setMaximumSize(new Dimension(300   , 700));
+
         //setPreferredSize(new Dimension(390, 870));
 
 //        setOpaque(true);
