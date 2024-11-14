@@ -10,7 +10,8 @@ import java.util.List;
 
 public class DrawPanel extends JPanel {
     private final BufferedImage canvas;
-    private List<PenLine> penLineList=new ArrayList<>();
+    //private List<PenLine> penLineList=new ArrayList<>();
+    private List<List<PenLine>> penLineLists = new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
     private int pageNum;
 
@@ -22,6 +23,7 @@ public class DrawPanel extends JPanel {
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
         setBounds(0,0,700,800);
         pageNum=0;
+        penLineLists.add(new ArrayList<>());
 //        setOpaque(true);
     }
     
@@ -30,7 +32,14 @@ public class DrawPanel extends JPanel {
     }
     
     public void setPageNum(int newPageNum) {
-    	pageNum = newPageNum;
+        while (newPageNum >= penLineLists.size()) {
+            // 부족한 인덱스를 채우기 위해 빈 ArrayList 추가
+            penLineLists.add(new ArrayList<>());
+        }
+        if(pageNum != newPageNum) {
+        	pageNum = newPageNum;
+        	reCanvas(5); // width는 받지 않도록 구현 필요(선마다 width 다를 수 있음)
+        }
     }
     
     public void createGraphics() {
@@ -43,7 +52,7 @@ public class DrawPanel extends JPanel {
     }
 
     public void addPenLine(PenLine penLine){
-        penLineList.add(penLine);
+        penLineLists.get(pageNum).add(penLine);
     }
 
 
@@ -103,7 +112,7 @@ public class DrawPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setStroke(new BasicStroke(width));
         g2d.setColor(Color.BLUE);
-        Iterator<PenLine> iterator = penLineList.iterator();
+        Iterator<PenLine> iterator = penLineLists.get(pageNum).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
     	    g2d.drawPolyline(
@@ -120,7 +129,7 @@ public class DrawPanel extends JPanel {
     public void reCanvas2(float width){
 
 
-        for(PenLine penLine: penLineList){
+        for(PenLine penLine: penLineLists.get(pageNum)){
             addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
                     penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
                     penLine.getXList().size(),
@@ -134,7 +143,7 @@ public class DrawPanel extends JPanel {
     	float minY = y - width;
     	float maxY = y + width;
     	
-    	Iterator<PenLine> iterator = penLineList.iterator();
+    	Iterator<PenLine> iterator = penLineLists.get(pageNum).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
     	    if (penLine.isBoxContains(minX, maxX, minY, maxY)) { //이 조건 굳이 필요?
