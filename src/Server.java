@@ -195,7 +195,7 @@ class ServerRunable implements Runnable{
             DrawService drawService=new DrawService(penLine, eraserPoint, rootFrame, false);
             
             // 임시 파일 전송 코드
-            String filePath = "C:\\Users\\PC\\Desktop\\1주차_강의자료.pdf";
+            String filePath = "C:\\Users\\PC\\Desktop\\임시.jpg";
 
             File file = new File(filePath);
 
@@ -208,11 +208,7 @@ class ServerRunable implements Runnable{
                 byte[] buffer = new byte[1024];
                 int bytesRead;
 
-                // 파일을 작은 조각으로 나누어 전송
-                //while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                for(int i = 0; i < 3; i++) {
-//                    mOutputStream.write(buffer, 0, bytesRead);
-//                    mOutputStream.flush();  // 전송 후 버퍼를 비운다
+                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                 	Sender(buffer);
                 }
 
@@ -309,6 +305,7 @@ class ServerRunable implements Runnable{
         	try {
         		mOutputStream.write(msg);
                 mOutputStream.flush(); // 버퍼 비우기
+                System.out.println(Arrays.toString(msg));
             } catch (IOException e) {
                 e.printStackTrace();
             }
