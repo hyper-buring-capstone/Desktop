@@ -1,8 +1,11 @@
 package drawing;
 
+import model.Note;
 import model.PenLine;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.*;
 import java.awt.image.BufferedImage;
@@ -18,8 +21,12 @@ class DrawPanel extends JPanel {
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
         canvas = new BufferedImage(390, 870, BufferedImage.TYPE_INT_ARGB);
         setLayout(null);
+        setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
+       // setAlignmentX(Component.CENTER_ALIGNMENT);
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
-        setBounds(0,0,700,800);
+        setSize(new Dimension(390, 870));
+        setMaximumSize(new Dimension(390, 870));
+        //setPreferredSize(new Dimension(390, 870));
 
 //        setOpaque(true);
     }

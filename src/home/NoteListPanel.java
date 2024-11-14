@@ -40,8 +40,8 @@ public class NoteListPanel extends JPanel {
         //noteList= FileService.loadNoteList();
 
 
-        setBounds(0,0,1000,800);
-        setVisible(true);
+   //     setBounds(0,0,1000,800);
+     //   setVisible(true);
 
 
 

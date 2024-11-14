@@ -96,7 +96,8 @@ public class FileService {
         }
     }
 
-    //파일로부터 노트 리스트를 반환해줌.
+    //파일로부터 노트 리스트를 반환해줌. 
+    //모든 노트의 이름과 메타데이터
     public static List<Note> loadNoteList(){
         List<Note> noteList=new ArrayList<>();
 

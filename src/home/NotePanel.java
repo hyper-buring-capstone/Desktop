@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * 노트 하나에 대한 gui 객체.
@@ -18,7 +19,12 @@ import java.io.IOException;
  */
 public class NotePanel extends JButton {
 
+    Note note;
+
     public NotePanel(Note note){
+        //생성자
+        this.note=note;
+
         // 패널 자체 설정
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(Component.CENTER_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
@@ -27,7 +33,7 @@ public class NotePanel extends JButton {
         
         // 노트 객체로부터 gui 객체 생성
         JLabel titleLabel=new JLabel(note.getTitle());
-        JLabel modifiedLabel=new JLabel(note.getModified_at().toString());
+        JLabel modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString());
         Image thumbNail=note.getThumbNail();
 
         add(titleLabel);
@@ -53,7 +59,7 @@ public class NotePanel extends JButton {
 
             // 노트 창 오픈
             try {
-                RootFrame rootFrame=new RootFrame();
+                RootFrame rootFrame=new RootFrame(note);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

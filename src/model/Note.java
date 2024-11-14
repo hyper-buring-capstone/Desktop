@@ -33,6 +33,6 @@ public class Note {
     public Note(String title, LocalDateTime localDateTime){
         this.thumbNail=null;
         this.title=title;
-        modified_at= localDateTime; //현재 시간으로 자동 설정.
+        modified_at= localDateTime; 
     }
 }

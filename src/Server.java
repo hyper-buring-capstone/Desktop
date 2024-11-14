@@ -1,6 +1,7 @@
 
 import drawing.RootFrame;
 import model.EraserPoint;
+import model.Note;
 import model.PenLine;
 import service.DrawService;
 
@@ -94,7 +95,7 @@ class ServerRunable implements Runnable{
 
         RootFrame rootFrame = null;
         try {
-            rootFrame = new RootFrame();
+            rootFrame = new RootFrame(new Note("dd"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
