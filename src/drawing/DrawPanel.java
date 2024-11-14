@@ -16,7 +16,6 @@ import java.util.List;
 
 public class DrawPanel extends JPanel {
     private final BufferedImage canvas;
-    //private List<PenLine> penLineList=new ArrayList<>();
     private List<List<PenLine>> penLineLists = new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
     @Getter
@@ -121,7 +120,7 @@ public class DrawPanel extends JPanel {
         g2d.setComposite(AlphaComposite.Clear);  // 전체 지우기 위해 Clear 컴포지트 설정
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        
+
 //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        g2d.setStroke(new BasicStroke(width));
 //        g2d.setColor(Color.BLACK);

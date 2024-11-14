@@ -1,5 +1,5 @@
 
-import drawing.RootFrame;
+import drawing.NoteFrame;
 import model.EraserPoint;
 import model.PenLine;
 import service.DrawService;
@@ -27,10 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Date;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public class Server{
 
     public static void main(String[] args){
@@ -51,7 +47,7 @@ public class Server{
         log( "name: " + local.getFriendlyName() );
 
 
-        Runnable r = new ServerRunable();
+        Runnable r = new ServerRunnable();
         Thread thread = new Thread(r);
         thread.start();
 
@@ -66,7 +62,7 @@ public class Server{
 }
 
 
-class ServerRunable implements Runnable{
+class ServerRunnable implements Runnable{
 
     //UUID for SPP
     final UUID uuid = new UUID("0000110100001000800000805F9B34FB", false);
@@ -97,12 +93,12 @@ class ServerRunable implements Runnable{
         log("Server is now running.");
 
 
-        RootFrame rootFrame = null;
-        try {
-            rootFrame = new RootFrame();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        NoteFrame NoteFrame = null;
+//        try {
+//            //NoteFrame = new NoteFrame();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
 //        jPanelPaintExample.addLine(130,130,200,230);
 //        jPanelPaintExample.addLine(10,100,200,100);
@@ -127,7 +123,7 @@ class ServerRunable implements Runnable{
             log("현재 접속 중인 클라이언트 수: " + count);
 
 
-            new Receiver(mStreamConnection, rootFrame).start();
+            new Receiver(mStreamConnection, NoteFrame).start();
         }
 
     }
@@ -140,14 +136,14 @@ class ServerRunable implements Runnable{
         private OutputStream mOutputStream = null;
         private String mRemoteDeviceString = null;
         private StreamConnection mStreamConnection = null;
-        RootFrame rootFrame;
+        NoteFrame noteFrame;
 
 
-        Receiver(StreamConnection streamConnection, RootFrame rootFrame){
+        Receiver(StreamConnection streamConnection, NoteFrame noteFrame){
 
 
             mStreamConnection = streamConnection;
-            this.rootFrame = rootFrame;
+            this.noteFrame = noteFrame;
 
 
             try {
@@ -192,10 +188,10 @@ class ServerRunable implements Runnable{
             int beforeX=0, beforeY=0;
             PenLine penLine = null;
             EraserPoint eraserPoint = null;
-            DrawService drawService=new DrawService(penLine, eraserPoint, rootFrame, false);
+            DrawService drawService=new DrawService(penLine, eraserPoint, noteFrame, false);
 
             // 임시 파일 전송 코드
-            String filePath = "C:\\Users\\PC\\Desktop\\임시.jpg";
+            String filePath = "C:\\drawing\\data\\hw5\\images\\0.jpg";
 
             File file = new File(filePath);
 
@@ -207,17 +203,59 @@ class ServerRunable implements Runnable{
             try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[1024];
                 int bytesRead;
+                int byteSize=fileInputStream.available();
+                System.out.println("available:" + byteSize); //224308
 
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                 	Sender(buffer);
                 }
 
-                System.out.println("PDF 파일 전송 완료: " + filePath);
+
+                System.out.println("두번째 시도");
+                byte[] buffer2 = new byte[fileInputStream.available()+1];
+
+
+                System.out.println("남은 바이트 수:" + fileInputStream.available()); //224308
+                System.out.println("초기 바이트 수" + byteSize); //224308
+
+                while ((bytesRead = fileInputStream.read(buffer2)) != -1) {
+                    Sender(buffer2);
+                }
+
+                System.out.println("available:" + fileInputStream.available()); //224308
+
+
+                System.out.println("PDF 파일 전송 완료2: " + filePath);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
             // 임시 파일 전송 코드 끝
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+
+
+
+                System.out.println("두번째 시도");
+                byte[] buffer2 = new byte[fileInputStream.available()];
+
+
+                System.out.println("available:" + fileInputStream.available()); //224308
+                int bytesRead;
+                while ((bytesRead = fileInputStream.read(buffer2)) != -1) {
+                    Sender(buffer2);
+                }
+
+                System.out.println("available:" + fileInputStream.available()); //224308
+
+
+                System.out.println("PDF 파일 전송 완료2: " + filePath);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
             Sender("END");
 
             try {
@@ -269,7 +307,7 @@ class ServerRunable implements Runnable{
                     /**
                      * 모바일에서 "10 20" 이런 식으로 보내면 (0,0) (10,20)을 잇는 직선 생성하는 테스트 코드임.
                      */
-                    drawService.drawProcess(recvMessage, rootFrame);
+                    drawService.drawProcess(recvMessage, noteFrame);
 
                     //Sender(recvMessage);
                     long endTime = System.nanoTime(); // 성능 측정 완료
