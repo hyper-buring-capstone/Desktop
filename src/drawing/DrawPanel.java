@@ -131,14 +131,14 @@ public class DrawPanel extends JPanel {
         repaint(); // 다시 그리기
     }
 
-    public void reCanvas2(float width){
+    public void reCanvas2(){
 
 
         for(PenLine penLine: penLineLists.get(pageNum)){
             addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
                     penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
                     penLine.getXList().size(),
-                    width);
+                    penLine.getWidth());
         }
     }
     
