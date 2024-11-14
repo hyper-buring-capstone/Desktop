@@ -8,10 +8,11 @@ import java.util.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel {
     private final BufferedImage canvas;
     private List<PenLine> penLineList=new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
+    private int pageNum;
 
 
     public DrawPanel() {
@@ -20,8 +21,16 @@ class DrawPanel extends JPanel {
         setLayout(null);
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
         setBounds(0,0,700,800);
-
+        pageNum=0;
 //        setOpaque(true);
+    }
+    
+    public int getPageNum() {
+    	return pageNum;
+    }
+    
+    public void setPageNum(int newPageNum) {
+    	pageNum = newPageNum;
     }
     
     public void createGraphics() {

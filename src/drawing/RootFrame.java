@@ -28,7 +28,7 @@ public class RootFrame extends JFrame {
         jLayeredPane.setLayout(null);
 
         //PDF Panel 추가
-        File file=new File("C:\\Users\\kimdh\\Downloads\\1인가구_대응_관련_현황보고서.pdf");
+        File file=new File("C:\\Users\\PC\\Desktop\\1주차_강의자료.pdf");
         PDDocument document = Loader.loadPDF(file); //파일 document에 연결
         pdfPanel=new PdfPanel(document); // 새 pdf 패널 객체 생성
 
@@ -36,7 +36,7 @@ public class RootFrame extends JFrame {
         drawPanel = new DrawPanel();
 
         // 상단 버튼 레이아웃 추가
-        TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel);
+        TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel, drawPanel);
 
 
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
