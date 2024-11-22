@@ -201,31 +201,31 @@ class ServerRunnable implements Runnable{
             }
 
             try (FileInputStream fileInputStream = new FileInputStream(file)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                int byteSize=fileInputStream.available();
-                System.out.println("available:" + byteSize); //224308
-
-                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                	Sender(buffer);
-                }
-
-
-                System.out.println("두번째 시도");
-                byte[] buffer2 = new byte[fileInputStream.available()+1];
-
-
-                System.out.println("남은 바이트 수:" + fileInputStream.available()); //224308
-                System.out.println("초기 바이트 수" + byteSize); //224308
-
-                while ((bytesRead = fileInputStream.read(buffer2)) != -1) {
-                    Sender(buffer2);
-                }
-
-                System.out.println("available:" + fileInputStream.available()); //224308
-
-
-                System.out.println("PDF 파일 전송 완료2: " + filePath);
+//                byte[] buffer = new byte[1024];
+//                int bytesRead;
+//                int byteSize=fileInputStream.available();
+//                System.out.println("available:" + byteSize); //224308
+//
+//                while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+//                	Sender(buffer);
+//                }
+//
+//
+//                System.out.println("두번째 시도");
+//                byte[] buffer2 = new byte[fileInputStream.available()+1];
+//
+//
+//                System.out.println("남은 바이트 수:" + fileInputStream.available()); //224308
+//                System.out.println("초기 바이트 수" + byteSize); //224308
+//
+//                while ((bytesRead = fileInputStream.read(buffer2)) != -1) {
+//                    Sender(buffer2);
+//                }
+//
+//                System.out.println("available:" + fileInputStream.available()); //224308
+//
+//
+//                System.out.println("PDF 파일 전송 완료2: " + filePath);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -235,20 +235,32 @@ class ServerRunnable implements Runnable{
 
 
 
-                System.out.println("두번째 시도");
-                byte[] buffer2 = new byte[fileInputStream.available()];
+//                System.out.println("두번째 시도");
+//                int available = fileInputStream.available();
+//                byte[] buffer2 = new byte[available];
+//
+//
+//                System.out.println("available:" + fileInputStream.available()); //224308
+//                int bytesRead;
+//                while ((bytesRead = fileInputStream.read(buffer2)) != -1) {
+//                    Sender(buffer2);
+//                }
+//
+//                System.out.println("available:" + available); //224308
+//
+//                System.out.println("PDF 파일 전송 완료2: " + filePath);
 
+                /**
+                 * 그냥 1024칸짜리 바이트 배열 보내기
+                 */
 
-                System.out.println("available:" + fileInputStream.available()); //224308
-                int bytesRead;
-                while ((bytesRead = fileInputStream.read(buffer2)) != -1) {
-                    Sender(buffer2);
+                int BYTE_SIZE=10000;
+                byte[] byteArr=new byte[BYTE_SIZE];
+                for(int i=0; i<BYTE_SIZE; i++){
+                    byteArr[i]=(byte)(i%100);
                 }
 
-                System.out.println("available:" + fileInputStream.available()); //224308
-
-
-                System.out.println("PDF 파일 전송 완료2: " + filePath);
+                Sender(byteArr);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -256,7 +268,9 @@ class ServerRunnable implements Runnable{
 
 
 
-            Sender("END");
+
+
+            //Sender("END");
 
             try {
 
@@ -265,8 +279,8 @@ class ServerRunnable implements Runnable{
 
                 boolean isDisconnected = false;
 
-                Sender("에코 서버에 접속하셨습니다.");
-                Sender( "보내신 문자를 에코해드립니다.");
+               // Sender("에코 서버에 접속하셨습니다.");
+               // Sender( "보내신 문자를 에코해드립니다.");
 
 
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import model.Note;
 import model.PenLine;
+import service.FileService;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -44,6 +45,14 @@ public class DrawPanel extends JPanel {
         penLineLists.add(new ArrayList<>());
         setSize(new Dimension(300, 700));
         setMaximumSize(new Dimension(300   , 700));
+
+
+
+        //노트 데이터로부터 드로잉 정보 불러오기.
+        penLineLists= FileService.loadPenLineLists(note);
+
+
+        reCanvas();
 
         //setPreferredSize(new Dimension(390, 870));
 
