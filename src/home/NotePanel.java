@@ -13,6 +13,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 /**
@@ -20,7 +22,7 @@ import java.io.IOException;
  * 노트 객체(entity)를 받아서 해당 내용을 gui로 변경하여 표시함.
  * JPanel -> JButton으로 변경. 어디든지 클릭해도 파일이 열렸으면 좋겠음.
  */
-public class NotePanel extends BaseButton {
+public class NotePanel extends JPanel {
 
     Note note;
 
@@ -32,10 +34,11 @@ public class NotePanel extends BaseButton {
         // 패널 자체 설정
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(Component.CENTER_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
-        setPreferredSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
-        setMinimumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
+       // setPreferredSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
+       // setMinimumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
       //  setMaximumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
-        setBorder(new TitledBorder(new LineBorder(Color.BLUE, 0),"NotePanel" )); //디버깅용. 두께 0으로 하면 없어짐.
+       // setBorder(new TitledBorder(new LineBorder(Color.BLUE, 2),"NotePanel" )); //디버깅용. 두께 0으로 하면 없어짐.
+        setBackground(Color.white);
         
         // 노트 객체로부터 gui 객체 생성
         JLabel titleLabel=new JLabel(note.getTitle());
@@ -47,7 +50,7 @@ public class NotePanel extends BaseButton {
       //  thumbNailLabel.setMaximumSize(new Dimension(100,100));
 
 
-        //제목과 날짜는 세로로
+
 
         add(thumbNailLabel);
         add(titleLabel);
@@ -55,7 +58,9 @@ public class NotePanel extends BaseButton {
 
         //클릭 시 노트 창으로 변환해야 함.
         //홈 프레임은 닫고 루트 프레임을 생성해야 한다.
-        addActionListener(actionListener);
+        //addActionListener(actionListener); //버튼일 때
+        //패널일 때는 아래
+        addMouseListener(mouseAdapter);
 
         setVisible(true);
     }
@@ -64,6 +69,24 @@ public class NotePanel extends BaseButton {
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
     }
+
+
+    MouseAdapter mouseAdapter=new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) { // 더블 클릭인지 확인
+                try {
+                    Thread thread = new Thread(new NoteFrame(note));
+                    //System.out.println("현재 쓰레드: " + thread.getName());
+                    thread.start();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+        }
+    };
+
 
     // 클릭 시 pdf창 열리도록 설정.
     ActionListener actionListener=new ActionListener() {

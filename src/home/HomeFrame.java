@@ -1,5 +1,7 @@
 package home;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import lombok.Getter;
 import model.Note;
 import service.FileService;
@@ -56,8 +58,9 @@ public class HomeFrame extends JFrame {
 //        remove(noteListPanel);
 //    }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws UnsupportedLookAndFeelException {
 
+        UIManager.setLookAndFeel(new FlatLightLaf());
         HomeFrame homeFrame=new HomeFrame();
     }
 
