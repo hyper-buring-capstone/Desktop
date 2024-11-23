@@ -65,11 +65,19 @@ public class NotePanel extends BaseButton {
 
 
             //서버
-            Runnable r = null;
-            try {
-                r = new ServerRunable(new NoteFrame(note));
+//            Runnable r = null;
+//            try {
+//                r = new ServerRunable(new NoteFrame(note));
+//
+//                Thread thread = new Thread(r);
+//                thread.start();
+//            } catch (IOException ex) {
+//                throw new RuntimeException(ex);
+//            }
 
-                Thread thread = new Thread(r);
+            try {
+                Thread thread = new Thread(new NoteFrame(note));
+                //System.out.println("현재 쓰레드: " + thread.getName());
                 thread.start();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
