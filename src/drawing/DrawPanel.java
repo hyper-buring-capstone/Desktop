@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import model.Note;
 import model.PenLine;
+import service.FileService;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -14,9 +15,9 @@ import java.util.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+@Getter
 public class DrawPanel extends JPanel {
     private final BufferedImage canvas;
-    //private List<PenLine> penLineList=new ArrayList<>();
     private List<List<PenLine>> penLineLists = new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
     @Getter
@@ -26,9 +27,12 @@ public class DrawPanel extends JPanel {
     int width;
     int height;
     private final int scale = 5;
+    Note note;
 
 
     public DrawPanel(Note note) {
+        this.note=note;
+
         //노트 데이터로부터 폭과 높이 불러오기
         Image thumbnail=note.getThumbNail();
         width=thumbnail.getWidth(null);
@@ -46,6 +50,14 @@ public class DrawPanel extends JPanel {
         penLineLists.add(new ArrayList<>());
         setSize(new Dimension(300, 700));
         setMaximumSize(new Dimension(300   , 700));
+
+
+
+        //노트 데이터로부터 드로잉 정보 불러오기.
+        penLineLists= FileService.loadPenLineLists(note);
+
+
+        reCanvas();
 
         //setPreferredSize(new Dimension(390, 870));
 
@@ -126,7 +138,7 @@ public class DrawPanel extends JPanel {
         g2d.setComposite(AlphaComposite.Clear);  // 전체 지우기 위해 Clear 컴포지트 설정
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        
+
 //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        g2d.setStroke(new BasicStroke(width));
 //        g2d.setColor(Color.BLACK);

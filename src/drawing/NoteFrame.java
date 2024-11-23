@@ -16,7 +16,7 @@ public class NoteFrame extends JFrame {
 
     public NoteFrame(Note note) throws IOException {
         setTitle("drawing");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1000, 800);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());

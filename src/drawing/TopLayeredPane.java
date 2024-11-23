@@ -2,6 +2,7 @@ package drawing;
 
 import drawing.button.NextPageBtn;
 import drawing.button.PrevPageBtn;
+import drawing.button.SaveBtn;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 public class TopLayeredPane extends JLayeredPane {
     PdfPanel pdfPanel;
     DrawPanel drawPanel;
+
     TopLayeredPane(PdfPanel pdfPanel, DrawPanel drawPanel){
         this.pdfPanel=pdfPanel; //버튼 조작을 위해 객체 받음.
         this.drawPanel=drawPanel; // 이하동문
@@ -22,9 +24,11 @@ public class TopLayeredPane extends JLayeredPane {
 
         JButton nextPageBtn=new NextPageBtn(pdfPanel, drawPanel);
         JButton prevPageBtn=new PrevPageBtn(pdfPanel, drawPanel);
+        JButton saveBtn=new SaveBtn(drawPanel);
 
         add(prevPageBtn);
         add(nextPageBtn);
+        add(saveBtn);
 
 
 
