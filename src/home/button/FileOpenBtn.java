@@ -75,7 +75,13 @@ public class FileOpenBtn extends BaseButton {
 
             //메타데이터 저장
             FileService.saveMeta(file);
-
+            
+            //선 데이터 저장소 초기화
+            try {
+                new File("c:\\drawing\\data\\"+fileName+"\\lines.txt").createNewFile();
+            } catch (IOException ex) { //저장소가 생기지 않았으면 예외처리.
+                throw new RuntimeException(ex);
+            }
 
             //패널 리스트를 재호출해서 새로고침
             noteListPanel.refresh();

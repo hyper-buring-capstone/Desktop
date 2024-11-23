@@ -2,6 +2,7 @@ package drawing;
 
 import drawing.button.NextPageBtn;
 import drawing.button.PrevPageBtn;
+import drawing.button.SaveBtn;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,9 +24,11 @@ public class TopLayeredPane extends JLayeredPane {
 
         JButton nextPageBtn=new NextPageBtn(pdfPanel, drawPanel);
         JButton prevPageBtn=new PrevPageBtn(pdfPanel, drawPanel);
+        JButton saveBtn=new SaveBtn(drawPanel);
 
         add(prevPageBtn);
         add(nextPageBtn);
+        add(saveBtn);
 
 
 

@@ -88,4 +88,30 @@ public class PenLine {
         penColor=Color.BLUE;
         width=5;
     }
+
+    //저장할 데이터 형식대로 변환함.
+    public String toData(int page){
+        // HEADER
+        // 5 (두께) FFFFFFAA 3 (페이지) -> 정보를 한 줄로 붙여야 파싱하기 편할 듯?
+        //  (new Color((int) HexFormat.fromHexDigitsToLong("ffffffaa"),true);)
+        // 10 10 .. (points)
+        // END
+
+        String hex = String.format("%02X%02X%02X%02X",
+                penColor.getRed(),
+                penColor.getGreen(),
+                penColor.getBlue(),
+                penColor.getAlpha());
+
+        String data="HEADER\n"
+                + width +" "+ hex +" "+page+"\n";
+
+        for(int i=0; i<xList.size(); i++){
+            data=data.concat(xList.get(i) +" "+ yList.get(i)+"\n");
+        }
+
+        data=data.concat("END\n");
+
+        return data;
+    }
 }

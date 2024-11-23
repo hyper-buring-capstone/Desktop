@@ -15,6 +15,7 @@ import java.util.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+@Getter
 public class DrawPanel extends JPanel {
     private final BufferedImage canvas;
     private List<List<PenLine>> penLineLists = new ArrayList<>();
@@ -26,9 +27,12 @@ public class DrawPanel extends JPanel {
     int width;
     int height;
     private final int scale = 5;
+    Note note;
 
 
     public DrawPanel(Note note) {
+        this.note=note;
+
         //노트 데이터로부터 폭과 높이 불러오기
         Image thumbnail=note.getThumbNail();
         width=thumbnail.getWidth(null);

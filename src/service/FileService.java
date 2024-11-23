@@ -68,11 +68,6 @@ public class FileService {
 
     }
 
-    public void saveLines(){
-
-
-    }
-
     public static void saveMeta(File file){
 
         String fileName=file.getName().split("\\.")[0]; //확장자 제거이름.
@@ -159,7 +154,7 @@ public class FileService {
             while ((str = reader.readLine()) != null) { //한 줄씩 읽어 str에 저장.
                 if(str.equals("HEADER")){ //선의 시작이므로 새 선 객체를 생성함.
                     String info= reader.readLine(); //다음 줄을 읽어 정보를 불러옴.
-                    int width=Integer.parseInt(info.split(" ")[0]); //두께
+                    float width=Float.parseFloat(info.split(" ")[0]); //두께
                     Color color=new Color((int) HexFormat.fromHexDigitsToLong(info.split(" ")[1]),true); //색상
                     pageNum=Integer.parseInt(info.split(" ")[2]); //페이지
                     penLine=new PenLine().builder()
@@ -193,6 +188,51 @@ public class FileService {
         }
 
         return penLineLists;
+
+
+    }
+
+    //드로잉 정보를 .txt파일로 저장.
+    public static void saveLines(Note note,List<List<PenLine>> penLineLists){
+
+        String fileName=note.getTitle(); //파일명
+        String filePath="c:\\drawing\\data\\"+fileName+"\\lines.txt"; //경로 설정
+
+
+        try {
+            new File(filePath).createNewFile();
+        }catch (IOException e){
+            e.printStackTrace();
+            createDirectory("c:\\drawing\\data\\"+fileName);
+        }
+
+        // HEADER
+        // 5 (두께) FFFFFFAA 3 (페이지) -> 정보를 한 줄로 붙여야 파싱하기 편할 듯?
+        //  (new Color((int) HexFormat.fromHexDigitsToLong("ffffffaa"),true);)
+        // 10 10 .. (points)
+        // END
+
+        try{
+
+            // BufferedWriter 와 FileWriter를 조합하여 사용 (속도 향상)
+            BufferedWriter fw = new BufferedWriter(new FileWriter(filePath, false));
+
+            for(int page=0;page<penLineLists.size(); page++ ){
+
+                //각 라인 객체에 대해 저장 작업 수행.
+                for(PenLine penLine:penLineLists.get(page)){
+                    fw.write(penLine.toData(page));
+                    fw.flush();
+                }
+            }
+
+            // 객체 닫기
+            fw.close();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
 
     }
