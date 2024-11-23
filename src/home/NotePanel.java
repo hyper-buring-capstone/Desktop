@@ -5,6 +5,8 @@ import global.BaseButton;
 import global.ServerRunable;
 import model.Note;
 
+import javax.imageio.ImageIO;
+import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -32,14 +34,22 @@ public class NotePanel extends BaseButton {
         setAlignmentX(Component.CENTER_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
         setPreferredSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
         setMinimumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
-        setMaximumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
-        setBorder(new TitledBorder(new LineBorder(Color.BLUE, 2),"NotePanel" )); //디버깅용
+      //  setMaximumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
+        setBorder(new TitledBorder(new LineBorder(Color.BLUE, 0),"NotePanel" )); //디버깅용. 두께 0으로 하면 없어짐.
         
         // 노트 객체로부터 gui 객체 생성
         JLabel titleLabel=new JLabel(note.getTitle());
         JLabel modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString());
-        Image thumbNail=note.getThumbNail(); //추후에 썸네일 넣기
+        Image thumbNail=note.getThumbNail().getScaledInstance(100,100,Image.SCALE_AREA_AVERAGING); //썸네일 축소. 속도 따라서 알고리즘 조정해.
+        ImageIcon thumbNailIcon=new ImageIcon(thumbNail);
 
+        JLabel thumbNailLabel=new JLabel(thumbNailIcon);
+      //  thumbNailLabel.setMaximumSize(new Dimension(100,100));
+
+
+        //제목과 날짜는 세로로
+
+        add(thumbNailLabel);
         add(titleLabel);
         add(modifiedLabel);
 
