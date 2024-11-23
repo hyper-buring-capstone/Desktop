@@ -23,10 +23,11 @@ public class NoteListPanel extends JPanel {
     public NoteListPanel(){
 
         //자체 패널 설정 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); //세로 방향으로 나열
+//        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); //세로 방향으로 나열
+        setLayout(new FlowLayout());
         setBackground(Color.white);
 
-        setBorder(new TitledBorder(new LineBorder(Color.red, 3),"notePanelList")); //테두리 설정(디버깅)
+        setBorder(new TitledBorder(new LineBorder(Color.red, 0),"notePanelList")); //테두리 설정(디버깅)
 
         //노트 각각에 대한 패널 생성
         noteList=FileService.loadNoteList();
