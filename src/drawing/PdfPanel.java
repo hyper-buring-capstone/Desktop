@@ -37,7 +37,7 @@ public class PdfPanel extends JPanel {
         //setAlignmentX(Component.CENTER_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
 
         //디버깅용
-        setBorder(new TitledBorder(new LineBorder(Color.BLUE,3),"PDFPanel"));
+        setBorder(new TitledBorder(new LineBorder(Color.BLUE,4),"PDFPanel"));
 
 
         //이미지 로딩
@@ -60,7 +60,7 @@ public class PdfPanel extends JPanel {
         //setLayout(null);
         //setBounds(0,0,1000, 1000*height/width);
 
-
+        setMinimumSize(new Dimension(1000, 1000*height/width));
         setPreferredSize(new Dimension(1000, 1000*height/width));
         setMaximumSize(new Dimension(1000, 1000*height/width));
         setVisible(true);

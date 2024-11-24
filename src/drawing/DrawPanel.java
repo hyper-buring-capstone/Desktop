@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
 import java.awt.image.BufferedImage;
@@ -24,10 +26,16 @@ public class DrawPanel extends JPanel {
     private int pageNum;
     @Setter
     private int maxPageNum;
-    int width;
-    int height;
+    //int width;
+   // int height; //여기에 값 넣지 말 것. 외부 컴포넌트에서 getHeight()로 값 가져가서 크기 이상해짐.
     private final int scale = 5;
     Note note;
+
+    int offsetX=0, offsetY=0;
+    int controlX, controlY; //컨트롤 박스의 크기.
+
+    private Point startPoint; // 처음 클릭한 좌표
+    private Point currentPoint; // 드래그 중의 현재 좌표
 
 
     public DrawPanel(Note note) {
@@ -35,34 +43,64 @@ public class DrawPanel extends JPanel {
 
         //노트 데이터로부터 폭과 높이 불러오기
         Image thumbnail=note.getThumbNail();
-        width=thumbnail.getWidth(null);
-        height=thumbnail.getHeight(null);
+       int imgWidth=thumbnail.getWidth(null);
+       int imgHeight=thumbnail.getHeight(null);
 
 
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
-        canvas = new BufferedImage(300*scale, 700*scale, BufferedImage.TYPE_INT_ARGB);
-        setLayout(null);
-        setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
+        canvas = new BufferedImage(999*scale, 999*imgHeight/imgWidth*scale, BufferedImage.TYPE_INT_ARGB);
+      //  setLayout(null);
+
        // setAlignmentX(Component.CENTER_ALIGNMENT);
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
-        setBounds(0,0,700,800);
+       // setBounds(0,0,300,800);
         pageNum=0;
         penLineLists.add(new ArrayList<>());
-        setSize(new Dimension(300, 700));
-        setMaximumSize(new Dimension(300   , 700));
+        setPreferredSize(new Dimension(999, 999*imgHeight/imgWidth));
+        setMaximumSize(new Dimension(999   , 999*imgHeight/imgWidth));
+        setMinimumSize(new Dimension(999   , 999*imgHeight/imgWidth));
+        /**
+         * 크기 999로 한 이유
+         * pdf패널보다 크기가 크거나 같으면(1000 이상) pdf가 완전히 가려져서 아예 안 나옴.
+         * 약간이라도 틈에서 pdf가 보여야 만들어지는 듯 함.
+         */
 
 
+        setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
 
         //노트 데이터로부터 드로잉 정보 불러오기.
         penLineLists= FileService.loadPenLineLists(note);
 
 
+        //클릭 연동 -> 컨트롤 패널 조작.
+        addMouseMotionListener(mouseDragAdapter);
+        addMouseListener(mouseDragAdapter);
+
+
         reCanvas();
 
-        //setPreferredSize(new Dimension(390, 870));
 
-//        setOpaque(true);
     }
+
+    //드래그해서 컨트롤 박스 크기 조정
+    MouseAdapter mouseDragAdapter=new MouseAdapter() {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            // 드래그 중 현재 좌표 저장
+            controlX=e.getX()-offsetX;
+            controlY=e.getY()-offsetY;
+            getParent().repaint();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            controlX=0;
+            controlY=0;
+            offsetX=e.getX();
+            offsetY=e.getY();
+            getParent().repaint();
+        }
+    };
 
     public void setPageNum(int newPageNum) {
         if(newPageNum>=0 && newPageNum<maxPageNum) {
@@ -116,6 +154,7 @@ public class DrawPanel extends JPanel {
         repaint(); // 패널 다시 그리기
     }
 
+    //그릴 때 이거 사용함. addline 삭제해도 될듯.
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
         g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2d.setColor(Color.BLACK);
@@ -202,8 +241,23 @@ public class DrawPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setLayout(null);
-        setBackground(new Color(0,0,0,0)); // alpha 값 0이면 투명화.
+       // setLayout(null);
+       // setBackground(new Color(0,0,0,0)); // alpha 값 0이면 투명화.
         g.drawImage(canvas, 0, 0, canvas.getWidth()/scale, canvas.getHeight()/scale, null); // BufferedImage에 그린 내용을 패널에 표시
+
+        //컨트롤 패널
+
+            g.drawRect(offsetX,offsetY,controlX,controlY);
+
+// 컨트롤 패널 대각선 표시
+//        if (startPoint != null && currentPoint != null) {
+//            g.setColor(Color.RED);
+//            g.drawLine(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y); // 클릭-드래그 연결 선
+//            g.fillOval(startPoint.x - 3, startPoint.y - 3, 6, 6); // 시작점 표시
+//            g.fillOval(currentPoint.x - 3, currentPoint.y - 3, 6, 6); // 현재 좌표 표시
+//        }
+
+
+
     }
 }

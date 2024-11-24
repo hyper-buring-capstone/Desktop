@@ -10,6 +10,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 
+import lombok.Getter;
 import model.EraserPoint;
 import model.Note;
 import model.PenLine;
@@ -24,13 +25,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class NoteFrame extends JFrame implements Runnable{
-    private final DrawPanel drawPanel;
+    @Getter
+    DrawPanel drawPanel;
     PdfPanel pdfPanel;
 
     public NoteFrame(Note note) throws IOException {
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(1000, 800);
+        setSize(1200, 900);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
@@ -60,8 +62,10 @@ public class NoteFrame extends JFrame implements Runnable{
         TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel, drawPanel);
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
         jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
+
 
         //스크롤 페인
         JScrollPane jScrollPane=new JScrollPane(jLayeredPane);
@@ -134,7 +138,7 @@ public class NoteFrame extends JFrame implements Runnable{
     //UUID for SPP
     final UUID uuid = new UUID("0000110100001000800000805F9B34FB", false);
     final String CONNECTION_URL_FOR_SPP = "btspp://localhost:"
-            + uuid +";name=SPP examples.Server";
+            + uuid +";name=SPP Server";
 
     private StreamConnectionNotifier mStreamConnectionNotifier = null;
     private StreamConnection mStreamConnection = null;

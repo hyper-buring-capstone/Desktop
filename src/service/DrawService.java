@@ -37,14 +37,20 @@ public class DrawService {
         }
         else if(BtParser.getMsgType(msg).equals(MsgType.POINT)){
         	if(!isEraser) {
-                penLine.addPoint(BtParser.getX(msg), BtParser.getY(msg));
+				//컨트롤 박스 offset 보정.
+				/**
+				 * offset 보정을 해도 성능에 영향 없음을 확인함.
+				 * 보정 전: 평균 190ms, 보정 후: 평균 170ms.
+				 */
+				long startTime = System.nanoTime(); // 성능 측정 시작
+                penLine.addPoint(BtParser.getX(msg)+noteFrame.getDrawPanel().getOffsetX(), BtParser.getY(msg)+noteFrame.getDrawPanel().getOffsetY());
                 int size=penLine.getXList().size();
 //                jPanelPaintExample.addPolyLine(
 //                		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
 //                		penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
 //                		size,
 //                		penLine.getWidth());
-                long startTime = System.nanoTime(); // 성능 측정 시작
+
                 if (size >= 2) {
 //                	jPanelPaintExample.addPolyLine(
 //                		penLine.getXList().subList(size - 2, size).stream().mapToInt(Integer::intValue).toArray(),
@@ -64,11 +70,12 @@ public class DrawService {
 		        		penLine.getWidth());
                 }
                 long endTime = System.nanoTime(); // 성능 측정 완료
-              //  System.out.println("Method 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
+                //System.out.println((endTime - startTime)); // 성능 시간 출력
 
         	}
         	else {
-        		eraserPoint.movePoint(BtParser.getX(msg), BtParser.getY(msg));
+        		eraserPoint.movePoint(BtParser.getX(msg)+noteFrame.getDrawPanel().getOffsetX()
+						, BtParser.getY(msg)+noteFrame.getDrawPanel().getOffsetY());
         		noteFrame.eraseLine(eraserPoint.getX(), eraserPoint.getY(), eraserPoint.getWidth());
         	}
         }
