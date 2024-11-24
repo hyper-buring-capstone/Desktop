@@ -46,7 +46,7 @@ public class NoteFrame extends JFrame implements Runnable{
 //        jLayeredPane.setPreferredSize(new Dimension(1000, 8000));
        // jLayeredPane.setLayout(new FlowLayout());
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jLayeredPane.setBorder(new TitledBorder(new LineBorder(Color.red,3),"jlayredPane")); //디버깅용
+      //  jLayeredPane.setBorder(new TitledBorder(new LineBorder(Color.red,3),"jlayredPane")); //디버깅용
         jLayeredPane.setLayout(new OverlayLayout(jLayeredPane));
 
         //PDF Panel 추가

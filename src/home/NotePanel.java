@@ -3,6 +3,8 @@ package home;
 import drawing.NoteFrame;
 import global.BaseButton;
 import global.ServerRunable;
+import home.button.NoteMenuBtn;
+import lombok.Getter;
 import model.Note;
 
 import javax.imageio.ImageIO;
@@ -22,14 +24,20 @@ import java.io.IOException;
  * 노트 객체(entity)를 받아서 해당 내용을 gui로 변경하여 표시함.
  * JPanel -> JButton으로 변경. 어디든지 클릭해도 파일이 열렸으면 좋겠음.
  */
-public class NotePanel extends JPanel {
+public class NotePanel extends JButton {
 
     Note note;
 
-    public NotePanel(Note note){
+    NotePopupMenu notePopupMenu;
+
+    @Getter
+    NoteListPanel noteListPanel;
+
+    public NotePanel(Note note, NoteListPanel noteListPanel){
         //생성자
         this.note=note;
-
+        notePopupMenu=new NotePopupMenu(note, this);
+        this.noteListPanel=noteListPanel;
 
         // 패널 자체 설정
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -51,7 +59,6 @@ public class NotePanel extends JPanel {
 
 
 
-
         add(thumbNailLabel);
         add(titleLabel);
         add(modifiedLabel);
@@ -65,6 +72,10 @@ public class NotePanel extends JPanel {
         setVisible(true);
     }
 
+    public void listRefresh(){
+
+        noteListPanel.refresh();
+    }
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
@@ -84,6 +95,26 @@ public class NotePanel extends JPanel {
                 }
             }
 
+        }
+
+
+        //우클릭 시 메뉴 보이도록 설정.
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                showMenu(e);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                showMenu(e);
+            }
+        }
+
+        private void showMenu(MouseEvent e) {
+            notePopupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     };
 

@@ -32,7 +32,7 @@ public class NoteListPanel extends JPanel {
         //노트 각각에 대한 패널 생성
         noteList=FileService.loadNoteList();
         for(Note note:noteList){
-            NotePanel notePanel=new NotePanel(note);
+            NotePanel notePanel=new NotePanel(note, this);
             notePanelList.add(notePanel);
             add(notePanel); //gui에 삽입
         }
@@ -61,12 +61,12 @@ public class NoteListPanel extends JPanel {
         releaseNote();
         noteList=FileService.loadNoteList();
         for(Note note:noteList){
-            NotePanel notePanel=new NotePanel(note);
+            NotePanel notePanel=new NotePanel(note, this);
             notePanelList.add(notePanel);
             add(notePanel); //gui에 삽입
         }
         revalidate();
-        //repaint();
+        repaint();
     }
 
     @Override

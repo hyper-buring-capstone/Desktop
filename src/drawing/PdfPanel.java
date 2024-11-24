@@ -37,7 +37,7 @@ public class PdfPanel extends JPanel {
         //setAlignmentX(Component.CENTER_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
 
         //디버깅용
-        setBorder(new TitledBorder(new LineBorder(Color.BLUE,4),"PDFPanel"));
+       // setBorder(new TitledBorder(new LineBorder(Color.BLUE,4),"PDFPanel"));
 
 
         //이미지 로딩
