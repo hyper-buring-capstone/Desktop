@@ -100,7 +100,7 @@ public class NotePanel extends JPanel {
             //서버
 //            Runnable r = null;
 //            try {
-//                r = new ServerRunable(new NoteFrame(note));
+//                r = new examples.ServerRunable(new NoteFrame(note));
 //
 //                Thread thread = new Thread(r);
 //                thread.start();

@@ -1,4 +1,5 @@
-import javax.bluetooth.*;
+package examples;
+
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import java.io.InputStream;

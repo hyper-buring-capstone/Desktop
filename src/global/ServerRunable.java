@@ -22,7 +22,7 @@ public class ServerRunable implements Runnable{
     //UUID for SPP
     final UUID uuid = new UUID("0000110100001000800000805F9B34FB", false);
     final String CONNECTION_URL_FOR_SPP = "btspp://localhost:"
-            + uuid +";name=SPP Server";
+            + uuid +";name=SPP examples.Server";
 
     private StreamConnectionNotifier mStreamConnectionNotifier = null;
     private StreamConnection mStreamConnection = null;
@@ -49,7 +49,7 @@ public class ServerRunable implements Runnable{
         }
 
 
-        log("Server is now running.");
+        log("examples.Server is now running.");
 
 
 
