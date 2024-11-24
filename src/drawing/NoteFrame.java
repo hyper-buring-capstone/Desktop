@@ -60,8 +60,10 @@ public class NoteFrame extends JFrame implements Runnable{
         TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel, drawPanel);
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER);
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
-        jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
+        // 드로잉을 그 위에 배치
+        jLayeredPane.revalidate();
 
         //스크롤 페인
         JScrollPane jScrollPane=new JScrollPane(jLayeredPane);

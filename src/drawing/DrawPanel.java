@@ -24,8 +24,8 @@ public class DrawPanel extends JPanel {
     private int pageNum;
     @Setter
     private int maxPageNum;
-    int width;
-    int height;
+    //int width;
+   // int height;
     private final int scale = 5;
     Note note;
 
@@ -35,33 +35,40 @@ public class DrawPanel extends JPanel {
 
         //노트 데이터로부터 폭과 높이 불러오기
         Image thumbnail=note.getThumbNail();
-        width=thumbnail.getWidth(null);
-        height=thumbnail.getHeight(null);
+       int imgWidth=thumbnail.getWidth(null);
+       int imgHeight=thumbnail.getHeight(null);
 
 
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
         canvas = new BufferedImage(300*scale, 700*scale, BufferedImage.TYPE_INT_ARGB);
-        setLayout(null);
-        setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
+      //  setLayout(null);
+
        // setAlignmentX(Component.CENTER_ALIGNMENT);
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
-        setBounds(0,0,700,800);
+        setBounds(0,0,300,800);
         pageNum=0;
         penLineLists.add(new ArrayList<>());
-        setSize(new Dimension(300, 700));
-        setMaximumSize(new Dimension(300   , 700));
+        setPreferredSize(new Dimension(999, 999*imgHeight/imgWidth));
+        setMaximumSize(new Dimension(999   , 999*imgHeight/imgWidth));
+        setMinimumSize(new Dimension(999   , 999*imgHeight/imgWidth));
+        int height2=getHeight();
+        int width2=getWidth();
 
 
+        setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
 
         //노트 데이터로부터 드로잉 정보 불러오기.
         penLineLists= FileService.loadPenLineLists(note);
 
 
         reCanvas();
+        revalidate();
 
         //setPreferredSize(new Dimension(390, 870));
 
 //        setOpaque(true);
+        height2=getHeight();
+        width2=getWidth();
     }
 
     public void setPageNum(int newPageNum) {
@@ -202,8 +209,8 @@ public class DrawPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setLayout(null);
-        setBackground(new Color(0,0,0,0)); // alpha 값 0이면 투명화.
+       // setLayout(null);
+       // setBackground(new Color(0,0,0,0)); // alpha 값 0이면 투명화.
         g.drawImage(canvas, 0, 0, canvas.getWidth()/scale, canvas.getHeight()/scale, null); // BufferedImage에 그린 내용을 패널에 표시
     }
 }
