@@ -1,6 +1,10 @@
 package home.button;
 
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.ui.FlatArrowButton;
+import com.formdev.flatlaf.ui.FlatButtonUI;
 import global.BaseButton;
+import global.RoundedBorder;
 import home.NoteListPanel;
 import home.NotePanel;
 import org.apache.pdfbox.Loader;
@@ -11,6 +15,8 @@ import service.FileService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,12 +34,21 @@ public class FileOpenBtn extends BaseButton {
 
     NoteListPanel noteListPanel;
     public FileOpenBtn(NoteListPanel noteListPanel){
-        setText("File Open");
+        setText("+  새 문서");
+        //setMaximumSize(new Dimension(100,50));
+        setPreferredSize(new Dimension(110,10));
+        setMaximumSize(new Dimension(110,10));
+        setFont(new Font("Times", Font.PLAIN, 15));
+        setForeground(Color.white);
+        setBackground(new Color(0,0,255,180));
+        setBorderPainted(false);
+        setMargin(new Insets(0,0,0,0));
+
+
         this.noteListPanel=noteListPanel;
         addActionListener(actionListener);
 
     }
-
 
 
 

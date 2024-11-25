@@ -66,7 +66,7 @@ public class DrawPanel extends JPanel {
          */
 
 
-        setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
+       // setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
 
         //노트 데이터로부터 드로잉 정보 불러오기.
         penLineLists= FileService.loadPenLineLists(note);
