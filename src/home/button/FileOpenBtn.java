@@ -34,7 +34,7 @@ public class FileOpenBtn extends BaseButton {
 
     NoteListPanel noteListPanel;
     public FileOpenBtn(NoteListPanel noteListPanel){
-        setText("+  새 파일");
+        setText("+  새 문서");
         //setMaximumSize(new Dimension(100,50));
         setPreferredSize(new Dimension(110,10));
         setMaximumSize(new Dimension(110,10));

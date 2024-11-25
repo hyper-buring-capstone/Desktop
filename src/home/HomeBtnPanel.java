@@ -25,21 +25,21 @@ public class HomeBtnPanel extends JPanel {
         JPanel topPanel=new JPanel();
         JPanel bottomPanel=new JPanel();
 
-       topPanel.setPreferredSize(new Dimension(0,200));
-
+        topPanel.setPreferredSize(new Dimension(0,200));
         topPanel.setBackground(Color.white);
-        topPanel.setLayout(null);
-        topPanel.setBorder(new LineBorder(Color.GREEN));
-        JLabel progLabel=new JLabel("     Phonote");
+        topPanel.setLayout(new BorderLayout());
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10 , 50 , 10 , 10));//내부 패딩
+       // topPanel.setBorder(new LineBorder(Color.GREEN));
+        JLabel progLabel=new JLabel("Phonote");
         progLabel.setFont(new Font("Times", Font.BOLD, 50));
-        progLabel.setBounds(0,0,300,100);
-        topPanel.add(progLabel);
+        topPanel.add(progLabel, BorderLayout.WEST);
 
         bottomPanel.setPreferredSize(new Dimension(0,100));
        //  bottomPanel.setMaximumSize(new Dimension(900,100));
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.setBackground(Color.white);
-        JLabel myDocLabel=new JLabel("        나의 문서");
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10 , 50 , 10 , 50));//내부 패딩
+        JLabel myDocLabel=new JLabel("나의 문서");
         myDocLabel.setFont(new Font("맑은 고딕", Font.BOLD, 30));
 
 
@@ -56,7 +56,5 @@ public class HomeBtnPanel extends JPanel {
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
-        setPreferredSize(new Dimension(getParent().getWidth()-100, 100));
-        setMaximumSize(new Dimension(getParent().getWidth()-100, 100));
     }
 }

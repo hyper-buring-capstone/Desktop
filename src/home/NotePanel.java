@@ -41,22 +41,29 @@ public class NotePanel extends JButton {
 
         // 패널 자체 설정
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setAlignmentX(Component.CENTER_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
-       // setPreferredSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
-       // setMinimumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
-      //  setMaximumSize(new Dimension(800,100)); // 사이즈 설정 어떻게함?;;
+//        setAlignmentX(Component.RIGHT_ALIGNMENT); //NotePanelList의 중앙에 위치하도록.
        // setBorder(new TitledBorder(new LineBorder(Color.BLUE, 2),"NotePanel" )); //디버깅용. 두께 0으로 하면 없어짐.
         setBackground(Color.white);
         setBorderPainted(false); //테두리 없앰
 
 
         // 노트 객체로부터 gui 객체 생성
+        //노트 제목
         JLabel titleLabel=new JLabel(note.getTitle());
-        JLabel modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString());
+        titleLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        //노트 수정일
+        JLabel modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString() + " ");
+        modifiedLabel.setFont(new Font("맑은 고딕", Font.ITALIC, 12));
+        modifiedLabel.setForeground(Color.gray);
+        modifiedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        //썸네일
         Image thumbNail=note.getThumbNail().getScaledInstance(150,150,Image.SCALE_AREA_AVERAGING); //썸네일 축소. 속도 따라서 알고리즘 조정해.
         ImageIcon thumbNailIcon=new ImageIcon(thumbNail);
-
         JLabel thumbNailLabel=new JLabel(thumbNailIcon);
+        thumbNailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
       //  thumbNailLabel.setMaximumSize(new Dimension(100,100));
 
 
