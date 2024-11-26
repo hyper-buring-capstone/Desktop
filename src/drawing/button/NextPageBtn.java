@@ -4,13 +4,20 @@ import drawing.PdfPanel;
 import global.BaseButton;
 import drawing.DrawPanel;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class NextPageBtn extends BaseButton {
 
     public NextPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel){
-        setText("다음 페이지");
+
+        ImageIcon icon=new ImageIcon("src/icon/next.png");
+        Image iconImage=icon.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
+        icon.setImage(iconImage);
+        setIcon(icon);
+        setBorderPainted(false);
 
         ActionListener actionListener=new ActionListener() {
             @Override

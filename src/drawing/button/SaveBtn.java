@@ -5,8 +5,11 @@ import global.BaseButton;
 import model.PenLine;
 import service.FileService;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -16,7 +19,14 @@ public class SaveBtn extends BaseButton {
     DrawPanel drawPanel;
     public SaveBtn(DrawPanel drawPanel){
         this.drawPanel=drawPanel;
-        setText("저장");
+
+        //이미지 설정
+        ImageIcon icon=new ImageIcon("src/icon/save.png");
+        Image iconImage=icon.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
+        icon.setImage(iconImage);
+        setIcon(icon);
+       // setBackground(new Color(0,0,0,0));
+        setBorderPainted(false);
 
         addActionListener(actionListener);
 

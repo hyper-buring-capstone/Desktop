@@ -40,7 +40,7 @@ public class FileOpenBtn extends BaseButton {
         setMaximumSize(new Dimension(110,10));
         setFont(new Font("Times", Font.PLAIN, 15));
         setForeground(Color.white);
-        setBackground(new Color(0,0,255,180));
+        setBackground(new Color(120,1,22));
         setBorderPainted(false);
         setMargin(new Insets(0,0,0,0));
 

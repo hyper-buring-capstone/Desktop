@@ -30,7 +30,7 @@ public class NoteFrame extends JFrame implements Runnable{
     PdfPanel pdfPanel;
 
     public NoteFrame(Note note) throws IOException {
-        setTitle("drawing");
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1200, 900);
         setLocationRelativeTo(null);
@@ -79,6 +79,7 @@ public class NoteFrame extends JFrame implements Runnable{
         add(jScrollPane, BorderLayout.CENTER);
         add(topLayeredPane, BorderLayout.NORTH);
         setVisible(true);
+        setTitle(note.getTitle());
 
 
 
