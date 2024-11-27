@@ -28,7 +28,7 @@ public class SaveBtn extends BaseButton {
         Color newColor = Color.black;
 
         // 색상 변환된 이미지 생성
-        Image coloredIconImage = recolorIcon(icon.getImage(), newColor, 35, 35);
+        Image coloredIconImage = recolorIcon(icon.getImage(), newColor, 25, 25);
         setIcon(new ImageIcon(coloredIconImage));
 
         // 버튼 스타일

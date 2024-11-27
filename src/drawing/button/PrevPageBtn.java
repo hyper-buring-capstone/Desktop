@@ -20,9 +20,11 @@ public class PrevPageBtn extends BaseButton {
         // 새 색상 지정
         Color newColor = Color.black;
 
+        Image image=icon.getImage().getScaledInstance(25,25,Image.SCALE_AREA_AVERAGING);
+
         // 색상 변환된 이미지 생성
-        Image coloredIconImage = recolorIcon(icon.getImage(), newColor, 30, 30);
-        setIcon(new ImageIcon(coloredIconImage));
+       // Image coloredIconImage = recolorIcon(icon.getImage(), newColor, 25, 25);
+        setIcon(new ImageIcon(image));
 
         // 버튼 스타일
         setBorderPainted(false);

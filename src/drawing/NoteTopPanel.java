@@ -5,16 +5,13 @@ import drawing.button.PrevPageBtn;
 import drawing.button.SaveBtn;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class TopLayeredPane extends JPanel {
+public class NoteTopPanel extends JPanel {
     PdfPanel pdfPanel;
     DrawPanel drawPanel;
 
-    TopLayeredPane(PdfPanel pdfPanel, DrawPanel drawPanel){
+    NoteTopPanel(PdfPanel pdfPanel, DrawPanel drawPanel){
         this.pdfPanel=pdfPanel; //버튼 조작을 위해 객체 받음.
         this.drawPanel=drawPanel; // 이하동문
 
@@ -22,7 +19,6 @@ public class TopLayeredPane extends JPanel {
         //setBackground(new Color(120,1,22));
         setBackground(Color.white);
         setLayout(new FlowLayout());
-        setBorder(new LineBorder(Color.red));
         setBorder(BorderFactory.createEmptyBorder(10 , 50 , 10 , 50));//내부 패딩
 
 
@@ -31,10 +27,11 @@ public class TopLayeredPane extends JPanel {
         JButton prevPageBtn=new PrevPageBtn(pdfPanel, drawPanel);
         JButton saveBtn=new SaveBtn(drawPanel);
 
-        add(prevPageBtn);
-        add(nextPageBtn);
-        add(new PageMoveTextField(pdfPanel, drawPanel));
-        add(saveBtn);
+        add(prevPageBtn); //이전 버튼
+        add(nextPageBtn); //다음 버튼
+        add(new PageMoveTextField(pdfPanel, drawPanel)); //페이지 무빙
+        add(new JLabel("/ "+ pdfPanel.getImageListSize() + " "));
+        add(saveBtn); // 저장 버튼
 
 
 

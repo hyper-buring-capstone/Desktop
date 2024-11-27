@@ -6,8 +6,6 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 
 import lombok.Getter;
@@ -59,7 +57,7 @@ public class NoteFrame extends JFrame implements Runnable{
 
 
         // 상단 버튼 레이아웃 추가
-        TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel, drawPanel);
+        NoteTopPanel noteTopPanel =new NoteTopPanel(pdfPanel, drawPanel);
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
@@ -77,7 +75,8 @@ public class NoteFrame extends JFrame implements Runnable{
 
 
         add(jScrollPane, BorderLayout.CENTER);
-        add(topLayeredPane, BorderLayout.NORTH);
+        add(noteTopPanel, BorderLayout.NORTH);
+
         setVisible(true);
         setTitle(note.getTitle());
 
