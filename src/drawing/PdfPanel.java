@@ -9,6 +9,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class PdfPanel extends JPanel {
         //디버깅용
        // setBorder(new TitledBorder(new LineBorder(Color.BLUE,4),"PDFPanel"));
 
+        setBorder(new EtchedBorder());
 
         //이미지 로딩
         File[] files=new File("C:\\drawing\\data\\"+title+"\\images").listFiles(); //이미지 폴더에 접근
