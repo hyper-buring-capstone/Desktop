@@ -32,7 +32,7 @@ public class NoteFrame extends JFrame implements Runnable{
     public NoteFrame(Note note) throws IOException {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(1200, 900);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 

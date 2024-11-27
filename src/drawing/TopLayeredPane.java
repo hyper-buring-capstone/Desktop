@@ -33,6 +33,7 @@ public class TopLayeredPane extends JPanel {
 
         add(prevPageBtn);
         add(nextPageBtn);
+        add(new PageMoveTextField(pdfPanel, drawPanel));
         add(saveBtn);
 
 

@@ -9,15 +9,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static service.ImageService.recolorIcon;
+
 
 public class PrevPageBtn extends BaseButton {
     public PrevPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel){
 
-        ImageIcon icon=new ImageIcon("src/icon/prev.png");
-        Image iconImage=icon.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
-        icon.setImage(iconImage);
-        setIcon(icon);
+        // 원본 이미지 아이콘 로드
+        ImageIcon icon = new ImageIcon("src/icon/prev.png");
+        // 새 색상 지정
+        Color newColor = Color.black;
 
+        // 색상 변환된 이미지 생성
+        Image coloredIconImage = recolorIcon(icon.getImage(), newColor, 30, 30);
+        setIcon(new ImageIcon(coloredIconImage));
+
+        // 버튼 스타일
         setBorderPainted(false);
 
         ActionListener actionListener=new ActionListener() {

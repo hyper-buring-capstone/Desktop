@@ -4,7 +4,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.ui.FlatArrowButton;
 import com.formdev.flatlaf.ui.FlatButtonUI;
 import global.BaseButton;
-import global.RoundedBorder;
 import home.NoteListPanel;
 import home.NotePanel;
 import org.apache.pdfbox.Loader;

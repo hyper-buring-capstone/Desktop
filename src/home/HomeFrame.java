@@ -61,6 +61,7 @@ public class HomeFrame extends JFrame {
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
 
         UIManager.setLookAndFeel(new FlatLightLaf());
+        UIManager.put("FileView.iconColor", Color.red); // 파일 아이콘 색상 변경
         HomeFrame homeFrame=new HomeFrame();
     }
 
