@@ -31,7 +31,7 @@ public class ServerService {
                 // "/images/{imageName}" 형식으로 요청 처리
                 if (target.startsWith("/images/")) {
                     String imageName = target.substring("/images/".length()); // 이미지 이름 추출
-                    File imageFile = new File("C:\\Users\\PC\\Desktop\\" + imageName); // 이미지 경로 설정
+                    File imageFile = new File("C:\\Users\\PC\\Desktop\\" + imageName + ".jpg"); // 이미지 경로 설정
 
                     if (imageFile.exists()) {
                         // 이미지 파일 존재하면 반환

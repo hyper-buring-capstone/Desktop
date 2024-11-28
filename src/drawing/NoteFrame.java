@@ -256,10 +256,24 @@ public class NoteFrame extends JFrame implements Runnable{
 
                 boolean isDisconnected = false;
 
-                Sender(ServerService.getLocalHostAddress());
+                try {
+					ServerService.httpServer();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+                
+                Sender("HEADER:SERVERIP&&"+ServerService.getLocalHostAddress());
                 log(ServerService.getLocalHostAddress());
 
-
+                try {
+                    sleep(3000); // 3초 대기
+                } catch (InterruptedException e) {
+                    e.printStackTrace(); // 대기 중 예외 처리
+                }
+                
+                Sender("HEADER:PAGE&&1");
+                
+                
                 while(isRunning){
 
                     StringBuilder stringBuilder = new StringBuilder();
