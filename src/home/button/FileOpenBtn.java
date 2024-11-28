@@ -72,6 +72,16 @@ public class FileOpenBtn extends BaseButton {
             }
 
             File file=jFileChooser.getSelectedFile(); //선택한 파일 가져옴
+
+            String fileName2=file.getName();
+           if(!fileName2.substring(fileName2.lastIndexOf(".") + 1).equals("pdf")){
+               JOptionPane.showMessageDialog(null
+                       , "지원하지 않는 형식입니다.\n\n지원 형식: PDF"
+                       , "경고"
+                       , JOptionPane.WARNING_MESSAGE);
+               return;
+           }
+
             String filePath=file.getPath();
             //System.out.println(filePath);
 
