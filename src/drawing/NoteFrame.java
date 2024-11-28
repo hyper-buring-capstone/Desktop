@@ -46,6 +46,9 @@ public class NoteFrame extends JFrame {
         // UI 초기화
         initUI(note);
 
+        // 닫을 때 행동
+        addWindowListener(windowAdapter);
+
     }
 
     private void initUI(Note note) throws IOException {
@@ -105,7 +108,7 @@ public class NoteFrame extends JFrame {
         setVisible(true);
         setTitle(note.getTitle());
 
-        //homeFrame.setVisible(false);
+        homeFrame.setVisible(false);
     }
 
     //윈도우 창 닫기 설정

@@ -113,6 +113,8 @@ public class NotePanel extends JButton {
 					noteFrame = new NoteFrame(state, note, homeFrame);
 					state.setNoteFrame(noteFrame);
 					state.setNoteOpen(true);
+
+                    saveMeta(note);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
