@@ -93,7 +93,12 @@ public class NoteFrame extends JFrame implements Runnable{
     WindowAdapter windowAdapter=new WindowAdapter() {
         @Override
         public void windowClosed(WindowEvent e) {
+
+
             homeFrame.setVisible(true);
+            homeFrame.refreshNotes(); //오래 걸리는 작업. 대략 1초;
+
+
             isRunning=false;
             try {
                 mStreamConnectionNotifier.close();

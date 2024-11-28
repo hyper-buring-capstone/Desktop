@@ -65,6 +65,9 @@ public class HomeFrame extends JFrame {
     }
 
 
+    public void refreshNotes(){
+        noteListPanel.refresh();
+    }
 //    @Override
 //    public void paintComponents(Graphics g) {
 //        super.paintComponents(g);

@@ -5,6 +5,7 @@ import lombok.Getter;
 import model.Note;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import service.FileService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+
+import static service.FileService.saveMeta;
 
 /**
  * 노트 하나에 대한 gui 객체.
@@ -100,10 +103,13 @@ public class NotePanel extends JButton {
                     long start=System.nanoTime();
                     NoteFrame noteFrame=new NoteFrame(note, homeFrame);
                     Thread thread = new Thread(noteFrame);
+                    thread.start();
                     long end=System.nanoTime();
                     System.out.println("실행 시간:" + (end - start));
                     //System.out.println("현재 쓰레드: " + thread.getName());
-                    thread.start();
+
+                    //메타 파일 수정
+                    saveMeta(note);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

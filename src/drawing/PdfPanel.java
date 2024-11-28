@@ -52,6 +52,7 @@ public class PdfPanel extends JPanel {
 
 
 
+
         //이미지 사이즈
 
         if(!imageList.isEmpty()){

@@ -93,6 +93,32 @@ public class FileService {
             e.printStackTrace();
         }
     }
+    public static void saveMeta(Note note){
+
+        String fileName=note.getTitle(); //확장자 제거이름.
+
+        String txt = "SOF\n"+fileName+"\n"+ LocalDateTime.now()+"\n"+"EOF"; //메타데이터 저장
+
+
+        String filePath="c:\\drawing\\data\\"+fileName+"\\meta.txt"; //경로 설정
+        try{
+
+            // BufferedWriter 와 FileWriter를 조합하여 사용 (속도 향상)
+            BufferedWriter fw = new BufferedWriter(new FileWriter(filePath, false));
+
+            // 파일안에 문자열 쓰기
+            fw.write(txt);
+            fw.flush();
+
+            // 객체 닫기
+            fw.close();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     //파일로부터 노트 리스트를 반환해줌. 
     //모든 노트의 이름과 메타데이터
