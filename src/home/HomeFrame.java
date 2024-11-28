@@ -20,6 +20,7 @@ public class HomeFrame extends JFrame {
     @Getter
     NoteListPanel noteListPanel;
 
+    JPanel loadingPanel;
 
     public HomeFrame(){
         //자체 설정
@@ -31,8 +32,17 @@ public class HomeFrame extends JFrame {
 
         FileService.initDirectory(); //디렉토리 구조 초기화.
 
+        //프로그래스 바.
+        JProgressBar jpb=new JProgressBar();
+//        jpb.setStringPainted(true);
+//        jpb.setString("0%");
+//        add(jpb, BorderLayout.SOUTH);
+//        jpb.setIndeterminate(true);
 
-        noteListPanel=new NoteListPanel(); //노트 리스트 패널
+        //jpb.setValue(30);
+        //jpb.setForeground(new Color(120,1,22));
+
+        noteListPanel=new NoteListPanel(jpb,this); //노트 리스트 패널
         HomeBtnPanel homeBtnPanel=new HomeBtnPanel(noteListPanel); //상단 버튼 패널
 
         //스크롤 기능
@@ -43,14 +53,17 @@ public class HomeFrame extends JFrame {
 
 
 
+        setVisible(true);
+
         add(homeBtnPanel, BorderLayout.NORTH);
         add(jScrollPane, BorderLayout.CENTER);
 
 
 
 
-        setVisible(true);
+      //  setVisible(true);
     }
+
 
 //    @Override
 //    public void paintComponents(Graphics g) {

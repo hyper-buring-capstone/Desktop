@@ -8,6 +8,8 @@ import javax.microedition.io.StreamConnectionNotifier;
 import javax.swing.*;
 
 
+import home.HomeFrame;
+import home.LoadingFrame;
 import lombok.Getter;
 import model.EraserPoint;
 import model.Note;
@@ -27,7 +29,11 @@ public class NoteFrame extends JFrame implements Runnable{
     DrawPanel drawPanel;
     PdfPanel pdfPanel;
 
-    public NoteFrame(Note note) throws IOException {
+    HomeFrame homeFrame;
+
+    public NoteFrame(Note note, HomeFrame homeFrame) throws IOException {
+
+        this.homeFrame=homeFrame;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1200, 800);
@@ -80,17 +86,18 @@ public class NoteFrame extends JFrame implements Runnable{
         setVisible(true);
         setTitle(note.getTitle());
 
-
-
+        //homeFrame.setVisible(false);
     }
 
     //윈도우 창 닫기 설정
     WindowAdapter windowAdapter=new WindowAdapter() {
         @Override
         public void windowClosed(WindowEvent e) {
+            homeFrame.setVisible(true);
             isRunning=false;
             try {
                 mStreamConnectionNotifier.close();
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

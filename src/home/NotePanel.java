@@ -1,17 +1,12 @@
 package home;
 
 import drawing.NoteFrame;
-import global.BaseButton;
-import global.ServerRunable;
-import home.button.NoteMenuBtn;
 import lombok.Getter;
 import model.Note;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import javax.imageio.ImageIO;
-import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +21,7 @@ import java.io.IOException;
  */
 public class NotePanel extends JButton {
 
+    private static final Log log = LogFactory.getLog(NotePanel.class);
     Note note;
 
     NotePopupMenu notePopupMenu;
@@ -33,7 +29,12 @@ public class NotePanel extends JButton {
     @Getter
     NoteListPanel noteListPanel;
 
-    public NotePanel(Note note, NoteListPanel noteListPanel){
+    JProgressBar jpb;
+
+    HomeFrame homeFrame;
+    public NotePanel(Note note, NoteListPanel noteListPanel, JProgressBar jpb, HomeFrame homeFrame){
+        this.homeFrame=homeFrame;
+        this.jpb=jpb;
         //생성자
         this.note=note;
         notePopupMenu=new NotePopupMenu(note, this);
@@ -77,7 +78,8 @@ public class NotePanel extends JButton {
         //패널일 때는 아래
         addMouseListener(mouseAdapter);
 
-        setVisible(true);
+        //setVisible(true);
+        
     }
 
     public void listRefresh(){
@@ -89,13 +91,17 @@ public class NotePanel extends JButton {
         super.paintComponents(g);
     }
 
-
+// 더블 클릭으로 노트 열기
     MouseAdapter mouseAdapter=new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) { // 더블 클릭인지 확인
                 try {
-                    Thread thread = new Thread(new NoteFrame(note));
+                    long start=System.nanoTime();
+                    NoteFrame noteFrame=new NoteFrame(note, homeFrame);
+                    Thread thread = new Thread(noteFrame);
+                    long end=System.nanoTime();
+                    System.out.println("실행 시간:" + (end - start));
                     //System.out.println("현재 쓰레드: " + thread.getName());
                     thread.start();
                 } catch (IOException ex) {
@@ -127,45 +133,7 @@ public class NotePanel extends JButton {
     };
 
 
-    // 클릭 시 pdf창 열리도록 설정.
-    ActionListener actionListener=new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            //기존 창 닫고
-
-
-
-            //서버
-//            Runnable r = null;
-//            try {
-//                r = new examples.ServerRunable(new NoteFrame(note));
-//
-//                Thread thread = new Thread(r);
-//                thread.start();
-//            } catch (IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-
-            try {
-                Thread thread = new Thread(new NoteFrame(note));
-                //System.out.println("현재 쓰레드: " + thread.getName());
-                thread.start();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-
-
-
-            // 노트 창 오픈
-            // 서버 오픈
-//            try {
-//                NoteFrame noteFrame =new NoteFrame(note);
-//            } catch (IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-        }
-    };
+   
 
 
 }
