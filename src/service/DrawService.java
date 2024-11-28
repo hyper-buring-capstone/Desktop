@@ -21,10 +21,10 @@ public class DrawService {
 
     public  void drawProcess(String msg, NoteFrame noteFrame){
         if(BtParser.getMsgType(msg).equals(MsgType.HEADER)){
+        	noteFrame.createGraphics();
         	if(msg.split(":")[1].split("\r")[0].equals("DRAWING")) {
                 penLine=new PenLine(); //새 선 객체 생성함.
                 noteFrame.callAddPenLine(penLine);
-                noteFrame.createGraphics();
         	}
         	else if(msg.split(":")[1].split("\r")[0].equals("ERASER")) {
         		eraserPoint = new EraserPoint(); // 새 지우개 포인트 생성.

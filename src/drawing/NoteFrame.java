@@ -1,5 +1,6 @@
 package drawing;
 
+import service.BluetoothServer;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
@@ -7,7 +8,7 @@ import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import javax.swing.*;
 
-
+import StateModel.StateModel;
 import home.HomeFrame;
 import home.LoadingFrame;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import model.EraserPoint;
 import model.Note;
 import model.PenLine;
 import service.DrawService;
+import service.ServerService;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -24,15 +26,16 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-public class NoteFrame extends JFrame implements Runnable{
-    @Getter
+public class NoteFrame extends JFrame {
+	@Getter
     DrawPanel drawPanel;
     PdfPanel pdfPanel;
-
+    private StateModel state;
     HomeFrame homeFrame;
 
-    public NoteFrame(Note note, HomeFrame homeFrame) throws IOException {
-
+    public NoteFrame(StateModel state, Note note, HomeFrame homeFrame) throws IOException {
+        this.state = state;
+        setTitle("drawing");
         this.homeFrame=homeFrame;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,23 +43,31 @@ public class NoteFrame extends JFrame implements Runnable{
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        //윈도우 닫기 설정
-        addWindowListener(windowAdapter);
+        // UI 초기화
+        initUI(note);
+
+    }
+
+    private void initUI(Note note) throws IOException {
+        // 기존 코드에 있던 UI 초기화 로직 그대로 유지
+        // drawPanel 및 pdfPanel 초기화
+        // LayeredPane, ScrollPane 설정
+    	setTitle("drawing");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(1200, 900);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
 
         //layeredPane 설정
         JLayeredPane jLayeredPane=new JLayeredPane();
-//        jLayeredPane.setMaximumSize(new Dimension(1000, 8000));
-//        jLayeredPane.setPreferredSize(new Dimension(1000, 8000));
-       // jLayeredPane.setLayout(new FlowLayout());
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-      //  jLayeredPane.setBorder(new TitledBorder(new LineBorder(Color.red,3),"jlayredPane")); //디버깅용
         jLayeredPane.setLayout(new OverlayLayout(jLayeredPane));
 
         //PDF Panel 추가
         pdfPanel=new PdfPanel(note); // 새 pdf 패널 객체 생성
 
-        // DrawPanel을 하나만 추가]
+        // DrawPanel을 하나만 추가
         // DrawPanel 페이지 사이즈 설정
         drawPanel = new DrawPanel(note);
         drawPanel.setMaxPageNum(pdfPanel.getImageListSize());
@@ -79,6 +90,14 @@ public class NoteFrame extends JFrame implements Runnable{
 //        jScrollPane.setMaximumSize(new Dimension(1000,8000));
 //        jScrollPane.setPreferredSize(new Dimension(1000,8000));
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                state.setNoteOpen(false);
+                dispose();
+                //homeFrame.setVisible(true);
+            }
+        });
 
         add(jScrollPane, BorderLayout.CENTER);
         add(noteTopPanel, BorderLayout.NORTH);
@@ -86,7 +105,7 @@ public class NoteFrame extends JFrame implements Runnable{
         setVisible(true);
         setTitle(note.getTitle());
 
-        homeFrame.setVisible(false);
+        //homeFrame.setVisible(false);
     }
 
     //윈도우 창 닫기 설정
@@ -99,13 +118,13 @@ public class NoteFrame extends JFrame implements Runnable{
             homeFrame.refreshNotes(); //오래 걸리는 작업. 대략 1초;
 
 
-            isRunning=false;
-            try {
-                mStreamConnectionNotifier.close();
-
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+//            isRunning=false;
+//            try {
+//                mStreamConnectionNotifier.close();
+//
+//            } catch (IOException ex) {
+//                throw new RuntimeException(ex);
+//            }
 
 
         }
@@ -125,17 +144,12 @@ public class NoteFrame extends JFrame implements Runnable{
     }
 
     public void addLine(int x1, int y1, int x2, int y2, float width){
-
         drawPanel.addLine(x1,y1,x2,y2,width);
     }
 
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
-    	long startTime = System.nanoTime(); // 성능 측정 시작
-        drawPanel.addPolyLine(xList, yList, n, width);
-        long endTime = System.nanoTime(); // 성능 측정 완료
-        //System.out.println("real time 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
-        repaint(); //트러불 8번 관련 해결
+    	drawPanel.addPolyLine(xList, yList, n, width);
+        repaint();
     }
     
     public void eraseLine(int x, int y, float width) {
@@ -147,215 +161,4 @@ public class NoteFrame extends JFrame implements Runnable{
         drawPanel.addPenLine(penLine);
     }
 
-    //UUID for SPP
-    final UUID uuid = new UUID("0000110100001000800000805F9B34FB", false);
-    final String CONNECTION_URL_FOR_SPP = "btspp://localhost:"
-            + uuid +";name=SPP Server";
-
-    private StreamConnectionNotifier mStreamConnectionNotifier = null;
-    private StreamConnection mStreamConnection = null;
-    private int count = 0;
-
-    private boolean isRunning=true;
-
-
-    @Override
-    public void run() {
-
-        try {
-
-            mStreamConnectionNotifier = (StreamConnectionNotifier) Connector
-                    .open(CONNECTION_URL_FOR_SPP);
-
-            log("Opened connection successful.");
-        } catch (IOException e) {
-
-            log("Could not open connection: " + e.getMessage());
-            return;
-        }
-
-
-        log("examples.Server is now running.");
-
-
-
-
-        while(isRunning){
-
-            log("wait for client requests...");
-
-            try {
-
-                mStreamConnection = mStreamConnectionNotifier.acceptAndOpen();
-            } catch (IOException e1) {
-
-                log("Could not open connection: " + e1.getMessage() );
-            }
-
-
-            count++;
-            log("현재 접속 중인 클라이언트 수: " + count);
-
-
-            //접속해야 실행
-            new Receiver(mStreamConnection, this).start();
-        }
-
-    }
-
-
-
-    class Receiver extends Thread {
-
-        private InputStream mInputStream = null;
-        private OutputStream mOutputStream = null;
-        private String mRemoteDeviceString = null;
-        private StreamConnection mStreamConnection = null;
-        NoteFrame noteFrame;
-
-
-        Receiver(StreamConnection streamConnection, NoteFrame noteFrame){
-
-
-            mStreamConnection = streamConnection;
-            this.noteFrame = noteFrame;
-
-
-            try {
-
-                mInputStream = mStreamConnection.openInputStream();
-                mOutputStream = mStreamConnection.openOutputStream();
-
-                log("Open streams...");
-            } catch (IOException e) {
-
-                log("Couldn't open Stream: " + e.getMessage());
-
-                Thread.currentThread().interrupt();
-                return;
-            }
-
-
-            try {
-
-                RemoteDevice remoteDevice
-                        = RemoteDevice.getRemoteDevice(mStreamConnection);
-
-                mRemoteDeviceString = remoteDevice.getBluetoothAddress();
-
-                log("Remote device");
-                log("address: "+ mRemoteDeviceString);
-
-            } catch (IOException e1) {
-
-                log("Found device, but couldn't connect to it: " + e1.getMessage());
-                return;
-            }
-
-            log("Client is connected...");
-        }
-
-
-        @Override
-        public void run() {
-            //연결된 뒤의 동작
-
-
-            PenLine penLine = null;
-            EraserPoint eraserPoint = null;
-            DrawService drawService=new DrawService(penLine, eraserPoint, noteFrame, false);
-            try {
-
-                Reader mReader = new BufferedReader(new InputStreamReader
-                        ( mInputStream, Charset.forName(StandardCharsets.UTF_8.name())));
-
-                boolean isDisconnected = false;
-
-                Sender("에코 서버에 접속하셨습니다.");
-                Sender( "보내신 문자를 에코해드립니다.");
-
-
-
-                while(isRunning){
-                    long startTime = System.nanoTime(); // 성능 측정 시작
-
-                    //log("ready");
-
-
-                    StringBuilder stringBuilder = new StringBuilder();
-                    int c = 0;
-
-
-                    while ( '\n' != (char)( c = mReader.read()) ) {
-
-                        if ( c == -1){
-
-                            log("Client has been disconnected");
-
-                            count--;
-                            log("현재 접속 중인 클라이언트 수: " + count);
-
-                            isDisconnected = true;
-                            Thread.currentThread().interrupt();
-
-                            break;
-                        }
-
-                        stringBuilder.append((char) c);
-                    }
-
-                    if ( isDisconnected ) break;
-
-                    String recvMessage = stringBuilder.toString(); //받은 문자
-                    //log( mRemoteDeviceString + ": " + recvMessage );
-
-
-                    /**
-                     * 모바일에서 "10 20" 이런 식으로 보내면 (0,0) (10,20)을 잇는 직선 생성하는 테스트 코드임.
-                     */
-                    drawService.drawProcess(recvMessage, noteFrame);
-
-                    //Sender(recvMessage);
-                    long endTime = System.nanoTime(); // 성능 측정 완료
-                    // System.out.println("최종 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
-                }
-
-            } catch (IOException e) {
-
-                log("Receiver closed" + e.getMessage());
-            }
-        }
-
-
-        void Sender(String msg){
-            long startTime = System.nanoTime(); // 성능 측정 시작
-
-            PrintWriter printWriter = new PrintWriter(new BufferedWriter
-                    (new OutputStreamWriter(mOutputStream,
-                            Charset.forName(StandardCharsets.UTF_8.name()))));
-
-            printWriter.write(msg+"\n");
-            printWriter.flush();
-
-            log( "Me : " + msg );
-            long endTime = System.nanoTime(); // 성능 측정 완료
-            System.out.println("Sender 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
-        }
-    }
-
-
-    private static void log(String msg) {
-        long startTime = System.nanoTime(); // 성능 측정 시작
-
-
-        System.out.println("["+(new Date()) + "] " + msg);
-        long endTime = System.nanoTime(); // 성능 측정 완료
-        System.out.println("로그 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
-    }
-
 }
-
-
