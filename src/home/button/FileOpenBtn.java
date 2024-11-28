@@ -4,7 +4,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.ui.FlatArrowButton;
 import com.formdev.flatlaf.ui.FlatButtonUI;
 import global.BaseButton;
-import global.RoundedBorder;
 import home.NoteListPanel;
 import home.NotePanel;
 import org.apache.pdfbox.Loader;
@@ -40,7 +39,7 @@ public class FileOpenBtn extends BaseButton {
         setMaximumSize(new Dimension(110,10));
         setFont(new Font("Times", Font.PLAIN, 15));
         setForeground(Color.white);
-        setBackground(new Color(0,0,255,180));
+        setBackground(new Color(120,1,22));
         setBorderPainted(false);
         setMargin(new Insets(0,0,0,0));
 

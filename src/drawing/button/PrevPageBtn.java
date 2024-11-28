@@ -4,13 +4,31 @@ import drawing.DrawPanel;
 import drawing.PdfPanel;
 import global.BaseButton;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static service.ImageService.recolorIcon;
 
 
 public class PrevPageBtn extends BaseButton {
     public PrevPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel){
-        setText("이전 페이지");
+
+        // 원본 이미지 아이콘 로드
+        ImageIcon icon = new ImageIcon("src/icon/prev.png");
+        // 새 색상 지정
+        Color newColor = Color.black;
+
+        Image image=icon.getImage().getScaledInstance(25,25,Image.SCALE_AREA_AVERAGING);
+
+        // 색상 변환된 이미지 생성
+       // Image coloredIconImage = recolorIcon(icon.getImage(), newColor, 25, 25);
+        setIcon(new ImageIcon(image));
+
+        // 버튼 스타일
+        setBorderPainted(false);
+
         ActionListener actionListener=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

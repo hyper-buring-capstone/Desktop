@@ -1,17 +1,12 @@
 package home;
 
 import drawing.NoteFrame;
-import global.BaseButton;
-import global.ServerRunable;
-import home.button.NoteMenuBtn;
 import lombok.Getter;
 import model.Note;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import javax.imageio.ImageIO;
-import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +21,7 @@ import java.io.IOException;
  */
 public class NotePanel extends JButton {
 
+    private static final Log log = LogFactory.getLog(NotePanel.class);
     Note note;
 
     NotePopupMenu notePopupMenu;
@@ -33,14 +29,19 @@ public class NotePanel extends JButton {
     @Getter
     NoteListPanel noteListPanel;
 
-    public NotePanel(Note note, NoteListPanel noteListPanel){
+    JProgressBar jpb;
+
+    HomeFrame homeFrame;
+    public NotePanel(Note note, NoteListPanel noteListPanel, JProgressBar jpb, HomeFrame homeFrame){
+        this.homeFrame=homeFrame;
+        this.jpb=jpb;
         //생성자
         this.note=note;
         notePopupMenu=new NotePopupMenu(note, this);
         this.noteListPanel=noteListPanel;
 
         // 패널 자체 설정
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));=
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
        // setBorder(new TitledBorder(new LineBorder(Color.BLUE, 2),"NotePanel" )); //디버깅용. 두께 0으로 하면 없어짐.
         setBackground(Color.white);
         setBorderPainted(false); //테두리 없앰
@@ -51,7 +52,7 @@ public class NotePanel extends JButton {
         //노트 제목
         JLabel titleLabel=new JLabel(note.getTitle());
         titleLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);=
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //노트 수정일
         JLabel modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString() + " ");
@@ -63,7 +64,7 @@ public class NotePanel extends JButton {
         Image thumbNail=note.getThumbNail().getScaledInstance(150,150,Image.SCALE_AREA_AVERAGING); //썸네일 축소. 속도 따라서 알고리즘 조정해.
         ImageIcon thumbNailIcon=new ImageIcon(thumbNail);
         JLabel thumbNailLabel=new JLabel(thumbNailIcon);
-        thumbNailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);=
+        thumbNailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
 
@@ -77,7 +78,8 @@ public class NotePanel extends JButton {
         //패널일 때는 아래
         addMouseListener(mouseAdapter);
 
-        setVisible(true);
+        //setVisible(true);
+        
     }
 
     public void listRefresh(){
@@ -89,13 +91,17 @@ public class NotePanel extends JButton {
         super.paintComponents(g);
     }
 
-
+// 더블 클릭으로 노트 열기
     MouseAdapter mouseAdapter=new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) { // 더블 클릭인지 확인
                 try {
-                    Thread thread = new Thread(new NoteFrame(note));
+                    long start=System.nanoTime();
+                    NoteFrame noteFrame=new NoteFrame(note, homeFrame);
+                    Thread thread = new Thread(noteFrame);
+                    long end=System.nanoTime();
+                    System.out.println("실행 시간:" + (end - start));
                     //System.out.println("현재 쓰레드: " + thread.getName());
                     thread.start();
                 } catch (IOException ex) {
@@ -127,45 +133,7 @@ public class NotePanel extends JButton {
     };
 
 
-    // 클릭 시 pdf창 열리도록 설정.
-    ActionListener actionListener=new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            //기존 창 닫고
-
-
-
-            //서버
-//            Runnable r = null;
-//            try {
-//                r = new examples.ServerRunable(new NoteFrame(note));
-//
-//                Thread thread = new Thread(r);
-//                thread.start();
-//            } catch (IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-
-            try {
-                Thread thread = new Thread(new NoteFrame(note));
-                //System.out.println("현재 쓰레드: " + thread.getName());
-                thread.start();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-
-
-
-            // 노트 창 오픈
-            // 서버 오픈
-//            try {
-//                NoteFrame noteFrame =new NoteFrame(note);
-//            } catch (IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-        }
-    };
+   
 
 
 }

@@ -4,8 +4,6 @@ import model.Note;
 import service.FileService;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +17,12 @@ public class NoteListPanel extends JPanel {
     List<NotePanel> notePanelList=new ArrayList<>();
     List<Note> noteList;
 
+    HomeFrame homeFrame; // 로딩 닫히고 포커스 낮추기 위함,
+    JProgressBar jpb;
     //노트 리스트를 받아서 NotePanel 리스트를 생성하고 이를 모두 add.
-    public NoteListPanel(){
-
+    public NoteListPanel(JProgressBar jpb, HomeFrame homeFrame){
+        this.jpb=jpb;
+        this.homeFrame=homeFrame;
         //자체 패널 설정 
 //        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); //세로 방향으로 나열
         setLayout(new FlowLayout(FlowLayout.LEFT, 20,20));
@@ -33,7 +34,7 @@ public class NoteListPanel extends JPanel {
         //노트 각각에 대한 패널 생성
         noteList=FileService.loadNoteList();
         for(Note note:noteList){
-            NotePanel notePanel=new NotePanel(note, this);
+            NotePanel notePanel=new NotePanel(note, this, jpb, homeFrame);
             notePanelList.add(notePanel);
             add(notePanel); //gui에 삽입
         }
@@ -62,7 +63,7 @@ public class NoteListPanel extends JPanel {
         releaseNote();
         noteList=FileService.loadNoteList();
         for(Note note:noteList){
-            NotePanel notePanel=new NotePanel(note, this);
+            NotePanel notePanel=new NotePanel(note, this, jpb, homeFrame);
             notePanelList.add(notePanel);
             add(notePanel); //gui에 삽입
         }
