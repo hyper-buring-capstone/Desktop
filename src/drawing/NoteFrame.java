@@ -86,7 +86,7 @@ public class NoteFrame extends JFrame implements Runnable{
         setVisible(true);
         setTitle(note.getTitle());
 
-        //homeFrame.setVisible(false);
+        homeFrame.setVisible(false);
     }
 
     //윈도우 창 닫기 설정
