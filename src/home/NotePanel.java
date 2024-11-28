@@ -1,6 +1,7 @@
 package home;
 
 import drawing.NoteFrame;
+import drawing.NoteFrame;
 import global.BaseButton;
 import global.ServerRunable;
 import home.button.NoteMenuBtn;
@@ -12,6 +13,9 @@ import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import StateModel.StateModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,12 +33,17 @@ public class NotePanel extends JButton {
     Note note;
 
     NotePopupMenu notePopupMenu;
+    
+    NoteFrame noteFrame;
+    
+    private StateModel state;
 
     @Getter
     NoteListPanel noteListPanel;
 
-    public NotePanel(Note note, NoteListPanel noteListPanel){
+    public NotePanel(StateModel state, Note note, NoteListPanel noteListPanel){
         //생성자
+    	this.state = state;
         this.note=note;
         notePopupMenu=new NotePopupMenu(note, this);
         this.noteListPanel=noteListPanel;
@@ -84,6 +93,7 @@ public class NotePanel extends JButton {
 
         noteListPanel.refresh();
     }
+    
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
@@ -94,13 +104,22 @@ public class NotePanel extends JButton {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) { // 더블 클릭인지 확인
-                try {
-                    Thread thread = new Thread(new NoteFrame(note));
-                    //System.out.println("현재 쓰레드: " + thread.getName());
-                    thread.start();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            	try {
+					noteFrame = new NoteFrame(state, note);
+					state.setNoteFrame(noteFrame);
+					state.setNoteOpen(true);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+//                try {
+//                	NoteFrame noteFrame = new NoteFrame(note);
+//                    Thread thread = new Thread(temp);
+//                    //System.out.println("현재 쓰레드: " + thread.getName());
+//                    thread.start();
+//                    
+//                } catch (IOException ex) {
+//                    throw new RuntimeException(ex);
+//                }
             }
 
         }
@@ -147,13 +166,13 @@ public class NotePanel extends JButton {
 //                throw new RuntimeException(ex);
 //            }
 
-            try {
-                Thread thread = new Thread(new NoteFrame(note));
-                //System.out.println("현재 쓰레드: " + thread.getName());
-                thread.start();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+        	try {
+				noteFrame = new NoteFrame(state, note);
+				state.setNoteFrame(noteFrame);
+				state.setNoteOpen(true);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
 
 

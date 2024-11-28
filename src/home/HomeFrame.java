@@ -2,12 +2,20 @@ package home;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+
+import StateModel.StateModel;
+import drawing.NoteFrame;
+import service.Receiver;
 import lombok.Getter;
 import model.Note;
+import service.BluetoothServer;
 import service.FileService;
 
+import javax.microedition.io.StreamConnection;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +23,20 @@ import java.util.List;
  * 초기 화면을 담당하는 프레임
  * 노트 선택, 환경설정, 노트 리스트 뷰어 등의 기능.
  */
-public class HomeFrame extends JFrame {
+public class HomeFrame extends JFrame implements BluetoothServer.ServerListener {
 
     @Getter
     NoteListPanel noteListPanel;
+    private BluetoothServer bluetoothServer;
+    private Thread serverThread;
+    NoteFrame noteFrame;
+    Receiver receiver;
+    private StateModel state;
 
 
-    public HomeFrame(){
+    public HomeFrame(StateModel state){
+    	this.state = state;
+    	
         //자체 설정
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,7 +47,7 @@ public class HomeFrame extends JFrame {
         FileService.initDirectory(); //디렉토리 구조 초기화.
 
 
-        noteListPanel=new NoteListPanel(); //노트 리스트 패널
+        noteListPanel=new NoteListPanel(state); //노트 리스트 패널
         HomeBtnPanel homeBtnPanel=new HomeBtnPanel(noteListPanel); //상단 버튼 패널
 
         //스크롤 기능
@@ -46,35 +61,55 @@ public class HomeFrame extends JFrame {
         add(homeBtnPanel, BorderLayout.NORTH);
         add(jScrollPane, BorderLayout.CENTER);
 
-
-
-
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                stopBluetoothServer();
+            }
+        });
+        
+        // Bluetooth 서버 시작
+        startBluetoothServer();
+        
         setVisible(true);
+        
     }
-
-//    @Override
-//    public void paintComponents(Graphics g) {
-//        super.paintComponents(g);
-//        remove(noteListPanel);
-//    }
+    
+    private void startBluetoothServer() {
+        bluetoothServer = new BluetoothServer(this);
+        serverThread = new Thread(bluetoothServer);
+        serverThread.start();
+    }
+    
+    private void stopBluetoothServer() {
+        if (bluetoothServer != null) {
+            bluetoothServer.stopServer();
+        }
+        if (serverThread != null) {
+            try {
+                serverThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public StateModel getStateModel() {
+    	return state;
+    }
+    
+    @Override
+    public void onClientConnected(StreamConnection connection) {
+        // 클라이언트 연결 시 처리할 로직
+        receiver = new Receiver(connection, this);
+        receiver.start();
+    }
 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
 
         UIManager.setLookAndFeel(new FlatLightLaf());
-        HomeFrame homeFrame=new HomeFrame();
+        StateModel state = new StateModel();
+        HomeFrame homeFrame=new HomeFrame(state);
     }
 
-    private List<Note> getDummyNotes(){
-        List<Note> noteList=new ArrayList<>();
-
-        Note note1=new Note("dummy1");
-        Note note2=new Note("dummy2");
-        Note note3=new Note("dummy3");
-
-        noteList.add(note1);
-        noteList.add(note2);
-        noteList.add(note3);
-
-        return noteList;
-    }
 }

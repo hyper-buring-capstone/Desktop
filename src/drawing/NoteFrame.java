@@ -1,5 +1,6 @@
 package drawing;
 
+import service.BluetoothServer;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
@@ -9,7 +10,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-
+import StateModel.StateModel;
 import lombok.Getter;
 import model.EraserPoint;
 import model.Note;
@@ -25,20 +26,34 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-public class NoteFrame extends JFrame implements Runnable{
-    @Getter
+public class NoteFrame extends JFrame {
+	@Getter
     DrawPanel drawPanel;
     PdfPanel pdfPanel;
+    private StateModel state;
 
-    public NoteFrame(Note note) throws IOException {
+    public NoteFrame(StateModel state, Note note) throws IOException {
+    	this.state = state;
         setTitle("drawing");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1200, 900);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        //윈도우 닫기 설정
-        addWindowListener(windowAdapter);
+        // UI 초기화
+        initUI(note);
+
+    }
+
+    private void initUI(Note note) throws IOException {
+        // 기존 코드에 있던 UI 초기화 로직 그대로 유지
+        // drawPanel 및 pdfPanel 초기화
+        // LayeredPane, ScrollPane 설정
+    	setTitle("drawing");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(1200, 900);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
 
         //layeredPane 설정
@@ -72,35 +87,24 @@ public class NoteFrame extends JFrame implements Runnable{
 //        jScrollPane.setMaximumSize(new Dimension(1000,8000));
 //        jScrollPane.setPreferredSize(new Dimension(1000,8000));
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                state.setNoteOpen(false);
+                dispose();
+            }
+        });
 
         add(jScrollPane, BorderLayout.CENTER);
         add(topLayeredPane, BorderLayout.NORTH);
         setVisible(true);
-
-
-
     }
-
-    //윈도우 창 닫기 설정
-    WindowAdapter windowAdapter=new WindowAdapter() {
-        @Override
-        public void windowClosed(WindowEvent e) {
-            isRunning=false;
-            try {
-                mStreamConnectionNotifier.close();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-
-
-        }
-    };
 
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
     }
-
+    
     public void createGraphics() {
     	drawPanel.createGraphics();
     }
@@ -108,226 +112,23 @@ public class NoteFrame extends JFrame implements Runnable{
     public void disposeGraphics() {
     	drawPanel.disposeGraphics();
     }
-
+    
     public void addLine(int x1, int y1, int x2, int y2, float width){
-
         drawPanel.addLine(x1,y1,x2,y2,width);
     }
-
+    
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
-    	long startTime = System.nanoTime(); // 성능 측정 시작
-        drawPanel.addPolyLine(xList, yList, n, width);
-        long endTime = System.nanoTime(); // 성능 측정 완료
-        //System.out.println("real time 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
-        repaint(); //트러불 8번 관련 해결
+    	drawPanel.addPolyLine(xList, yList, n, width);
+        repaint();
     }
     
     public void eraseLine(int x, int y, float width) {
     	drawPanel.eraseLine(x, y, width);
         repaint();
     }
-
+    
     public void callAddPenLine(PenLine penLine) {
         drawPanel.addPenLine(penLine);
     }
-
-    //UUID for SPP
-    final UUID uuid = new UUID("0000110100001000800000805F9B34FB", false);
-    final String CONNECTION_URL_FOR_SPP = "btspp://localhost:"
-            + uuid +";name=SPP Server";
-
-    private StreamConnectionNotifier mStreamConnectionNotifier = null;
-    private StreamConnection mStreamConnection = null;
-    private int count = 0;
-
-    private boolean isRunning=true;
-
-
-    @Override
-    public void run() {
-
-        try {
-
-            mStreamConnectionNotifier = (StreamConnectionNotifier) Connector
-                    .open(CONNECTION_URL_FOR_SPP);
-
-            log("Opened connection successful.");
-        } catch (IOException e) {
-
-            log("Could not open connection: " + e.getMessage());
-            return;
-        }
-
-
-        log("examples.Server is now running.");
-
-
-
-
-        while(isRunning){
-
-            log("wait for client requests...");
-
-            try {
-
-                mStreamConnection = mStreamConnectionNotifier.acceptAndOpen();
-            } catch (IOException e1) {
-
-                log("Could not open connection: " + e1.getMessage() );
-            }
-
-
-            count++;
-            log("현재 접속 중인 클라이언트 수: " + count);
-
-
-            //접속해야 실행
-            new Receiver(mStreamConnection, this).start();
-        }
-
-    }
-
-
-
-    class Receiver extends Thread {
-
-        private InputStream mInputStream = null;
-        private OutputStream mOutputStream = null;
-        private String mRemoteDeviceString = null;
-        private StreamConnection mStreamConnection = null;
-        NoteFrame noteFrame;
-
-
-        Receiver(StreamConnection streamConnection, NoteFrame noteFrame){
-
-
-            mStreamConnection = streamConnection;
-            this.noteFrame = noteFrame;
-
-
-            try {
-
-                mInputStream = mStreamConnection.openInputStream();
-                mOutputStream = mStreamConnection.openOutputStream();
-
-                log("Open streams...");
-            } catch (IOException e) {
-
-                log("Couldn't open Stream: " + e.getMessage());
-
-                Thread.currentThread().interrupt();
-                return;
-            }
-
-
-            try {
-
-                RemoteDevice remoteDevice
-                        = RemoteDevice.getRemoteDevice(mStreamConnection);
-
-                mRemoteDeviceString = remoteDevice.getBluetoothAddress();
-
-                log("Remote device");
-                log("address: "+ mRemoteDeviceString);
-
-            } catch (IOException e1) {
-
-                log("Found device, but couldn't connect to it: " + e1.getMessage());
-                return;
-            }
-
-            log("Client is connected...");
-        }
-
-
-        @Override
-        public void run() {
-            //연결된 뒤의 동작
-
-
-            PenLine penLine = null;
-            EraserPoint eraserPoint = null;
-            DrawService drawService=new DrawService(penLine, eraserPoint, noteFrame, false);
-            try {
-
-                Reader mReader = new BufferedReader(new InputStreamReader
-                        ( mInputStream, Charset.forName(StandardCharsets.UTF_8.name())));
-
-                boolean isDisconnected = false;
-
-                try {
-					ServerService.httpServer();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-                
-                Sender("HEADER:SERVERIP&&"+ServerService.getLocalHostAddress());
-                log(ServerService.getLocalHostAddress());
-
-                try {
-                    sleep(3000); // 3초 대기
-                } catch (InterruptedException e) {
-                    e.printStackTrace(); // 대기 중 예외 처리
-                }
-                
-                Sender("HEADER:PAGE&&1");
-                
-                
-                while(isRunning){
-
-                    StringBuilder stringBuilder = new StringBuilder();
-                    int c = 0;
-
-
-                    while ( '\n' != (char)( c = mReader.read()) ) {
-
-                        if ( c == -1){
-
-                            log("Client has been disconnected");
-
-                            count--;
-                            log("현재 접속 중인 클라이언트 수: " + count);
-
-                            isDisconnected = true;
-                            Thread.currentThread().interrupt();
-
-                            break;
-                        }
-
-                        stringBuilder.append((char) c);
-                    }
-
-                    if ( isDisconnected ) break;
-
-                    String recvMessage = stringBuilder.toString(); //받은 문자
-
-                    drawService.drawProcess(recvMessage, noteFrame);
-
-                    //Sender(recvMessage);
-                }
-
-            } catch (IOException e) {
-
-                log("Receiver closed" + e.getMessage());
-            }
-        }
-
-
-        void Sender(String msg){
-            PrintWriter printWriter = new PrintWriter(new BufferedWriter
-                    (new OutputStreamWriter(mOutputStream,
-                            Charset.forName(StandardCharsets.UTF_8.name()))));
-            printWriter.write(msg+"\n");
-            printWriter.flush();
-        }
-    }
-
-
-    private static void log(String msg) {
-        System.out.println("["+(new Date()) + "] " + msg);
-    }
-
+    
 }
-
-
