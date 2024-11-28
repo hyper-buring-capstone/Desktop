@@ -28,6 +28,7 @@ public class Receiver extends Thread {
     private String mRemoteDeviceString = null;
     private HomeFrame homeFrame;
     private StateModel state;
+    DrawService drawService;
 
     public Receiver(StreamConnection streamConnection, HomeFrame homeFrame) {
         mStreamConnection = streamConnection;
@@ -65,17 +66,13 @@ public class Receiver extends Thread {
     
     @Override
     public void run() {
-        PenLine penLine = null;
-        EraserPoint eraserPoint = null;
-
+    	PenLine penLine = null;
+    	EraserPoint eraserPoint = null;
         // 데이터를 읽는 작업을 별도의 스레드로 실행
         Thread readThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    NoteFrame noteFrame;
-                    DrawService drawService;
-
                     synchronized (homeFrame) {
                         // NoteFrame이 없으면 대기 상태로 들어감
                         while (!Receiver.this.state.getNoteOpen()) {
@@ -90,8 +87,7 @@ public class Receiver extends Thread {
                         }
 
                         // NoteFrame이 존재하면 작업을 진행
-                        noteFrame = state.getNoteFrame();
-                        drawService = new DrawService(penLine, eraserPoint, noteFrame, false);
+                        drawService = new DrawService(penLine, eraserPoint, Receiver.this.state.getNoteFrame(), false);
                     }
 
                     try {
@@ -111,7 +107,7 @@ public class Receiver extends Thread {
 
                             // 메시지 처리 로직
                             String recvMessage = stringBuilder.toString(); // 받은 문자
-                            drawService.drawProcess(recvMessage, noteFrame);
+                            drawService.drawProcess(recvMessage, Receiver.this.state.getNoteFrame());
                         }
                     } catch (IOException e) {
                         IOService.log("Error in Receiver: " + e.getMessage());
