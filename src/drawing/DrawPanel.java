@@ -39,21 +39,21 @@ public class DrawPanel extends JPanel {
 
 
     public DrawPanel(Note note) {
-        this.note=note;
+    	this.note=note;
 
         //노트 데이터로부터 폭과 높이 불러오기
         Image thumbnail=note.getThumbNail();
-       int imgWidth=thumbnail.getWidth(null);
-       int imgHeight=thumbnail.getHeight(null);
+        int imgWidth=thumbnail.getWidth(null);
+        int imgHeight=thumbnail.getHeight(null);
 
 
         // BufferedImage 생성 (패널의 크기와 동일한 크기)
         canvas = new BufferedImage(999*scale, 999*imgHeight/imgWidth*scale, BufferedImage.TYPE_INT_ARGB);
-      //  setLayout(null);
+        //  setLayout(null);
 
-       // setAlignmentX(Component.CENTER_ALIGNMENT);
+        // setAlignmentX(Component.CENTER_ALIGNMENT);
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
-       // setBounds(0,0,300,800);
+        // setBounds(0,0,300,800);
         pageNum=0;
         penLineLists.add(new ArrayList<>());
         setPreferredSize(new Dimension(999, 999*imgHeight/imgWidth));
@@ -66,7 +66,7 @@ public class DrawPanel extends JPanel {
          */
 
 
-       // setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
+        // setBorder(new TitledBorder(new LineBorder(Color.CYAN, 3), "drawpanel"));
 
         //노트 데이터로부터 드로잉 정보 불러오기.
         penLineLists= FileService.loadPenLineLists(note);
@@ -158,30 +158,16 @@ public class DrawPanel extends JPanel {
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
         g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2d.setColor(Color.BLACK);
-        long startTime = System.nanoTime(); // 성능 측정 시작
         g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
         		Arrays.stream(yList).map(y -> y * 5).toArray(),
         		n);
-        long endTime = System.nanoTime(); // 성능 측정 완료
-        //System.out.println("알짜시간 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
         repaint();
     }
     
     public void reCanvas() {
-
-//    	Graphics2D g2d = canvas.createGraphics();
-//        g2d.setColor( new Color(0,0,0,0));
-//        g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Graphics2D g2d = canvas.createGraphics();
-//    	createGraphics();
         g2d.setComposite(AlphaComposite.Clear);  // 전체 지우기 위해 Clear 컴포지트 설정
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-
-//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setStroke(new BasicStroke(width));
-//        g2d.setColor(Color.BLACK);
-
 
         // 그리기 설정 초기화
         g2d.setComposite(AlphaComposite.SrcOver); // 다시 그릴 수 있도록 컴포지트 설정
@@ -248,14 +234,6 @@ public class DrawPanel extends JPanel {
         //컨트롤 패널
 
             g.drawRect(offsetX,offsetY,controlX,controlY);
-
-// 컨트롤 패널 대각선 표시
-//        if (startPoint != null && currentPoint != null) {
-//            g.setColor(Color.RED);
-//            g.drawLine(startPoint.x, startPoint.y, currentPoint.x, currentPoint.y); // 클릭-드래그 연결 선
-//            g.fillOval(startPoint.x - 3, startPoint.y - 3, 6, 6); // 시작점 표시
-//            g.fillOval(currentPoint.x - 3, currentPoint.y - 3, 6, 6); // 현재 좌표 표시
-//        }
 
 
 
