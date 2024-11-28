@@ -95,6 +95,7 @@ public class NoteFrame extends JFrame {
             public void windowClosed(WindowEvent e) {
                 state.setNoteOpen(false);
                 dispose();
+                //homeFrame.setVisible(true);
             }
         });
 
@@ -104,25 +105,8 @@ public class NoteFrame extends JFrame {
         setVisible(true);
         setTitle(note.getTitle());
 
-        homeFrame.setVisible(false);
+        //homeFrame.setVisible(false);
     }
-
-    //윈도우 창 닫기 설정
-    WindowAdapter windowAdapter=new WindowAdapter() {
-        @Override
-        public void windowClosed(WindowEvent e) {
-            homeFrame.setVisible(true);
-            isRunning=false;
-            try {
-                mStreamConnectionNotifier.close();
-
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-
-
-        }
-    };
 
     @Override
     public void paintComponents(Graphics g) {
