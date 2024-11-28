@@ -15,7 +15,10 @@ import java.nio.file.Files;
 
 public class ServerService {
 
-    public static void httpServer() throws Exception {
+    public static void startHttpServer() throws Exception {
+    	// Jetty 로깅 레벨을 코드에서 설정
+        System.setProperty("org.eclipse.jetty.LEVEL", "WARN");
+    	
         // IP 주소 가져오기
         String hostAddress = getLocalHostAddress();
         if (hostAddress == null) {

@@ -6,6 +6,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import StateModel.StateModel;
 import drawing.NoteFrame;
 import service.Receiver;
+import service.ServerService;
 import lombok.Getter;
 import model.Note;
 import service.BluetoothServer;
@@ -114,11 +115,18 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
         receiver.start();
     }
 
-    public static void main(String[] args) throws UnsupportedLookAndFeelException {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, Exception {
 
         UIManager.setLookAndFeel(new FlatLightLaf());
         UIManager.put("FileView.iconColor", Color.red); // 파일 아이콘 색상 변경
         StateModel state = new StateModel();
+        new Thread(() -> {
+            try {
+                service.ServerService.startHttpServer();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
         HomeFrame homeFrame=new HomeFrame(state);
     }
 
