@@ -7,6 +7,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.swing.*;
+
+import StateModel.StateModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +28,10 @@ public class NotePanel extends JButton {
     Note note;
 
     NotePopupMenu notePopupMenu;
+    
+    NoteFrame noteFrame;
+    
+    private StateModel state;
 
     @Getter
     NoteListPanel noteListPanel;
@@ -32,10 +39,11 @@ public class NotePanel extends JButton {
     JProgressBar jpb;
 
     HomeFrame homeFrame;
-    public NotePanel(Note note, NoteListPanel noteListPanel, JProgressBar jpb, HomeFrame homeFrame){
+    public NotePanel(StateModel state, Note note, NoteListPanel noteListPanel, JProgressBar jpb, HomeFrame homeFrame){
         this.homeFrame=homeFrame;
         this.jpb=jpb;
         //생성자
+    	this.state = state;
         this.note=note;
         notePopupMenu=new NotePopupMenu(note, this);
         this.noteListPanel=noteListPanel;
@@ -86,6 +94,7 @@ public class NotePanel extends JButton {
 
         noteListPanel.refresh();
     }
+    
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
@@ -96,17 +105,15 @@ public class NotePanel extends JButton {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) { // 더블 클릭인지 확인
-                try {
-                    long start=System.nanoTime();
-                    NoteFrame noteFrame=new NoteFrame(note, homeFrame);
-                    Thread thread = new Thread(noteFrame);
-                    long end=System.nanoTime();
-                    System.out.println("실행 시간:" + (end - start));
-                    //System.out.println("현재 쓰레드: " + thread.getName());
-                    thread.start();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+
+            	try {
+					noteFrame = new NoteFrame(state, note, homeFrame);
+					state.setNoteFrame(noteFrame);
+					state.setNoteOpen(true);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
             }
 
         }
@@ -131,9 +138,5 @@ public class NotePanel extends JButton {
             notePopupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     };
-
-
-   
-
 
 }

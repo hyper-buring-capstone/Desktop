@@ -48,7 +48,7 @@ public class ServerRunable implements Runnable{
 
 
         NoteFrame noteFrame = null;
-        HomeFrame homeFrame= new HomeFrame();
+        //HomeFrame homeFrame= new HomeFrame();
 
 
 
