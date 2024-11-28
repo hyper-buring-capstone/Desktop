@@ -15,6 +15,7 @@ import model.EraserPoint;
 import model.Note;
 import model.PenLine;
 import service.DrawService;
+import service.ServerService;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -42,17 +43,13 @@ public class NoteFrame extends JFrame implements Runnable{
 
         //layeredPane 설정
         JLayeredPane jLayeredPane=new JLayeredPane();
-//        jLayeredPane.setMaximumSize(new Dimension(1000, 8000));
-//        jLayeredPane.setPreferredSize(new Dimension(1000, 8000));
-       // jLayeredPane.setLayout(new FlowLayout());
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-      //  jLayeredPane.setBorder(new TitledBorder(new LineBorder(Color.red,3),"jlayredPane")); //디버깅용
         jLayeredPane.setLayout(new OverlayLayout(jLayeredPane));
 
         //PDF Panel 추가
         pdfPanel=new PdfPanel(note); // 새 pdf 패널 객체 생성
 
-        // DrawPanel을 하나만 추가]
+        // DrawPanel을 하나만 추가
         // DrawPanel 페이지 사이즈 설정
         drawPanel = new DrawPanel(note);
         drawPanel.setMaxPageNum(pdfPanel.getImageListSize());
@@ -259,16 +256,11 @@ public class NoteFrame extends JFrame implements Runnable{
 
                 boolean isDisconnected = false;
 
-                Sender("에코 서버에 접속하셨습니다.");
-                Sender( "보내신 문자를 에코해드립니다.");
-
+                Sender(ServerService.getLocalHostAddress());
+                log(ServerService.getLocalHostAddress());
 
 
                 while(isRunning){
-                    long startTime = System.nanoTime(); // 성능 측정 시작
-
-                    //log("ready");
-
 
                     StringBuilder stringBuilder = new StringBuilder();
                     int c = 0;
@@ -295,18 +287,10 @@ public class NoteFrame extends JFrame implements Runnable{
                     if ( isDisconnected ) break;
 
                     String recvMessage = stringBuilder.toString(); //받은 문자
-                    //log( mRemoteDeviceString + ": " + recvMessage );
 
-
-                    /**
-                     * 모바일에서 "10 20" 이런 식으로 보내면 (0,0) (10,20)을 잇는 직선 생성하는 테스트 코드임.
-                     */
                     drawService.drawProcess(recvMessage, noteFrame);
 
                     //Sender(recvMessage);
-                    long endTime = System.nanoTime(); // 성능 측정 완료
-                    // System.out.println("최종 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
                 }
 
             } catch (IOException e) {
@@ -317,31 +301,17 @@ public class NoteFrame extends JFrame implements Runnable{
 
 
         void Sender(String msg){
-            long startTime = System.nanoTime(); // 성능 측정 시작
-
             PrintWriter printWriter = new PrintWriter(new BufferedWriter
                     (new OutputStreamWriter(mOutputStream,
                             Charset.forName(StandardCharsets.UTF_8.name()))));
-
             printWriter.write(msg+"\n");
             printWriter.flush();
-
-            log( "Me : " + msg );
-            long endTime = System.nanoTime(); // 성능 측정 완료
-            System.out.println("Sender 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
         }
     }
 
 
     private static void log(String msg) {
-        long startTime = System.nanoTime(); // 성능 측정 시작
-
-
         System.out.println("["+(new Date()) + "] " + msg);
-        long endTime = System.nanoTime(); // 성능 측정 완료
-        System.out.println("로그 실행 시간: " + (endTime - startTime) + " ns"); // 성능 시간 출력
-
     }
 
 }

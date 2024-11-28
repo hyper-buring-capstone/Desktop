@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ServerService {
 
-    public static void main(String[] args) throws Exception {
+    public static void httpServer() throws Exception {
         // IP 주소 가져오기
         String hostAddress = getLocalHostAddress();
         if (hostAddress == null) {
@@ -71,7 +71,7 @@ public class ServerService {
     }
 
     // 로컬 IP 주소 가져오기 메서드
-    private static String getLocalHostAddress() {
+    public static String getLocalHostAddress() {
         try {
             InetAddress localHost = InetAddress.getLocalHost(); // 로컬 호스트 주소 가져오기
             return localHost.getHostAddress(); // IP 주소 반환
