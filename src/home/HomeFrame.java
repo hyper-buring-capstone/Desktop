@@ -33,6 +33,7 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
     Receiver receiver;
     private StateModel state;
 
+    JPanel loadingPanel;
 
     public HomeFrame(StateModel state){
     	this.state = state;
@@ -46,8 +47,14 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
 
         FileService.initDirectory(); //디렉토리 구조 초기화.
 
+        //프로그래스 바.
+        JProgressBar jpb=new JProgressBar();
+//        jpb.setStringPainted(true);
+//        jpb.setString("0%");
+//        add(jpb, BorderLayout.SOUTH);
+//        jpb.setIndeterminate(true);
 
-        noteListPanel=new NoteListPanel(state); //노트 리스트 패널
+        noteListPanel=new NoteListPanel(state, jpb,this); //노트 리스트 패널
         HomeBtnPanel homeBtnPanel=new HomeBtnPanel(noteListPanel); //상단 버튼 패널
 
         //스크롤 기능
@@ -57,6 +64,8 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
         jScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
 
 
+
+        setVisible(true);
 
         add(homeBtnPanel, BorderLayout.NORTH);
         add(jScrollPane, BorderLayout.CENTER);
@@ -108,6 +117,7 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
 
         UIManager.setLookAndFeel(new FlatLightLaf());
+        UIManager.put("FileView.iconColor", Color.red); // 파일 아이콘 색상 변경
         StateModel state = new StateModel();
         HomeFrame homeFrame=new HomeFrame(state);
     }

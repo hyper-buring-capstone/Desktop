@@ -1,18 +1,14 @@
 package drawing;
 
+import home.HomeFrame;
+import home.LoadingFrame;
 import lombok.Getter;
 import model.Note;
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,12 +35,22 @@ public class PdfPanel extends JPanel {
         //디버깅용
        // setBorder(new TitledBorder(new LineBorder(Color.BLUE,4),"PDFPanel"));
 
+        setBorder(new EtchedBorder());
 
         //이미지 로딩
+        // 여기서 실행 시간의 병목 발생.
         File[] files=new File("C:\\drawing\\data\\"+title+"\\images").listFiles(); //이미지 폴더에 접근
-        for(File file:files){
-            imageList.add(ImageIO.read(file));
+
+
+        //로딩 창 띄우면 좋은데 도저히 못하겠음;;
+
+        for(int i=0; i<files.length; i++){
+            File file=files[i];
+            imageList.add(ImageIO.read(file)); //오래 걸림.
         }
+
+
+
 
         //이미지 사이즈
 
@@ -64,6 +70,46 @@ public class PdfPanel extends JPanel {
         setPreferredSize(new Dimension(1000, 1000*height/width));
         setMaximumSize(new Dimension(1000, 1000*height/width));
         setVisible(true);
+
+    }
+
+    //백그라운드에서 이미지 로딩하기.
+    // 백그라운드에서 돌리니깐 이미지 로딩하는 동안 다른 프레임 떠서 오류남.;;
+    class ImageLoadingTask extends SwingWorker<Void, Integer> {
+        private final JProgressBar progressBar;
+        File[] files;
+
+        public ImageLoadingTask(JProgressBar progressBar, File[] files) {
+            this.progressBar = progressBar;
+            this.files=files;
+        }
+
+        @Override
+        protected Void doInBackground() throws IOException {
+
+
+            int totalImages = files.length;
+
+            for (int i = 0; i < totalImages; i++) {
+                File file=files[i];
+                imageList.add(ImageIO.read(file));
+
+                // 진행 상태 업데이트
+                int progress = (int) (((i + 1) / (double) totalImages) * 100);
+                publish(progress); // UI 업데이트 요청
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void process(java.util.List<Integer> chunks) {
+            // 마지막 progress 값으로 업데이트
+            int progress = chunks.get(chunks.size() - 1);
+            progressBar.setValue(progress);
+        }
+
+
     }
 
     public int getImageListSize() {

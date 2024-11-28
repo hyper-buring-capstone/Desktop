@@ -7,10 +7,10 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 import StateModel.StateModel;
+import home.HomeFrame;
+import home.LoadingFrame;
 import lombok.Getter;
 import model.EraserPoint;
 import model.Note;
@@ -31,12 +31,15 @@ public class NoteFrame extends JFrame {
     DrawPanel drawPanel;
     PdfPanel pdfPanel;
     private StateModel state;
+    HomeFrame homeFrame;
 
-    public NoteFrame(StateModel state, Note note) throws IOException {
-    	this.state = state;
+    public NoteFrame(StateModel state, Note note, HomeFrame homeFrame) throws IOException {
+        this.state = state;
         setTitle("drawing");
+        this.homeFrame=homeFrame;
+      
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(1200, 900);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
@@ -71,7 +74,7 @@ public class NoteFrame extends JFrame {
 
 
         // 상단 버튼 레이아웃 추가
-        TopLayeredPane topLayeredPane=new TopLayeredPane(pdfPanel, drawPanel);
+        NoteTopPanel noteTopPanel =new NoteTopPanel(pdfPanel, drawPanel);
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
@@ -96,9 +99,30 @@ public class NoteFrame extends JFrame {
         });
 
         add(jScrollPane, BorderLayout.CENTER);
-        add(topLayeredPane, BorderLayout.NORTH);
+        add(noteTopPanel, BorderLayout.NORTH);
+
         setVisible(true);
+        setTitle(note.getTitle());
+
+        homeFrame.setVisible(false);
     }
+
+    //윈도우 창 닫기 설정
+    WindowAdapter windowAdapter=new WindowAdapter() {
+        @Override
+        public void windowClosed(WindowEvent e) {
+            homeFrame.setVisible(true);
+            isRunning=false;
+            try {
+                mStreamConnectionNotifier.close();
+
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+
+        }
+    };
 
     @Override
     public void paintComponents(Graphics g) {

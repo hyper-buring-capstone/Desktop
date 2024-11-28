@@ -4,7 +4,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.ui.FlatArrowButton;
 import com.formdev.flatlaf.ui.FlatButtonUI;
 import global.BaseButton;
-import global.RoundedBorder;
 import home.NoteListPanel;
 import home.NotePanel;
 import org.apache.pdfbox.Loader;
@@ -40,7 +39,7 @@ public class FileOpenBtn extends BaseButton {
         setMaximumSize(new Dimension(110,10));
         setFont(new Font("Times", Font.PLAIN, 15));
         setForeground(Color.white);
-        setBackground(new Color(0,0,255,180));
+        setBackground(new Color(120,1,22));
         setBorderPainted(false);
         setMargin(new Insets(0,0,0,0));
 
@@ -73,6 +72,16 @@ public class FileOpenBtn extends BaseButton {
             }
 
             File file=jFileChooser.getSelectedFile(); //선택한 파일 가져옴
+
+            String fileName2=file.getName();
+           if(!fileName2.substring(fileName2.lastIndexOf(".") + 1).equals("pdf")){
+               JOptionPane.showMessageDialog(null
+                       , "지원하지 않는 형식입니다.\n\n지원 형식: PDF"
+                       , "경고"
+                       , JOptionPane.WARNING_MESSAGE);
+               return;
+           }
+
             String filePath=file.getPath();
             //System.out.println(filePath);
 
