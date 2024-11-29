@@ -186,7 +186,6 @@ public class DrawPanel extends JPanel {
         
         repaint();
         g2d.dispose(); // 리소스 해제
-        repaint(); // 다시 그리기
     }
 
     public void reCanvas2(){

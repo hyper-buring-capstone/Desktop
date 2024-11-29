@@ -43,9 +43,10 @@ public class PrevPageBtn extends BaseButton {
                 drawPanel.setPageNum(drawPanel.getPageNum()-1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()-1);
                 state.setCurPageNum(state.getCurPageNum()-1);
-                pageMoveTextField.setText("" + (state.getCurPageNum()+1));
+                pageMoveTextField.setText(String.valueOf(Math.max(1, curPage)));
                 state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
-                getParent().getParent().repaint();
+                //getParent().getParent().repaint();
+                getRootPane().repaint();
             }
         };
 
