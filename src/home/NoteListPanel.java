@@ -72,6 +72,7 @@ public class NoteListPanel extends JPanel {
         for(NotePanel notePanel:notePanelList){
             remove(notePanel);
         }
+        notePanelList.clear(); //메모리 청소
     }
 
     public void refresh(){
