@@ -97,6 +97,7 @@ public class NoteFrame extends JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 state.setNoteOpen(false);
+                state.getReceiver().Sender("HEADER:NOTESTATE&&OFF");
                 dispose();
                 //homeFrame.setVisible(true);
             }

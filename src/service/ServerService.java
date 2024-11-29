@@ -59,7 +59,13 @@ public class ServerService {
         });
 
         // 서버 시작
-        server.start();
+        try {
+            server.start();
+        }
+        catch(Exception e) {
+        	IOService.log("서버 연결에 오류가 있습니다. 한 포트에 여러 서버가 있는지 확인 바랍니다.");
+        	System.exit(1);
+        }
         System.out.printf("HTTP 서버가 시작되었습니다: http://%s:8080/images/{imageName}\n", hostAddress);
 
         // JVM 종료 시 서버를 멈추기 위한 shutdown hook 추가

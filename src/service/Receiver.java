@@ -65,11 +65,22 @@ public class Receiver extends Thread {
         	IOService.log("Found device, but couldn't connect to it: " + e1.getMessage());
             return;
         }
-
+        
         IOService.log("Client is connected...");
-        Sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
-        if(state.getNoteOpen()) {
-			Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+        
+        // 초반에 블루투스 전송 보내는거 씹혀서 이런 식으로 보내는게 나을듯(더 좋은 방식 있으면 선회)
+        try {
+			sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+        for(int i = 0 ; i < 10; i++) {
+            Sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
+        }
+        for(int i = 0 ; i < 10; i++) {
+            if(state.getNoteOpen()) {
+    			Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+            }
         }
 
     }
