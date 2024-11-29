@@ -156,8 +156,8 @@ public class DrawPanel extends JPanel {
 
     //그릴 때 이거 사용함. addline 삭제해도 될듯.
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
-        g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke((width*5)*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.setColor(new Color(40, 123, 144, 80));
         g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
         		Arrays.stream(yList).map(y -> y * 5).toArray(),
         		n);
