@@ -1,23 +1,18 @@
 package drawing.button;
 
-import com.formdev.flatlaf.ui.FlatButtonUI;
-import com.formdev.flatlaf.ui.FlatRoundBorder;
+import drawing.PageMoveTextField;
 import drawing.PdfPanel;
 import global.BaseButton;
 import drawing.DrawPanel;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static service.ImageService.recolorIcon;
-
 public class NextPageBtn extends BaseButton {
 
-    public NextPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel){
+    public NextPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel, PageMoveTextField pageMoveTextField){
 
         // 원본 이미지 아이콘 로드
         ImageIcon icon = new ImageIcon("src/icon/next.png");
@@ -35,8 +30,10 @@ public class NextPageBtn extends BaseButton {
         ActionListener actionListener=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int curPage=pdfPanel.getPageNum();
                 drawPanel.setPageNum(drawPanel.getPageNum()+1);
-                pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
+                pdfPanel.goOtherPage(curPage+1);
+                pageMoveTextField.setText(String.valueOf(Math.min(pdfPanel.getImageListSize(),curPage+2)));
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
             }
         };
