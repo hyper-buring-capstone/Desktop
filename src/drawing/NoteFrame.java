@@ -68,7 +68,7 @@ public class NoteFrame extends JFrame {
         jLayeredPane.setLayout(new OverlayLayout(jLayeredPane));
 
         //PDF Panel 추가
-        pdfPanel=new PdfPanel(note); // 새 pdf 패널 객체 생성
+        pdfPanel=new PdfPanel(state, note); // 새 pdf 패널 객체 생성
 
         // DrawPanel을 하나만 추가
         // DrawPanel 페이지 사이즈 설정
@@ -77,7 +77,7 @@ public class NoteFrame extends JFrame {
 
 
         // 상단 버튼 레이아웃 추가
-        NoteTopPanel noteTopPanel =new NoteTopPanel(pdfPanel, drawPanel);
+        NoteTopPanel noteTopPanel =new NoteTopPanel(state, pdfPanel, drawPanel);
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 

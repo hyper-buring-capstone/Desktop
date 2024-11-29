@@ -6,6 +6,7 @@ import model.Note;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import service.FileService;
+import service.Receiver;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicOptionPaneUI;
@@ -117,6 +118,8 @@ public class NotePanel extends JButton {
 					noteFrame = new NoteFrame(state, note, homeFrame);
 					state.setNoteFrame(noteFrame);
 					state.setNoteOpen(true);
+					state.setCurPageNum(0);
+					state.getReceiver().Sender("HEADER:PAGE&&" + 1);
 
                     saveMeta(note);
 				} catch (IOException e1) {

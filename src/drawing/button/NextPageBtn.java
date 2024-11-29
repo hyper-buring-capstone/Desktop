@@ -1,9 +1,12 @@
 package drawing.button;
 
+import StateModel.StateModel;
 import drawing.PageMoveTextField;
 import drawing.PdfPanel;
 import global.BaseButton;
+import service.Receiver;
 import drawing.DrawPanel;
+import drawing.PageMoveTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class NextPageBtn extends BaseButton {
-
-    public NextPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel, PageMoveTextField pageMoveTextField){
-
+	StateModel state;
+	
+    public NextPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel, PageMoveTextField pageMoveTextField){
+    	this.state = state;
         // 원본 이미지 아이콘 로드
         ImageIcon icon = new ImageIcon("src/icon/next.png");
         // 새 색상 지정
@@ -32,8 +36,11 @@ public class NextPageBtn extends BaseButton {
             public void actionPerformed(ActionEvent e) {
                 int curPage=pdfPanel.getPageNum();
                 drawPanel.setPageNum(drawPanel.getPageNum()+1);
-                pdfPanel.goOtherPage(curPage+1);
-                pageMoveTextField.setText(String.valueOf(Math.min(pdfPanel.getImageListSize(),curPage+2)));
+                pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
+                state.setCurPageNum(state.getCurPageNum()+1);
+                pageMoveTextField.setText("" + (state.getCurPageNum()+1));
+                state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
             }
         };
