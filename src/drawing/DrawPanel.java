@@ -158,6 +158,7 @@ public class DrawPanel extends JPanel {
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
         g2d.setStroke(new BasicStroke((width*5)*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2d.setColor(new Color(40, 123, 144, 80));
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 0.5f));
         g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
         		Arrays.stream(yList).map(y -> y * 5).toArray(),
         		n);
