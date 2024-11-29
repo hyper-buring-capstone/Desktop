@@ -109,6 +109,10 @@ public class NoteFrame extends JFrame {
         @Override
         public void windowClosed(WindowEvent e) {
 
+            //메모리 초기화
+            pdfPanel.removeAllImages();
+            removeAll();
+
 
             homeFrame.setVisible(true);
             homeFrame.refreshNotes(); //오래 걸리는 작업. 대략 1초;

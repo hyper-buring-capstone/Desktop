@@ -4,7 +4,6 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import StateModel.StateModel;
-import drawing.NoteFrame;
 import service.Receiver;
 import service.ServerService;
 import lombok.Getter;
@@ -30,7 +29,6 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
     NoteListPanel noteListPanel;
     private BluetoothServer bluetoothServer;
     private Thread serverThread;
-    NoteFrame noteFrame;
     Receiver receiver;
     private StateModel state;
 
