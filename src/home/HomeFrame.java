@@ -55,7 +55,7 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
 //        add(jpb, BorderLayout.SOUTH);
 //        jpb.setIndeterminate(true);
 
-        noteListPanel=new NoteListPanel(state, jpb,this); //노트 리스트 패널
+        noteListPanel=new NoteListPanel(state, this); //노트 리스트 패널
         HomeBtnPanel homeBtnPanel=new HomeBtnPanel(noteListPanel); //상단 버튼 패널
 
         //스크롤 기능
@@ -65,8 +65,6 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
         jScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
 
 
-
-        setVisible(true);
 
         add(homeBtnPanel, BorderLayout.NORTH);
         add(jScrollPane, BorderLayout.CENTER);

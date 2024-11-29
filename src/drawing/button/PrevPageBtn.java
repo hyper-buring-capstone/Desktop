@@ -21,6 +21,7 @@ public class PrevPageBtn extends BaseButton {
 	StateModel state;
     public PrevPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel, PageMoveTextField pageMoveTextField){
     	this.state = state;
+
         // 원본 이미지 아이콘 로드
         ImageIcon icon = new ImageIcon("src/icon/prev.png");
         // 새 색상 지정
@@ -38,6 +39,7 @@ public class PrevPageBtn extends BaseButton {
         ActionListener actionListener=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int curPage=pdfPanel.getPageNum();
                 drawPanel.setPageNum(drawPanel.getPageNum()-1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()-1);
                 state.setCurPageNum(state.getCurPageNum()-1);

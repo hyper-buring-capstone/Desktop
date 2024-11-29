@@ -9,6 +9,7 @@ import service.FileService;
 import service.Receiver;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicOptionPaneUI;
 
 import StateModel.StateModel;
 
@@ -64,6 +65,7 @@ public class NotePanel extends JButton {
         //노트 제목
         JLabel titleLabel=new JLabel(note.getTitle());
         titleLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+        titleLabel.setPreferredSize(new Dimension(150,50));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //노트 수정일
@@ -91,7 +93,8 @@ public class NotePanel extends JButton {
         addMouseListener(mouseAdapter);
 
         //setVisible(true);
-        
+        this.getHeight();
+        this.getWidth();
     }
 
     public void listRefresh(){
@@ -103,6 +106,7 @@ public class NotePanel extends JButton {
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
     }
+
 
 // 더블 클릭으로 노트 열기
     MouseAdapter mouseAdapter=new MouseAdapter() {
@@ -125,6 +129,8 @@ public class NotePanel extends JButton {
             }
 
         }
+
+
 
 
         //우클릭 시 메뉴 보이도록 설정.
