@@ -1,6 +1,7 @@
 package drawing.button;
 
 import drawing.DrawPanel;
+import drawing.PageMoveTextField;
 import drawing.PdfPanel;
 import global.BaseButton;
 import service.Receiver;
@@ -18,7 +19,7 @@ import static service.ImageService.recolorIcon;
 
 public class PrevPageBtn extends BaseButton {
 	StateModel state;
-    public PrevPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel){
+    public PrevPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel, PageMoveTextField pageMoveTextField){
     	this.state = state;
         // 원본 이미지 아이콘 로드
         ImageIcon icon = new ImageIcon("src/icon/prev.png");
@@ -40,6 +41,7 @@ public class PrevPageBtn extends BaseButton {
                 drawPanel.setPageNum(drawPanel.getPageNum()-1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()-1);
                 state.setCurPageNum(state.getCurPageNum()-1);
+                pageMoveTextField.setText("" + (state.getCurPageNum()+1));
                 state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                 getParent().getParent().repaint();
             }

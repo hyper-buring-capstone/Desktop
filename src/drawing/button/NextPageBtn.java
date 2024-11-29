@@ -8,6 +8,7 @@ import drawing.PdfPanel;
 import global.BaseButton;
 import service.Receiver;
 import drawing.DrawPanel;
+import drawing.PageMoveTextField;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -21,7 +22,7 @@ import static service.ImageService.recolorIcon;
 public class NextPageBtn extends BaseButton {
 	StateModel state;
 	
-    public NextPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel){
+    public NextPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel, PageMoveTextField pageMoveTextField){
     	this.state = state;
         // 원본 이미지 아이콘 로드
         ImageIcon icon = new ImageIcon("src/icon/next.png");
@@ -42,6 +43,7 @@ public class NextPageBtn extends BaseButton {
                 drawPanel.setPageNum(drawPanel.getPageNum()+1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
                 state.setCurPageNum(state.getCurPageNum()+1);
+                pageMoveTextField.setText("" + (state.getCurPageNum()+1));
                 state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
             }
