@@ -51,13 +51,13 @@ public class PageMoveTextField extends JTextField {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     try {
                         // 숫자 입력값 받아오기
-                        int number = Integer.parseInt(getText());
+                        int number = Integer.parseInt(getText()); // 가상
 
                         // 숫자에 따라 액션 발동
                         drawPanel.setPageNum(number-1);
                         pdfPanel.goOtherPage(number-1);
                         state.setCurPageNum(number-1);
-                        state.getReceiver().sender("HEADER:PAGE&&" + state.getCurPageNum());
+                        state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
 
                     } catch (NumberFormatException ex) {
                         // 잘못된 숫자 입력 시 경고

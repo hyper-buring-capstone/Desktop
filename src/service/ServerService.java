@@ -36,8 +36,7 @@ public class ServerService {
             public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
                 // "/images/{imageName}" 형식으로 요청 처리
                 if (target.startsWith("/images/")) {
-                    String imageName = target.substring("/images/".length()); // 이미지 이름 추출
-                    //File imageFile = new File("C:\\Users\\PC\\Desktop\\" + imageName + ".jpg"); // 이미지 경로 설정
+                    String imageName = target.substring("/images/".length()); // 이미지 이름 추출. 가상 num
                     File imageFile = StateModel.getFile(Integer.parseInt(imageName)-1);
                     
                     if (imageFile.exists()) {

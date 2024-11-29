@@ -42,7 +42,7 @@ public class NextPageBtn extends BaseButton {
                 drawPanel.setPageNum(drawPanel.getPageNum()+1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
                 state.setCurPageNum(state.getCurPageNum()+1);
-                state.getReceiver().sender("HEADER:PAGE&&" + state.getCurPageNum());
+                state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
             }
         };

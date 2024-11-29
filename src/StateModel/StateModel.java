@@ -37,11 +37,11 @@ public class StateModel {
 		StateModel.files = files;
 	}
 	
-	public static File getFile(int num) {
+	public static File getFile(int num) { // 실제 num
 		return files[num]; // 에러 처리 해야함(static을 없애는게 제일 좋긴함)
 	}
 	
-	public void setCurPageNum(int num) {
+	public void setCurPageNum(int num) { // 실제 num
 		curPageNum = num;
 	}
 	

@@ -27,6 +27,7 @@ public class Receiver extends Thread {
     private OutputStream mOutputStream = null;
     private StreamConnection mStreamConnection = null;
     private String mRemoteDeviceString = null;
+    private PrintWriter writer;
     private HomeFrame homeFrame;
     private StateModel state;
     DrawService drawService;
@@ -40,6 +41,8 @@ public class Receiver extends Thread {
         try {
             mInputStream = mStreamConnection.openInputStream();
             mOutputStream = mStreamConnection.openOutputStream();
+            writer = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(mOutputStream, StandardCharsets.UTF_8)));
             
             IOService.log("Open streams...");
         } catch (IOException e) {
@@ -64,8 +67,8 @@ public class Receiver extends Thread {
         }
 
         IOService.log("Client is connected...");
-        sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
-        sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
+        Sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
+
     }
     
     @Override
@@ -144,11 +147,13 @@ public class Receiver extends Thread {
     	mStreamConnection = null;
     }
 
-    public void sender(String message) {
-        try (PrintWriter writer = new PrintWriter(new BufferedWriter(
-                new OutputStreamWriter(mOutputStream, Charset.forName(StandardCharsets.UTF_8.name()))))) {
+    public void Sender(String message) {
+        try {
             writer.write(message + "\n");
             writer.flush();
+        }
+        catch (Exception e) {
+            IOService.log("Error in Sender: " + e.getMessage());
         }
     }
 }
