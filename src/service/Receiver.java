@@ -68,6 +68,9 @@ public class Receiver extends Thread {
 
         IOService.log("Client is connected...");
         Sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
+        if(state.getNoteOpen()) {
+			Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+        }
 
     }
     
