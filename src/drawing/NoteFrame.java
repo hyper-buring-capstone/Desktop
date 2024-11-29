@@ -134,6 +134,10 @@ public class NoteFrame extends JFrame {
         }
     };
 
+    public void tempEnd() {
+    	drawPanel.reCanvas();
+    }
+
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);

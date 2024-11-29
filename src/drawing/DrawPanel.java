@@ -37,7 +37,6 @@ public class DrawPanel extends JPanel {
     private Point startPoint; // 처음 클릭한 좌표
     private Point currentPoint; // 드래그 중의 현재 좌표
 
-
     public DrawPanel(Note note) {
     	this.note=note;
 
@@ -156,14 +155,15 @@ public class DrawPanel extends JPanel {
 
     //그릴 때 이거 사용함. addline 삭제해도 될듯.
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
-        g2d.setStroke(new BasicStroke((width*5)*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2d.setColor(new Color(40, 123, 144, 80));
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 0.5f));
+        //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 0.5f));
         g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
         		Arrays.stream(yList).map(y -> y * 5).toArray(),
         		n);
         repaint();
     }
+
     
     public void reCanvas() {
         Graphics2D g2d = canvas.createGraphics();
@@ -174,7 +174,8 @@ public class DrawPanel extends JPanel {
         g2d.setComposite(AlphaComposite.SrcOver); // 다시 그릴 수 있도록 컴포지트 설정
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(new Color(40, 123, 144, 80));
+        //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // 투명도 합성
         Iterator<PenLine> iterator = penLineLists.get(pageNum).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
