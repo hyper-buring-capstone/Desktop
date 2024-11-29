@@ -16,6 +16,8 @@ public class StateModel {
 	private static File [] files;
 	private int curPageNum;
 	private Receiver receiver;
+	private int imageWidth;
+	private int imageHeight;
 	
 	public void setNoteOpen(boolean isOpen) {
 		isNoteOpen = isOpen;
@@ -55,5 +57,21 @@ public class StateModel {
 	
 	public Receiver getReceiver() {
 		return receiver;
+	}
+	
+	public void setImageWidth(int width) {
+		this.imageWidth = width;
+	}
+	
+	public int getImageWidth() {
+		return imageWidth;
+	}
+	
+	public void setImageHeight(int height) {
+		this.imageHeight = height;
+	}
+	
+	public int getImageHeight() {
+		return imageHeight;
 	}
 }

@@ -1,6 +1,7 @@
 package service;
 
 
+import StateModel.StateModel;
 import drawing.NoteFrame;
 import global.BtParser;
 import global.MsgType;
@@ -17,6 +18,7 @@ public class DrawService {
     EraserPoint eraserPoint;
     NoteFrame noteFrame;
     boolean isEraser = false;
+    StateModel state;
 
 
     public  void drawProcess(String msg, NoteFrame noteFrame){
@@ -43,7 +45,7 @@ public class DrawService {
 				 * 보정 전: 평균 190ms, 보정 후: 평균 170ms.
 				 */
 				long startTime = System.nanoTime(); // 성능 측정 시작
-                penLine.addPoint(BtParser.getX(msg)+noteFrame.getDrawPanel().getOffsetX(), BtParser.getY(msg)+noteFrame.getDrawPanel().getOffsetY());
+                penLine.addPoint(((BtParser.getX(msg)*state.getImageWidth())/10000)+noteFrame.getDrawPanel().getOffsetX(), ((BtParser.getY(msg)*state.getImageHeight())/10000)+noteFrame.getDrawPanel().getOffsetY());
                 int size=penLine.getXList().size();
 //                jPanelPaintExample.addPolyLine(
 //                		penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
@@ -74,8 +76,8 @@ public class DrawService {
 
         	}
         	else {
-        		eraserPoint.movePoint(BtParser.getX(msg)+noteFrame.getDrawPanel().getOffsetX()
-						, BtParser.getY(msg)+noteFrame.getDrawPanel().getOffsetY());
+        		eraserPoint.movePoint(((BtParser.getX(msg)*state.getImageWidth())/10000)+noteFrame.getDrawPanel().getOffsetX()
+						, ((BtParser.getY(msg)*state.getImageHeight())/10000)+noteFrame.getDrawPanel().getOffsetY());
         		noteFrame.eraseLine(eraserPoint.getX(), eraserPoint.getY(), eraserPoint.getWidth());
         	}
         }

@@ -108,7 +108,7 @@ public class Receiver extends Thread {
                         }
 
                         // NoteFrame이 존재하면 작업을 진행
-                        drawService = new DrawService(penLine, eraserPoint, Receiver.this.state.getNoteFrame(), false);
+                        drawService = new DrawService(penLine, eraserPoint, Receiver.this.state.getNoteFrame(), false, state);
                     }
 
                     try {

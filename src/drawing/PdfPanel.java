@@ -73,9 +73,13 @@ public class PdfPanel extends JPanel {
         //setLayout(null);
         //setBounds(0,0,1000, 1000*height/width);
 
-        setMinimumSize(new Dimension(1000, 1000*height/width));
-        setPreferredSize(new Dimension(1000, 1000*height/width));
-        setMaximumSize(new Dimension(1000, 1000*height/width));
+        int imageWidth = 1000;
+        int imageHeight = 1000*height/width;
+        setMinimumSize(new Dimension(imageWidth, imageHeight));
+        setPreferredSize(new Dimension(imageWidth, imageHeight));
+        setMaximumSize(new Dimension(imageWidth, imageHeight));
+        state.setImageWidth(imageWidth);
+        state.setImageHeight(imageHeight);
         setVisible(true);
 
     }
