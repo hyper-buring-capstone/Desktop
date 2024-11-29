@@ -35,6 +35,7 @@ public class Receiver extends Thread {
         mStreamConnection = streamConnection;
         this.homeFrame = homeFrame;
         this.state = homeFrame.getStateModel();
+        state.setReceiver(this);
 
         try {
             mInputStream = mStreamConnection.openInputStream();
@@ -63,7 +64,7 @@ public class Receiver extends Thread {
         }
 
         IOService.log("Client is connected...");
-        //checkClientInfo(); // 요거 뒤지게 느림. 그래서 혁진이가 보내주는 friendlyName으로 대체하기로 함.
+        sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
         sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
     }
     
@@ -148,38 +149,6 @@ public class Receiver extends Thread {
                 new OutputStreamWriter(mOutputStream, Charset.forName(StandardCharsets.UTF_8.name()))))) {
             writer.write(message + "\n");
             writer.flush();
-        }
-    }
-    
-    public void checkClientInfo() {
-        try {
-        	System.out.println("여기냐?");
-            RemoteDevice remoteDevice = RemoteDevice.getRemoteDevice(mStreamConnection);
-        	System.out.println("여기야?");
-            String remoteDeviceName = remoteDevice.getFriendlyName(true);  // 클라이언트 장치의 이름을 가져옵니다.
-        	System.out.println("너냐?");
-
-            // 다이얼로그 창을 띄워 사용자가 맞는지 확인
-            int response = JOptionPane.showConfirmDialog(
-                    null,
-                    "Is this the correct client: " + remoteDeviceName + "?",
-                    "Client Confirmation",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
-            );
-        	System.out.println("너야?");
-
-            // 사용자가 'Yes'를 선택하면 true, 'No'를 선택하면 false
-            if (response == JOptionPane.YES_OPTION) {
-                IOService.log("User confirmed: " + remoteDeviceName);
-                // 'Yes' 선택 후 추가 코드 실행
-            } else {
-                IOService.log("User declined: " + remoteDeviceName);
-                // 'No' 선택 후 처리할 코드
-            }
-
-        } catch (IOException e) {
-            IOService.log("Error getting remote device info: " + e.getMessage());
         }
     }
 }

@@ -3,8 +3,12 @@ package drawing.button;
 import drawing.DrawPanel;
 import drawing.PdfPanel;
 import global.BaseButton;
+import service.Receiver;
 
 import javax.swing.*;
+
+import StateModel.StateModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,8 +17,9 @@ import static service.ImageService.recolorIcon;
 
 
 public class PrevPageBtn extends BaseButton {
-    public PrevPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel){
-
+	StateModel state;
+    public PrevPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel){
+    	this.state = state;
         // 원본 이미지 아이콘 로드
         ImageIcon icon = new ImageIcon("src/icon/prev.png");
         // 새 색상 지정
@@ -34,6 +39,8 @@ public class PrevPageBtn extends BaseButton {
             public void actionPerformed(ActionEvent e) {
                 drawPanel.setPageNum(drawPanel.getPageNum()-1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()-1);
+                state.setCurPageNum(state.getCurPageNum()-1);
+                state.getReceiver().sender("HEADER:PAGE&&" + state.getCurPageNum());
                 getParent().getParent().repaint();
             }
         };

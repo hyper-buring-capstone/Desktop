@@ -6,6 +6,8 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
+import StateModel.StateModel;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -35,8 +37,9 @@ public class ServerService {
                 // "/images/{imageName}" 형식으로 요청 처리
                 if (target.startsWith("/images/")) {
                     String imageName = target.substring("/images/".length()); // 이미지 이름 추출
-                    File imageFile = new File("C:\\Users\\PC\\Desktop\\" + imageName + ".jpg"); // 이미지 경로 설정
-
+                    //File imageFile = new File("C:\\Users\\PC\\Desktop\\" + imageName + ".jpg"); // 이미지 경로 설정
+                    File imageFile = StateModel.getFile(Integer.parseInt(imageName)-1);
+                    
                     if (imageFile.exists()) {
                         // 이미지 파일 존재하면 반환
                         response.setContentType("image/jpeg"); // 응답 타입 설정 (JPEG 이미지)

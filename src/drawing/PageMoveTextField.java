@@ -1,6 +1,10 @@
 package drawing;
 
 import javax.swing.*;
+
+import StateModel.StateModel;
+import service.Receiver;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -8,8 +12,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class PageMoveTextField extends JTextField {
-
-    public PageMoveTextField(PdfPanel pdfPanel, DrawPanel drawPanel){
+		StateModel state;
+		
+    public PageMoveTextField(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel){
+    	this.state = state;
         //super("이동할 페이지 번호");
         setText(String.valueOf(pdfPanel.getPageNum()+1));
         String placeholder="이동할 페이지 번호";
@@ -50,6 +56,8 @@ public class PageMoveTextField extends JTextField {
                         // 숫자에 따라 액션 발동
                         drawPanel.setPageNum(number-1);
                         pdfPanel.goOtherPage(number-1);
+                        state.setCurPageNum(number-1);
+                        state.getReceiver().sender("HEADER:PAGE&&" + state.getCurPageNum());
 
                     } catch (NumberFormatException ex) {
                         // 잘못된 숫자 입력 시 경고

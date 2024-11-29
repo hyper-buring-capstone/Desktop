@@ -2,8 +2,11 @@ package drawing.button;
 
 import com.formdev.flatlaf.ui.FlatButtonUI;
 import com.formdev.flatlaf.ui.FlatRoundBorder;
+
+import StateModel.StateModel;
 import drawing.PdfPanel;
 import global.BaseButton;
+import service.Receiver;
 import drawing.DrawPanel;
 
 import javax.swing.*;
@@ -16,9 +19,10 @@ import java.awt.event.ActionListener;
 import static service.ImageService.recolorIcon;
 
 public class NextPageBtn extends BaseButton {
-
-    public NextPageBtn(PdfPanel pdfPanel, DrawPanel drawPanel){
-
+	StateModel state;
+	
+    public NextPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel){
+    	this.state = state;
         // 원본 이미지 아이콘 로드
         ImageIcon icon = new ImageIcon("src/icon/next.png");
         // 새 색상 지정
@@ -37,6 +41,8 @@ public class NextPageBtn extends BaseButton {
             public void actionPerformed(ActionEvent e) {
                 drawPanel.setPageNum(drawPanel.getPageNum()+1);
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
+                state.setCurPageNum(state.getCurPageNum()+1);
+                state.getReceiver().sender("HEADER:PAGE&&" + state.getCurPageNum());
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
             }
         };

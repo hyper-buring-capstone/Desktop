@@ -8,6 +8,9 @@ import model.Note;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
+
+import StateModel.StateModel;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -21,10 +24,12 @@ public class PdfPanel extends JPanel {
     int height=0;
     @Getter
     int pageNum;
+    StateModel state;
 
     List<Image> imageList;
 
-    public PdfPanel(Note note) throws IOException { //pdf 객체를 받아 이미지로 가지고 있게 됨.
+    public PdfPanel(StateModel state, Note note) throws IOException { //pdf 객체를 받아 이미지로 가지고 있게 됨.
+    	this.state = state;
         imageList=new ArrayList<>();
         pageNum=0;
         String title=note.getTitle();
@@ -40,6 +45,7 @@ public class PdfPanel extends JPanel {
         //이미지 로딩
         // 여기서 실행 시간의 병목 발생.
         File[] files=new File("C:\\drawing\\data\\"+title+"\\images").listFiles(); //이미지 폴더에 접근
+        state.setFiles(files);
 
 
         //로딩 창 띄우면 좋은데 도저히 못하겠음;;
