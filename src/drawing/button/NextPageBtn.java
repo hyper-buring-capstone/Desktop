@@ -40,7 +40,7 @@ public class NextPageBtn extends BaseButton {
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
                 state.setCurPageNum(state.getCurPageNum()+1);
                 pageMoveTextField.setText(String.valueOf(Math.min(pdfPanel.getImageListSize(), curPage+2)));
-                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum()));
+                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                 }

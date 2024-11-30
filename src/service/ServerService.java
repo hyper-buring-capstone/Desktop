@@ -48,7 +48,7 @@ public class ServerService {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 파일이 없을 경우 404 반환
                         response.getWriter().write("Image not found: " + imageName);
                     }
-                } else if (target.startsWith("/lines/")) {
+                } else if (target.startsWith("/lines")) {
                     // "/status" API 요청 처리
                     response.setContentType("application/json");
                     response.setStatus(HttpServletResponse.SC_OK);

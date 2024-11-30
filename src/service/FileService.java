@@ -164,7 +164,7 @@ public class FileService {
 //        }
 //        return lineString;
 //    }
-    public static String getSpecificBlock(String noteTitle, int targetPageNumber) {
+    public static String getSpecificBlock(String noteTitle, int targetPageNumber, int imageWidth, int imageHeight) {
         File file = new File("c:\\drawing\\data\\" + noteTitle + "\\lines.txt");
         String result = "";
 
@@ -196,7 +196,7 @@ public class FileService {
                 }
                 if (isLine) {
                 	if(!line.equals("END")) {
-                    	result += "[" + line.split(" ")[0] + "," + line.split(" ")[1] + "]";	
+                    	result += "[" + Integer.toString((Integer.parseInt(line.split(" ")[0])*10000)/imageWidth) + "," + Integer.toString((Integer.parseInt(line.split(" ")[1])*10000)/imageHeight) + "]";	
                 	}
                 	else {
                 		result = result.substring(0, result.length()-2);
@@ -210,7 +210,12 @@ public class FileService {
         } catch (IOException e) {
             System.err.println("파일을 읽는 도중 오류가 발생했습니다: " + e.getMessage());
         }
-        return result.substring(0, result.length()-1);
+        if(result.equals("")) {
+        	return "";
+        }
+        else {
+            return result.substring(0, result.length()-1);
+        }
     }
     
     //해당 파일에 대한 드로잉 정보를 penlinelists로 반환

@@ -58,7 +58,7 @@ public class PageMoveTextField extends JTextField {
                         drawPanel.setPageNum(number-1);
                         pdfPanel.goOtherPage(number-1);
                         state.setCurPageNum(number-1);
-                        state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum()));
+                        state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                         if(state.getReceiver() != null) {
                             state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                         }

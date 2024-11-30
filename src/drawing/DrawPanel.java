@@ -75,7 +75,7 @@ public class DrawPanel extends JPanel {
 
         //노트 데이터로부터 드로잉 정보 불러오기.
         penLineLists= FileService.loadPenLineLists(note);
-        state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), 0));
+        state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
 
         createGraphics();
         

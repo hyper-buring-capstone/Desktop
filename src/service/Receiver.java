@@ -77,9 +77,11 @@ public class Receiver extends Thread {
         for(int i = 0 ; i < 10; i++) {
             Sender("HEADER:SERVERIP&&" + ServerService.getLocalHostAddress());
         }
-        for(int i = 0 ; i < 10; i++) {
-            if(state.getNoteOpen()) {
-    			Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+        if(state.getNoteOpen()) {
+            for(int i = 0 ; i < 10; i++) {
+                if(state.getNoteOpen()) {
+        			Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                }
             }
         }
 
@@ -98,9 +100,7 @@ public class Receiver extends Thread {
                         // NoteFrame이 없으면 대기 상태로 들어감
                         while (!Receiver.this.state.getNoteOpen()) {
                             try {
-                            	System.out.println("나 노트프레임 줘!!!!!!!!!!!!!!");
                                 homeFrame.wait();
-                            	System.out.println("풀려났다 크하하하하하하하하하하하하하하!!!!!!!!!!!!!!");
                             } catch (InterruptedException e) {
                                 IOService.log("Read thread interrupted: " + e.getMessage());
                                 return;
