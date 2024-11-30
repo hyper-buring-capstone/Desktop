@@ -4,6 +4,7 @@ import StateModel.StateModel;
 import drawing.PageMoveTextField;
 import drawing.PdfPanel;
 import global.BaseButton;
+import service.FileService;
 import service.Receiver;
 import drawing.DrawPanel;
 import drawing.PageMoveTextField;
@@ -39,7 +40,10 @@ public class NextPageBtn extends BaseButton {
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
                 state.setCurPageNum(state.getCurPageNum()+1);
                 pageMoveTextField.setText(String.valueOf(Math.min(pdfPanel.getImageListSize(), curPage+2)));
-                state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum()));
+                if(state.getReceiver() != null) {
+                    state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                }
 
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
             }

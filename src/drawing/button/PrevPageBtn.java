@@ -4,6 +4,7 @@ import drawing.DrawPanel;
 import drawing.PageMoveTextField;
 import drawing.PdfPanel;
 import global.BaseButton;
+import service.FileService;
 import service.Receiver;
 
 import javax.swing.*;
@@ -44,8 +45,10 @@ public class PrevPageBtn extends BaseButton {
                 pdfPanel.goOtherPage(pdfPanel.getPageNum()-1);
                 state.setCurPageNum(state.getCurPageNum()-1);
                 pageMoveTextField.setText(String.valueOf(Math.max(1, curPage)));
-                state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
-                //getParent().getParent().repaint();
+                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum()));
+                if(state.getReceiver() != null) {
+                    state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                }
                 getRootPane().repaint();
             }
         };

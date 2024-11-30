@@ -72,7 +72,7 @@ public class NoteFrame extends JFrame {
 
         // DrawPanel을 하나만 추가
         // DrawPanel 페이지 사이즈 설정
-        drawPanel = new DrawPanel(note);
+        drawPanel = new DrawPanel(state, note);
         drawPanel.setMaxPageNum(pdfPanel.getImageListSize());
 
 
@@ -118,7 +118,9 @@ public class NoteFrame extends JFrame {
             homeFrame.refreshNotes(); //오래 걸리는 작업. 대략 1초;
 
             state.setNoteOpen(false);
-            state.getReceiver().Sender("HEADER:NOTESTATE&&OFF");
+            if(state.getReceiver() != null) {
+                state.getReceiver().Sender("HEADER:NOTESTATE&&OFF");
+            }
             dispose();
 
 //            isRunning=false;

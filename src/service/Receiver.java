@@ -132,6 +132,7 @@ public class Receiver extends Thread {
                         }
                     } catch (IOException e) {
                         IOService.log("Error in Receiver: " + e.getMessage());
+                        System.exit(1);
                     }
                 }
             }

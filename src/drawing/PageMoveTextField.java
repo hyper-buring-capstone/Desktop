@@ -3,6 +3,7 @@ package drawing;
 import javax.swing.*;
 
 import StateModel.StateModel;
+import service.FileService;
 import service.Receiver;
 
 import java.awt.*;
@@ -57,7 +58,10 @@ public class PageMoveTextField extends JTextField {
                         drawPanel.setPageNum(number-1);
                         pdfPanel.goOtherPage(number-1);
                         state.setCurPageNum(number-1);
-                        state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                        state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum()));
+                        if(state.getReceiver() != null) {
+                            state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                        }
 
                     } catch (NumberFormatException ex) {
                         // 잘못된 숫자 입력 시 경고

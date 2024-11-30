@@ -19,7 +19,6 @@ public class ServerService {
 
     public static void startHttpServer() throws Exception {
     	// Jetty 로깅 레벨을 코드에서 설정
-        System.setProperty("org.eclipse.jetty.LEVEL", "WARN");
     	
         // IP 주소 가져오기
         String hostAddress = getLocalHostAddress();
@@ -49,6 +48,11 @@ public class ServerService {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 파일이 없을 경우 404 반환
                         response.getWriter().write("Image not found: " + imageName);
                     }
+                } else if (target.startsWith("/lines/")) {
+                    // "/status" API 요청 처리
+                    response.setContentType("application/json");
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().write(StateModel.getLineString());
                 } else {
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND); // 요청 경로가 틀릴 경우 404 반환
                     response.getWriter().write("Not Found");

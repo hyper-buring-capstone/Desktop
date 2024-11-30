@@ -46,6 +46,7 @@ public class PdfPanel extends JPanel {
         // 여기서 실행 시간의 병목 발생.
         File[] files=new File("C:\\drawing\\data\\"+title+"\\images").listFiles(); //이미지 폴더에 접근
         state.setFiles(files);
+        state.setNoteTitle(title);
 
 
         //로딩 창 띄우면 좋은데 도저히 못하겠음;;
