@@ -184,10 +184,10 @@ public class DrawPanel extends JPanel {
             		penLine.getYList().stream().mapToInt(y -> y*5).toArray(),
             		penLine.getXList().size());
     	}
-        
 
         //g2d.dispose(); // 리소스 해제
         repaint(); // 다시 그리기
+        //
     }
 
     public void reCanvas2(){

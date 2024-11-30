@@ -93,15 +93,7 @@ public class NoteFrame extends JFrame {
 //        jScrollPane.setMaximumSize(new Dimension(1000,8000));
 //        jScrollPane.setPreferredSize(new Dimension(1000,8000));
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                state.setNoteOpen(false);
-                state.getReceiver().Sender("HEADER:NOTESTATE&&OFF");
-                dispose();
-                //homeFrame.setVisible(true);
-            }
-        });
+        addWindowListener(windowAdapter);
 
         add(jScrollPane, BorderLayout.CENTER);
         add(noteTopPanel, BorderLayout.NORTH);
@@ -117,10 +109,17 @@ public class NoteFrame extends JFrame {
         @Override
         public void windowClosed(WindowEvent e) {
 
+            //메모리 초기화
+            pdfPanel.removeAllImages();
+            removeAll();
+
 
             homeFrame.setVisible(true);
             homeFrame.refreshNotes(); //오래 걸리는 작업. 대략 1초;
 
+            state.setNoteOpen(false);
+            state.getReceiver().Sender("HEADER:NOTESTATE&&OFF");
+            dispose();
 
 //            isRunning=false;
 //            try {

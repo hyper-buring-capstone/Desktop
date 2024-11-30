@@ -50,6 +50,7 @@ public class PdfPanel extends JPanel {
 
         //로딩 창 띄우면 좋은데 도저히 못하겠음;;
 
+        //여기서 메모리 누수가 발생할 확률 있음.
         for(int i=0; i<files.length; i++){
             File file=files[i];
             imageList.add(ImageIO.read(file)); //오래 걸림.
@@ -73,11 +74,19 @@ public class PdfPanel extends JPanel {
         //setLayout(null);
         //setBounds(0,0,1000, 1000*height/width);
 
-        setMinimumSize(new Dimension(1000, 1000*height/width));
-        setPreferredSize(new Dimension(1000, 1000*height/width));
-        setMaximumSize(new Dimension(1000, 1000*height/width));
+        int imageWidth = 1000;
+        int imageHeight = 1000*height/width;
+        setMinimumSize(new Dimension(imageWidth, imageHeight));
+        setPreferredSize(new Dimension(imageWidth, imageHeight));
+        setMaximumSize(new Dimension(imageWidth, imageHeight));
+        state.setImageWidth(imageWidth);
+        state.setImageHeight(imageHeight);
         setVisible(true);
 
+    }
+
+    public void removeAllImages(){
+        imageList.clear();
     }
 
     //백그라운드에서 이미지 로딩하기.
