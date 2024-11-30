@@ -21,7 +21,7 @@ public class DrawService {
 
     public  void drawProcess(String msg, NoteFrame noteFrame){
         if(BtParser.getMsgType(msg).equals(MsgType.HEADER)){
-        	noteFrame.createGraphics();
+        	//noteFrame.createGraphics();
         	if(msg.split(":")[1].split("\r")[0].equals("DRAWING")) {
                 penLine=new PenLine(); //새 선 객체 생성함.
                 noteFrame.callAddPenLine(penLine);
@@ -33,7 +33,7 @@ public class DrawService {
         }
         else if(BtParser.getMsgType(msg).equals(MsgType.END)){
         	isEraser = false;
-        	noteFrame.disposeGraphics();
+        	//noteFrame.disposeGraphics();
         }
         else if(BtParser.getMsgType(msg).equals(MsgType.POINT)){
         	if(!isEraser) {

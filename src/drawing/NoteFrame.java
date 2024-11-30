@@ -147,9 +147,9 @@ public class NoteFrame extends JFrame {
     	drawPanel.disposeGraphics();
     }
 
-    public void addLine(int x1, int y1, int x2, int y2, float width){
-        drawPanel.addLine(x1,y1,x2,y2,width);
-    }
+//    public void addLine(int x1, int y1, int x2, int y2, float width){
+//        drawPanel.addLine(x1,y1,x2,y2,width);
+//    }
 
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
     	drawPanel.addPolyLine(xList, yList, n, width);

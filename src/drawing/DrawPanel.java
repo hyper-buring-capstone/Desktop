@@ -71,7 +71,8 @@ public class DrawPanel extends JPanel {
         //노트 데이터로부터 드로잉 정보 불러오기.
         penLineLists= FileService.loadPenLineLists(note);
 
-
+        createGraphics();
+        
         //클릭 연동 -> 컨트롤 패널 조작.
         addMouseMotionListener(mouseDragAdapter);
         addMouseListener(mouseDragAdapter);
@@ -120,7 +121,7 @@ public class DrawPanel extends JPanel {
     }
     
     public void disposeGraphics() {
-    	g2d.dispose(); // 사용이 끝나면 Graphics2D 객체를 해제
+    	//g2d.dispose(); // 사용이 끝나면 Graphics2D 객체를 해제
     }
 
     public void addPenLine(PenLine penLine){
@@ -143,16 +144,16 @@ public class DrawPanel extends JPanel {
     }
 
     // 새로운 선을 추가하는 메서드
-    public void addLine(int x1, int y1, int x2, int y2, float width) {
-        Graphics2D g2d = canvas.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setStroke(new BasicStroke(width));
-        
-        g2d.setColor(Color.RED);
-        g2d.drawLine(x1, y1, x2, y2);
-        g2d.dispose(); // 리소스 해제
-        repaint(); // 패널 다시 그리기
-    }
+//    public void addLine(int x1, int y1, int x2, int y2, float width) {
+//        Graphics2D g2d = canvas.createGraphics();
+//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//        g2d.setStroke(new BasicStroke(width));
+//        
+//        g2d.setColor(Color.RED);
+//        g2d.drawLine(x1, y1, x2, y2);
+//        g2d.dispose(); // 리소스 해제
+//        repaint(); // 패널 다시 그리기
+//    }
 
     //그릴 때 이거 사용함. addline 삭제해도 될듯.
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
@@ -165,7 +166,7 @@ public class DrawPanel extends JPanel {
     }
     
     public void reCanvas() {
-        Graphics2D g2d = canvas.createGraphics();
+        //Graphics2D g2d = canvas.createGraphics();
         g2d.setComposite(AlphaComposite.Clear);  // 전체 지우기 위해 Clear 컴포지트 설정
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -184,8 +185,8 @@ public class DrawPanel extends JPanel {
             		penLine.getXList().size());
     	}
         
-        repaint();
-        g2d.dispose(); // 리소스 해제
+
+        //g2d.dispose(); // 리소스 해제
         repaint(); // 다시 그리기
     }
 
