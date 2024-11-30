@@ -5,9 +5,7 @@ import drawing.PageMoveTextField;
 import drawing.PdfPanel;
 import global.BaseButton;
 import service.FileService;
-import service.Receiver;
 import drawing.DrawPanel;
-import drawing.PageMoveTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,11 +33,15 @@ public class NextPageBtn extends BaseButton {
         ActionListener actionListener=new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int curPage=pdfPanel.getPageNum();
-                drawPanel.setPageNum(drawPanel.getPageNum()+1);
-                pdfPanel.goOtherPage(pdfPanel.getPageNum()+1);
-                state.setCurPageNum(state.getCurPageNum()+1);
-                pageMoveTextField.setText(String.valueOf(Math.min(pdfPanel.getImageListSize(), curPage+2)));
+                int curPage= state.getCurPageNum();
+                int totalPage=pdfPanel.getTotalPageNum();
+                if(curPage>=totalPage-1){ //마지막 페이지인 경우.
+                    return;
+                }
+                drawPanel.setPageNum(curPage+1);
+                pdfPanel.setPageIndex(curPage+1);
+                state.setCurPageNum(curPage+1);
+                pageMoveTextField.setText(String.valueOf(curPage+2));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));

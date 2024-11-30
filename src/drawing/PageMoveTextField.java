@@ -4,7 +4,6 @@ import javax.swing.*;
 
 import StateModel.StateModel;
 import service.FileService;
-import service.Receiver;
 
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -17,10 +16,7 @@ public class PageMoveTextField extends JTextField {
 		
     public PageMoveTextField(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel){
     	this.state = state;
-        //super("이동할 페이지 번호");
-        setText(String.valueOf(pdfPanel.getPageNum()+1));
-        String placeholder="이동할 페이지 번호";
-
+        setText(String.valueOf(pdfPanel.getPageIndex()+1));
         //setForeground(Color.gray);
         setPreferredSize(new Dimension(50, 30));
 
@@ -37,7 +33,7 @@ public class PageMoveTextField extends JTextField {
             @Override
             public void focusLost(FocusEvent e) {
                 //if (getText().isEmpty()) {
-                    setText(String.valueOf(pdfPanel.getPageNum()+1)); // 텍스트가 없으면 안내 문구를 다시 표시
+                    setText(String.valueOf(pdfPanel.getPageIndex()+1)); // 텍스트가 없으면 안내 문구를 다시 표시
                    // setForeground(Color.GRAY); // 안내 문구 색상 회색으로 설정
                // }
             }
@@ -54,9 +50,10 @@ public class PageMoveTextField extends JTextField {
                         // 숫자 입력값 받아오기
                         int number = Integer.parseInt(getText()); // 가상
 
+                        if(number<=0 && number>pdfPanel.totalPageNum) return; //최대, 최소 페이지를 넘어갈 수 없음.
                         // 숫자에 따라 액션 발동
                         drawPanel.setPageNum(number-1);
-                        pdfPanel.goOtherPage(number-1);
+                        pdfPanel.setPageIndex(number-1);
                         state.setCurPageNum(number-1);
                         state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                         if(state.getReceiver() != null) {

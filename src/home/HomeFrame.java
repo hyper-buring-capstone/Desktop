@@ -11,11 +11,14 @@ import model.Note;
 import service.BluetoothServer;
 import service.FileService;
 
+import javax.imageio.ImageIO;
 import javax.microedition.io.StreamConnection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +41,17 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
     	this.state = state;
 
         //자체 설정
-        setTitle("drawing");
+        setTitle("Phonote");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        try{
+            setIconImage(ImageIO.read(new File("src/icon/pen.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
 
         FileService.initDirectory(); //디렉토리 구조 초기화.
 

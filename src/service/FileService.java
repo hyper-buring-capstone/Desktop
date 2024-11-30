@@ -22,6 +22,7 @@ import java.util.Objects;
  */
 public class FileService {
 
+    public static int a=1;
     //해당 경로의 디렉토리를 생성.
     public static void createDirectory(String dirPath){
         Path path= Paths.get(dirPath);

@@ -1,7 +1,5 @@
 package drawing;
 
-import home.HomeFrame;
-import home.LoadingFrame;
 import lombok.Getter;
 import model.Note;
 
@@ -22,16 +20,20 @@ public class PdfPanel extends JPanel {
     Image image;
     int width=0;
     int height=0;
-    @Getter
-    int pageNum;
+
     StateModel state;
 
     List<Image> imageList;
 
+    @Getter
+    int totalPageNum; //전체 페이지 수
+    @Getter
+    int pageIndex; //현재 페이지 수
+
     public PdfPanel(StateModel state, Note note) throws IOException { //pdf 객체를 받아 이미지로 가지고 있게 됨.
     	this.state = state;
-        imageList=new ArrayList<>();
-        pageNum=0;
+
+        pageIndex=0;
         String title=note.getTitle();
 
         //자체 설정
@@ -45,6 +47,9 @@ public class PdfPanel extends JPanel {
         //이미지 로딩
         // 여기서 실행 시간의 병목 발생.
         File[] files=new File("C:\\drawing\\data\\"+title+"\\images").listFiles(); //이미지 폴더에 접근
+        totalPageNum=files.length;
+        imageList=new ArrayList<>(totalPageNum);
+
         state.setFiles(files);
         state.setNoteTitle(title);
 
@@ -52,21 +57,18 @@ public class PdfPanel extends JPanel {
         //로딩 창 띄우면 좋은데 도저히 못하겠음;;
 
         //여기서 메모리 누수가 발생할 확률 있음.
-        for(int i=0; i<files.length; i++){
-            File file=files[i];
-            imageList.add(ImageIO.read(file)); //오래 걸림.
-        }
-
-
-
-
+//        for(int i=0; i<files.length; i++){
+//            File file=files[i];
+//            imageList.add(ImageIO.read(file)); //오래 걸림.
+//        }
 
         //이미지 사이즈
 
-        if(!imageList.isEmpty()){
-            width=imageList.get(0).getWidth(null);
-            height=imageList.get(0).getHeight(null);
-        }
+//        if(!imageList.isEmpty()){
+//            width=imageList.get(0).getWidth(null);
+//            height=imageList.get(0).getHeight(null);
+//        }
+        setImage(0);
 
         width=note.getThumbNail().getWidth(null);
         height=note.getThumbNail().getHeight(null);
@@ -84,6 +86,14 @@ public class PdfPanel extends JPanel {
         state.setImageHeight(imageHeight);
         setVisible(true);
 
+    }
+
+    // index에 위치한 페이지로 이미지 설정
+    private void setImage(int index) throws IOException {
+        this.image=ImageIO.read(new File("C:\\drawing\\data\\" + state.getNoteTitle() + "\\images\\"+index+".jpg"));
+        state.setCurPageNum(index);
+        pageIndex=index;
+        repaint();
     }
 
     public void removeAllImages(){
@@ -142,16 +152,19 @@ public class PdfPanel extends JPanel {
         int parentW=1000;
         setMaximumSize(new Dimension(parentW, parentW*height/width));
         setPreferredSize(new Dimension(parentW, parentW*height/width));
-        g.drawImage(imageList.get(pageNum), 0,0,parentW, parentW*height/width,null);
+        g.drawImage(image, 0,0,parentW, parentW*height/width,null);
 
         setVisible(true);
     }
 
 
-    public void goOtherPage(int num){
-        if(num>=0 && num<imageList.size()){
-        	pageNum=num;
-        	repaint();
+    public void setPageIndex(int num){
+        if(num>=0 && num<totalPageNum){
+            try{
+                setImage(num);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 

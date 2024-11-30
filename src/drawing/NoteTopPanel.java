@@ -37,7 +37,7 @@ public class NoteTopPanel extends JPanel {
         add(prevPageBtn); //이전 버튼
         add(nextPageBtn); //다음 버튼
         add(pageMoveTextField); //페이지 무빙
-        add(new JLabel("/ "+ pdfPanel.getImageListSize() + " "));
+        add(new JLabel("/ "+ pdfPanel.getTotalPageNum() + " "));
         add(saveBtn); // 저장 버튼
 
 
