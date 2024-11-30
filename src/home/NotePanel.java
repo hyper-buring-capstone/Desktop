@@ -19,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static service.FileService.saveMeta;
 
@@ -30,6 +32,8 @@ import static service.FileService.saveMeta;
 public class NotePanel extends JButton {
 
     private static final Log log = LogFactory.getLog(NotePanel.class);
+
+    @Getter
     Note note;
 
     NotePopupMenu notePopupMenu;
@@ -41,12 +45,12 @@ public class NotePanel extends JButton {
     @Getter
     NoteListPanel noteListPanel;
 
-    JProgressBar jpb;
 
     HomeFrame homeFrame;
-    public NotePanel(StateModel state, Note note, NoteListPanel noteListPanel, JProgressBar jpb, HomeFrame homeFrame){
+
+    JLabel modifiedLabel;
+    public NotePanel(StateModel state, Note note, NoteListPanel noteListPanel, HomeFrame homeFrame){
         this.homeFrame=homeFrame;
-        this.jpb=jpb;
         //생성자
     	this.state = state;
         this.note=note;
@@ -69,14 +73,15 @@ public class NotePanel extends JButton {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //노트 수정일
-        JLabel modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString() + " ");
+        modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString() + " ");
         modifiedLabel.setFont(new Font("맑은 고딕", Font.ITALIC, 12));
         modifiedLabel.setForeground(Color.gray);
         modifiedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //썸네일
+        //여기서 시간 많이 소요됨. //average: 0.25~0.3초 ,fast: 0.16초 내외. 근데 화질 너무깨짐.
         Image thumbNail=note.getThumbNail().getScaledInstance(150,150,Image.SCALE_AREA_AVERAGING); //썸네일 축소. 속도 따라서 알고리즘 조정해.
-        ImageIcon thumbNailIcon=new ImageIcon(thumbNail);
+        ImageIcon thumbNailIcon=new ImageIcon(thumbNail); //정확히는 여기서 시간 많이 소요됨. 0.2초정도
         JLabel thumbNailLabel=new JLabel(thumbNailIcon);
         thumbNailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -97,9 +102,24 @@ public class NotePanel extends JButton {
         this.getWidth();
     }
 
+    public void setLastOpenDate(){
+        remove(modifiedLabel);
+
+        modifiedLabel.setText(LocalDate.now()+" ");
+        modifiedLabel.setFont(new Font("맑은 고딕", Font.ITALIC, 12));
+        modifiedLabel.setForeground(Color.gray);
+        modifiedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        add(modifiedLabel);
+
+    }
+
     public void listRefresh(){
 
-        noteListPanel.refresh();
+        noteListPanel.remove(this);
+        noteListPanel.revalidate();
+        noteListPanel.repaint();
+
     }
 
     @Override
@@ -116,12 +136,15 @@ public class NotePanel extends JButton {
 
             	try {
 					noteFrame = new NoteFrame(state, note, homeFrame);
+
+                    saveMeta(note);
+                    noteListPanel.setLastNote(note); //최근에 오픈한 노트.
+
 					state.setNoteFrame(noteFrame);
 					state.setNoteOpen(true);
 					state.setCurPageNum(0);
 					state.getReceiver().Sender("HEADER:PAGE&&" + 1);
 
-                    saveMeta(note);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

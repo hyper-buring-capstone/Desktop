@@ -1,5 +1,6 @@
 package home;
 
+import lombok.Setter;
 import model.Note;
 import service.FileService;
 
@@ -27,6 +28,9 @@ public class NoteListPanel extends JPanel {
     HomeFrame homeFrame; // 로딩 닫히고 포커스 낮추기 위함,
     JProgressBar jpb;
     //노트 리스트를 받아서 NotePanel 리스트를 생성하고 이를 모두 add.
+
+    @Setter
+    Note lastNote; //최근에 열었던 노트.
   
     public NoteListPanel(StateModel state, HomeFrame homeFrame){
     	this.state = state;
@@ -45,7 +49,7 @@ public class NoteListPanel extends JPanel {
         //노트 각각에 대한 패널 생성
         noteList=FileService.loadNoteList();
         for(Note note:noteList){
-            NotePanel notePanel=new NotePanel(state, note, this, jpb, homeFrame);
+            NotePanel notePanel=new NotePanel(state, note, this, homeFrame);
             notePanelList.add(notePanel);
             add(notePanel); //gui에 삽입
         }
@@ -68,6 +72,18 @@ public class NoteListPanel extends JPanel {
 
     }
 
+
+
+    public void addNote(Note newNote){
+
+        NotePanel notePanel=new NotePanel(state, newNote, this, homeFrame); //개당 0.25초 소요
+        notePanelList.add(notePanel);
+        add(notePanel); //gui에 삽입
+
+
+        revalidate();
+    }
+
     public void releaseNote(){
         for(NotePanel notePanel:notePanelList){
             remove(notePanel);
@@ -75,15 +91,39 @@ public class NoteListPanel extends JPanel {
         notePanelList.clear(); //메모리 청소
     }
 
+    public void refreshPanels(){
+        //패널을 모두 새로 만들지 말고, 최근에 열었던 노트만 고침.
+        for(NotePanel notePanel : notePanelList){
+            if(notePanel.getNote().hashCode()==lastNote.hashCode()){
+                notePanel.setLastOpenDate();
+
+            }
+        }
+    }
+
     public void refresh(){
 
-        releaseNote();
-        noteList=FileService.loadNoteList();
-        for(Note note:noteList){
-            NotePanel notePanel=new NotePanel(state, note, this, jpb, homeFrame);
-            notePanelList.add(notePanel);
-            add(notePanel); //gui에 삽입
-        }
+        refreshPanels();
+
+
+  //      releaseNote();
+//        long start=System.nanoTime();
+//
+//
+//        noteList=FileService.loadNoteList(); //대략 0.7초 내외
+//        long end=System.nanoTime();
+//        System.out.println((end-start)/1000000000.0);
+//
+//        start=System.nanoTime();
+//        //여기서 시간 많이 잡아먹힘.
+//        // 버튼 11개 기준 대략 3.5초 내외.
+//        for(Note note:noteList){
+//            NotePanel notePanel=new NotePanel(state, note, this, homeFrame); //개당 0.25초 소요
+//            notePanelList.add(notePanel);
+//            add(notePanel); //gui에 삽입
+//        }
+//        end=System.nanoTime();
+//        System.out.println((end-start)/1000000000.0);
         revalidate();
         repaint();
     }

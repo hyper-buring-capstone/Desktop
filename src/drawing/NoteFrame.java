@@ -16,6 +16,7 @@ import model.EraserPoint;
 import model.Note;
 import model.PenLine;
 import service.DrawService;
+import service.FileService;
 import service.ServerService;
 
 import java.awt.*;
@@ -33,10 +34,13 @@ public class NoteFrame extends JFrame {
     private StateModel state;
     HomeFrame homeFrame;
 
+    Note note;
+
     public NoteFrame(StateModel state, Note note, HomeFrame homeFrame) throws IOException {
         this.state = state;
         setTitle("drawing");
         this.homeFrame=homeFrame;
+        this.note=note;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1200, 800);
@@ -112,6 +116,13 @@ public class NoteFrame extends JFrame {
             //메모리 초기화
             pdfPanel.removeAllImages();
             removeAll();
+
+
+            // 메타정보 변경(날짜) : 0..001초. 비용 낮음.
+            long start=System.nanoTime();
+            FileService.saveMeta(note);
+            long end=System.nanoTime();
+            System.out.println("메타변경:" +( end-start));
 
 
             homeFrame.setVisible(true);

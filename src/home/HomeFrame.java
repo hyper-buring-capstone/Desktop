@@ -102,7 +102,7 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
 
 
     public void refreshNotes(){
-        noteListPanel.refresh();
+        noteListPanel.refreshPanels();
     }
 //    @Override
 //    public void paintComponents(Graphics g) {

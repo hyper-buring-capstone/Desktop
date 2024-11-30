@@ -66,6 +66,9 @@ public class NotePopupMenu extends JPopupMenu {
                                 try {
                                     Files.delete(path);
                                     System.out.println("삭제됨: " + path);
+
+                                    //삭제 끝난 후 새로고침
+                                    notePanel.listRefresh();
                                 } catch (IOException e) {
                                     System.err.println("삭제 실패: " + path + " - " + e.getMessage());
                                 }
@@ -77,8 +80,7 @@ public class NotePopupMenu extends JPopupMenu {
                 System.out.println("삭제 취소됨");
             }
 
-            //삭제 끝난 후 새로고침
-            notePanel.listRefresh();
+
 
         }
     };

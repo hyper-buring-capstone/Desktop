@@ -42,6 +42,7 @@ public class NextPageBtn extends BaseButton {
                 state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
 
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
+
             }
         };
 

@@ -6,6 +6,7 @@ import com.formdev.flatlaf.ui.FlatButtonUI;
 import global.BaseButton;
 import home.NoteListPanel;
 import home.NotePanel;
+import model.Note;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -27,6 +28,8 @@ import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static service.FileService.getNoteByTitle;
 
 
 public class FileOpenBtn extends BaseButton {
@@ -108,7 +111,8 @@ public class FileOpenBtn extends BaseButton {
             }
 
             //패널 리스트를 재호출해서 새로고침
-            noteListPanel.refresh();
+            Note newNote= getNoteByTitle(fileName);
+            noteListPanel.addNote(newNote);
 
 
         }

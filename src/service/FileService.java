@@ -119,6 +119,25 @@ public class FileService {
         }
     }
 
+    // 제목으로 노트 객체 반환.
+    public static Note getNoteByTitle(String title){
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("c:\\drawing\\data\\"+title+"\\meta.txt"));
+            List<String> metaData=new ArrayList<>(); //메타데이터 담는 리스트.
+            String str;
+            while ((str = reader.readLine()) != null) { //한 줄씩 읽는 메소드
+                metaData.add(str.split("\n")[0]); //줄바꿈 제거
+            }
+            reader.close();
+
+            Image image=ImageIO.read(new File("c:\\drawing\\data\\"+title+"\\images\\0.jpg"));
+            return new Note(image,title,LocalDateTime.parse(metaData.get(2))); //노트 생성
+        }catch(IOException e){
+            e.printStackTrace(); //추후 예외처리 할 것. 파일이 삭제되거나 하는 문제?
+        }
+        return null;
+    }
 
     //파일로부터 노트 리스트를 반환해줌. 
     //모든 노트의 이름과 메타데이터
