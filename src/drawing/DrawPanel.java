@@ -9,6 +9,9 @@ import service.FileService;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import StateModel.StateModel;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,6 +33,7 @@ public class DrawPanel extends JPanel {
    // int height; //여기에 값 넣지 말 것. 외부 컴포넌트에서 getHeight()로 값 가져가서 크기 이상해짐.
     private final int scale = 5;
     Note note;
+    private StateModel state;
 
     int offsetX=0, offsetY=0;
     int controlX, controlY; //컨트롤 박스의 크기.
@@ -38,7 +42,8 @@ public class DrawPanel extends JPanel {
     private Point currentPoint; // 드래그 중의 현재 좌표
 
 
-    public DrawPanel(Note note) {
+    public DrawPanel(StateModel state, Note note) {
+    	this.state = state;
     	this.note=note;
 
         //노트 데이터로부터 폭과 높이 불러오기
@@ -70,6 +75,7 @@ public class DrawPanel extends JPanel {
 
         //노트 데이터로부터 드로잉 정보 불러오기.
         penLineLists= FileService.loadPenLineLists(note);
+        state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
 
         createGraphics();
         

@@ -154,6 +154,70 @@ public class FileService {
         return noteList;
     }
 
+//    public static String getLineString(Note note) {
+//        File file=new File("c:\\drawing\\data\\"+note.getTitle()+"\\lines.txt"); //선 정보가 저장된 파일 불러옴.
+//        String lineString = "";
+//        try {
+//            lineString = new String(Files.readAllBytes(file.toPath())); // 파일의 모든 내용을 읽어서 String으로 변환
+//        } catch (IOException e) {
+//            System.err.println("파일을 읽는 도중 오류가 발생했습니다: " + e.getMessage());
+//        }
+//        return lineString;
+//    }
+    public static String getSpecificBlock(String noteTitle, int targetPageNumber, int imageWidth, int imageHeight) {
+        File file = new File("c:\\drawing\\data\\" + noteTitle + "\\lines.txt");
+        String result = "";
+
+        try {
+            List<String> lines = Files.readAllLines(file.toPath()); // 파일을 줄 단위로 읽음
+            boolean isHeader = false;
+            boolean isLine = false;
+
+            for (String line : lines) {
+                if (line.startsWith("HEADER")) {
+                	isHeader = true;
+                	continue;
+                }
+                if (isHeader) {
+                    // HEADER가 시작되면 세 번째 숫자를 파싱
+                    String[] headerParts = line.split(" ");
+                    if (headerParts[2].equals(Integer.toString(targetPageNumber))) {
+                    	result += "{";
+                    	result += "\"fontsize\" : " + headerParts[0] + ",";
+                    	result += "\"color\" : " + "\"" + headerParts[1] + "\"" + ",";
+                    	result += "\"data\" : " + "[";
+                        isLine = true;
+                        isHeader = false;
+                        continue;
+                    }
+                    else {
+                    	isHeader = false;
+                    }
+                }
+                if (isLine) {
+                	if(!line.equals("END")) {
+                    	result += "[" + Integer.toString((Integer.parseInt(line.split(" ")[0])*10000)/imageWidth) + "," + Integer.toString((Integer.parseInt(line.split(" ")[1])*10000)/imageHeight) + "]";	
+                	}
+                	else {
+                		result = result.substring(0, result.length()-2);
+                		result += "]}&";
+                		isLine = false;
+                		continue;
+                	}
+                	result += ", ";
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("파일을 읽는 도중 오류가 발생했습니다: " + e.getMessage());
+        }
+        if(result.equals("")) {
+        	return "";
+        }
+        else {
+            return result.substring(0, result.length()-1);
+        }
+    }
+    
     //해당 파일에 대한 드로잉 정보를 penlinelists로 반환
     public static List<List<PenLine>> loadPenLineLists(Note note){
 

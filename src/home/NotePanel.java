@@ -119,7 +119,9 @@ public class NotePanel extends JButton {
 					state.setNoteFrame(noteFrame);
 					state.setNoteOpen(true);
 					state.setCurPageNum(0);
-					state.getReceiver().Sender("HEADER:PAGE&&" + 1);
+					if(state.getReceiver() != null) {
+						state.getReceiver().Sender("HEADER:PAGE&&" + 1);	
+					}
 
                     saveMeta(note);
 				} catch (IOException e1) {
