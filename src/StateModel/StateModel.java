@@ -18,6 +18,8 @@ public class StateModel {
 	private Receiver receiver;
 	private int imageWidth;
 	private int imageHeight;
+	private static String lineString;
+	private String noteTitle;
 	
 	public void setNoteOpen(boolean isOpen) {
 		isNoteOpen = isOpen;
@@ -73,5 +75,21 @@ public class StateModel {
 	
 	public int getImageHeight() {
 		return imageHeight;
+	}
+	
+	public void setLineString(String lineString) {
+		StateModel.lineString = lineString;
+	}
+	
+	public static String getLineString() {
+		return lineString;
+	}
+	
+	public void setNoteTitle(String noteTitle) {
+		this.noteTitle = noteTitle;
+	}
+	
+	public String getNoteTitle() {
+		return noteTitle;
 	}
 }
