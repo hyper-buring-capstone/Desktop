@@ -3,7 +3,10 @@ package examples;
 import javax.swing.*;
 import java.util.Enumeration;
 
+
 public class UIManagerKeys {
+
+
     public static void main(String[] args) {
         Enumeration<Object> keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {

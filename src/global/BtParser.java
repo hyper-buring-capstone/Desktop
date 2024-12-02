@@ -9,17 +9,30 @@ public class BtParser {
 
     /**
      * 메시지의 타입이 헤더/점/end인지 구분.
+     * 끝에 \r 들어가 있음.
      */
     public static MsgType getMsgType(String msg){
-        // 헤더인 경우
-        if(msg.split(":")[0].equals("HEADER")){
-            return MsgType.HEADER;
+
+        String header=msg.split("&&")[0];
+        // 펜의 헤더인 경우
+        if(header.equals("HEADER:DRAWING\r")){
+            return MsgType.HEADER_PEN;
+        }
+        // 지우개 헤더
+        else if(header.equals("HEADER:ERASER\r")){
+            return MsgType.HEADER_ERASER;
+        }
+        // 드로잉 박스 조작하는 경우.
+        else if(header.equals("HEADER:PANNING")){
+            return MsgType.HEADER_PANNING;
         }
 
         // end인 경우
-        else if(msg.split("\r")[0].equals("END")){
+//        else if(msg.split("\r")[0].equals("END")){
+        else if(header.equals("END\r")){
             return MsgType.END;
         }
+
 
         //다 아니면 point라고 가정함.
         else{
