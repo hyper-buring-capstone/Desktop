@@ -61,6 +61,7 @@ public class NoteFrame extends JFrame {
         // LayeredPane, ScrollPane 설정
     	setTitle("drawing");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);
         setSize(1200, 900);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
