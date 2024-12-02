@@ -28,7 +28,7 @@ public class DrawPanel extends JPanel {
 //    private int maxPageNum;
     //int width;
    // int height; //여기에 값 넣지 말 것. 외부 컴포넌트에서 getHeight()로 값 가져가서 크기 이상해짐.
-    private final int scale = 5;
+    private final int scale = 10;
     Note note;
     private StateModel state;
 
@@ -132,40 +132,15 @@ public class DrawPanel extends JPanel {
     }
 
 
-    public void addPoint(int x1, int y1){
-        
-    }
-    
-    public void tempEraserPoint(int x, int y, float width) {
-    	Graphics2D g2d = canvas.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
-        g2d.setColor(Color.RED);
-    	g2d.fillOval(x, y, Math.round(width), Math.round(width));
-    	g2d.dispose(); // 리소스 해제
-        repaint(); // 패널 다시 그리기
-    }
-
-    // 새로운 선을 추가하는 메서드
-//    public void addLine(int x1, int y1, int x2, int y2, float width) {
-//        Graphics2D g2d = canvas.createGraphics();
-//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setStroke(new BasicStroke(width));
-//
-//        g2d.setColor(Color.RED);
-//        g2d.drawLine(x1, y1, x2, y2);
-//        g2d.dispose(); // 리소스 해제
-//        repaint(); // 패널 다시 그리기
-//    }
 
     //그릴 때 이거 사용함. addline 삭제해도 될듯.
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
         g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        g2d.setColor(new Color(40, 123, 144, 80));
+        g2d.setColor(new Color(40, 123, 144, 255));
         //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 0.5f));
 
-        g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
-        		Arrays.stream(yList).map(y -> y * 5).toArray(),
+        g2d.drawPolyline(Arrays.stream(xList).map(x->x*scale).toArray(),
+        		Arrays.stream(yList).map(y->y*scale).toArray(),
         		n);
         repaint();
     }
@@ -182,15 +157,15 @@ public class DrawPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setColor(Color.BLACK);
         //Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
-        g2d.setColor(new Color(40, 123, 144, 80));
+        g2d.setColor(new Color(40, 123, 144, 255));
         //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // 투명도 합성
         Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
             g2d.setStroke(new BasicStroke(penLine.getWidth()*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     	    g2d.drawPolyline(
-    	    		penLine.getXList().stream().mapToInt(x -> x*5).toArray(),
-            		penLine.getYList().stream().mapToInt(y -> y*5).toArray(),
+    	    		penLine.getXList().stream().mapToInt(x->x*scale).toArray(),
+            		penLine.getYList().stream().mapToInt(y->y*scale).toArray(),
             		penLine.getXList().size());
     	}
 
@@ -199,16 +174,6 @@ public class DrawPanel extends JPanel {
         //
     }
 
-    public void reCanvas2(){
-
-
-        for(PenLine penLine: penLineLists.get(pageIndex)){
-            addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
-                    penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
-                    penLine.getXList().size(),
-                    penLine.getWidth());
-        }
-    }
     
     public void eraseLine(int x, int y, float width) {
     	float minX = x - width;
@@ -224,9 +189,6 @@ public class DrawPanel extends JPanel {
 
     	            iterator.remove();
                     reCanvas();
-                  //  repaint();
-
-    	            //reCanvas(penLine.getWidth());
     	        }
     	    }
     	}

@@ -37,6 +37,12 @@ public class PenLine {
     int minY = 9999;
     int maxY = 0;
 
+    public PenLine(){
+        penColor=Color.BLUE;
+        width=5;
+    }
+
+
     public void addPoint(int x, int y){
         xList.add(x);
         yList.add(y);
@@ -85,10 +91,7 @@ public class PenLine {
     	return result;
     }
 
-    public PenLine(){
-        penColor=Color.BLUE;
-        width=15;
-    }
+
 
     //저장할 데이터 형식대로 변환함.
     public String toData(int page){
