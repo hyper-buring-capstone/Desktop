@@ -7,15 +7,12 @@ import model.PenLine;
 import service.FileService;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 import StateModel.StateModel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -26,9 +23,9 @@ public class DrawPanel extends JPanel {
     private List<List<PenLine>> penLineLists = new ArrayList<>();
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
     @Getter
-    private int pageNum;
+    private int pageIndex;
     @Setter
-    private int maxPageNum;
+//    private int maxPageNum;
     //int width;
    // int height; //여기에 값 넣지 말 것. 외부 컴포넌트에서 getHeight()로 값 가져가서 크기 이상해짐.
     private final int scale = 5;
@@ -59,7 +56,7 @@ public class DrawPanel extends JPanel {
         // setAlignmentX(Component.CENTER_ALIGNMENT);
         setBackground(new Color(0,0,0,0)); // alpah 값 0이면 투명화.
         // setBounds(0,0,300,800);
-        pageNum=0;
+        pageIndex =0;
         penLineLists.add(new ArrayList<>());
         setPreferredSize(new Dimension(999, 999*imgHeight/imgWidth));
         setMaximumSize(new Dimension(999   , 999*imgHeight/imgWidth));
@@ -109,13 +106,13 @@ public class DrawPanel extends JPanel {
         }
     };
 
-    public void setPageNum(int newPageNum) {
-        if(newPageNum>=0 && newPageNum<maxPageNum) {
-            while (newPageNum >= penLineLists.size()) {
+    public void setPageIndex(int newPageIndex) {
+        if(newPageIndex>=0 && newPageIndex<state.getTotalPage()) {
+            while (newPageIndex >= penLineLists.size()) {
                 // 부족한 인덱스를 채우기 위해 빈 ArrayList 추가
                 penLineLists.add(new ArrayList<>());
             }
-        	pageNum = newPageNum;
+        	pageIndex = newPageIndex;
         	reCanvas();
         }
     }
@@ -131,7 +128,7 @@ public class DrawPanel extends JPanel {
     }
 
     public void addPenLine(PenLine penLine){
-        penLineLists.get(pageNum).add(penLine);
+        penLineLists.get(pageIndex).add(penLine);
     }
 
 
@@ -181,7 +178,7 @@ public class DrawPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setColor(Color.BLACK);
-        Iterator<PenLine> iterator = penLineLists.get(pageNum).iterator();
+        Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
             g2d.setStroke(new BasicStroke(penLine.getWidth()*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
@@ -199,7 +196,7 @@ public class DrawPanel extends JPanel {
     public void reCanvas2(){
 
 
-        for(PenLine penLine: penLineLists.get(pageNum)){
+        for(PenLine penLine: penLineLists.get(pageIndex)){
             addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
                     penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
                     penLine.getXList().size(),
@@ -213,7 +210,7 @@ public class DrawPanel extends JPanel {
     	float minY = y - width;
     	float maxY = y + width;
     	
-    	Iterator<PenLine> iterator = penLineLists.get(pageNum).iterator();
+    	Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
     	    if (penLine.isBoxContains(minX, maxX, minY, maxY)) { //이 조건 굳이 필요?

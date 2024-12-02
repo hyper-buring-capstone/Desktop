@@ -13,6 +13,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class PdfPanel extends JPanel {
@@ -49,6 +51,16 @@ public class PdfPanel extends JPanel {
         File[] files=new File("C:\\drawing\\data\\"+title+"\\images").listFiles(); //이미지 폴더에 접근
         totalPageNum=files.length;
         imageList=new ArrayList<>(totalPageNum);
+
+        Comparator<File> comparator=new Comparator<File>() {
+            @Override
+            public int compare(File f1, File f2)
+            {
+                return Integer.parseInt(f1.getName().split("\\.")[0])-Integer.parseInt(f2.getName().split("\\.")[0]);
+            }
+        };
+
+        Arrays.sort(files, comparator);
 
         state.setFiles(files);
         state.setNoteTitle(title);

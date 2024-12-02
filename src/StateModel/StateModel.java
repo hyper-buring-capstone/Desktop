@@ -20,6 +20,10 @@ public class StateModel {
 	private int imageHeight;
 	private static String lineString;
 	private String noteTitle;
+
+	@Getter
+	@Setter
+	private int totalPage;
 	
 	public void setNoteOpen(boolean isOpen) {
 		isNoteOpen = isOpen;

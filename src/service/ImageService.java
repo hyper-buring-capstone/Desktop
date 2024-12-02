@@ -23,4 +23,7 @@ public class ImageService {
         g2d.dispose();
         return bufferedImage;
     }
+
+
+//    public Image getImageBy
 }

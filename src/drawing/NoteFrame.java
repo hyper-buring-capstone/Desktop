@@ -77,7 +77,9 @@ public class NoteFrame extends JFrame {
         // DrawPanel을 하나만 추가
         // DrawPanel 페이지 사이즈 설정
         drawPanel = new DrawPanel(state, note);
-        drawPanel.setMaxPageNum(pdfPanel.getImageListSize());
+
+        //statemodel 초기화
+        state.setTotalPage(pdfPanel.getTotalPageNum());
 
 
         // 상단 버튼 레이아웃 추가

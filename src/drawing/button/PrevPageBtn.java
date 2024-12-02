@@ -42,7 +42,7 @@ public class PrevPageBtn extends BaseButton {
                 if(curPage<=0){ //첫 페이지인 경우
                     return;
                 }
-                drawPanel.setPageNum(curPage-1);
+                drawPanel.setPageIndex(curPage-1);
                 pdfPanel.setPageIndex(curPage-1);
                 state.setCurPageNum(curPage-1);
                 pageMoveTextField.setText(String.valueOf(curPage));

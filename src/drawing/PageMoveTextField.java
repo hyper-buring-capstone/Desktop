@@ -52,7 +52,7 @@ public class PageMoveTextField extends JTextField {
 
                         if(number<=0 && number>pdfPanel.totalPageNum) return; //최대, 최소 페이지를 넘어갈 수 없음.
                         // 숫자에 따라 액션 발동
-                        drawPanel.setPageNum(number-1);
+                        drawPanel.setPageIndex(number-1);
                         pdfPanel.setPageIndex(number-1);
                         state.setCurPageNum(number-1);
                         state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));

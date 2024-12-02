@@ -38,13 +38,14 @@ public class NextPageBtn extends BaseButton {
                 if(curPage>=totalPage-1){ //마지막 페이지인 경우.
                     return;
                 }
-                drawPanel.setPageNum(curPage+1);
+                drawPanel.setPageIndex(curPage+1);
                 pdfPanel.setPageIndex(curPage+1);
                 state.setCurPageNum(curPage+1);
                 pageMoveTextField.setText(String.valueOf(curPage+2));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                    System.out.println(state.getCurPageNum()+1);
                 }
 
                 getParent().getParent().repaint(); //8번 트러블 문제랑 비슷하게 해결.
