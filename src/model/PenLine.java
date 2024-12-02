@@ -26,6 +26,7 @@ public class PenLine {
     PenType penType=PenType.PEN; //펜 타입
     Color penColor;
     float width; //펜 두께
+    int alpha;
     //int pageNum; //몇 페이지에 기록되는지?
 
     List<Integer> xList=new ArrayList<Integer>(); // x좌표

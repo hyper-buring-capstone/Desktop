@@ -75,7 +75,7 @@ public class DrawPanel extends JPanel {
         state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
 
         createGraphics();
-        
+
         //클릭 연동 -> 컨트롤 패널 조작.
         addMouseMotionListener(mouseDragAdapter);
         addMouseListener(mouseDragAdapter);
@@ -151,7 +151,7 @@ public class DrawPanel extends JPanel {
 //        Graphics2D g2d = canvas.createGraphics();
 //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        g2d.setStroke(new BasicStroke(width));
-//        
+//
 //        g2d.setColor(Color.RED);
 //        g2d.drawLine(x1, y1, x2, y2);
 //        g2d.dispose(); // 리소스 해제
@@ -161,13 +161,15 @@ public class DrawPanel extends JPanel {
     //그릴 때 이거 사용함. addline 삭제해도 될듯.
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
         g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(new Color(40, 123, 144, 80));
+        //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 0.5f));
         g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
         		Arrays.stream(yList).map(y -> y * 5).toArray(),
         		n);
         repaint();
     }
-    
+
+
     public void reCanvas() {
         //Graphics2D g2d = canvas.createGraphics();
         g2d.setComposite(AlphaComposite.Clear);  // 전체 지우기 위해 Clear 컴포지트 설정
@@ -178,6 +180,9 @@ public class DrawPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setColor(Color.BLACK);
+        //Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
+        g2d.setColor(new Color(40, 123, 144, 80));
+        //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // 투명도 합성
         Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
