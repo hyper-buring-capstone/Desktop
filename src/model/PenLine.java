@@ -87,7 +87,7 @@ public class PenLine {
 
     public PenLine(){
         penColor=Color.BLUE;
-        width=5;
+        width=15;
     }
 
     //저장할 데이터 형식대로 변환함.

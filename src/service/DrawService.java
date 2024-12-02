@@ -37,6 +37,7 @@ public class DrawService {
         	isEraser = false;
         	noteFrame.disposeGraphics();
         	noteFrame.tempEnd();
+			noteFrame.repaint();
         }
         else if(BtParser.getMsgType(msg).equals(MsgType.POINT)){
         	if(!isEraser) {
