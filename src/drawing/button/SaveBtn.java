@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import static global.Constants.SAVE_ICON_PATH;
 import static service.ImageService.recolorIcon;
 
 /**
@@ -23,7 +24,7 @@ public class SaveBtn extends BaseButton {
         this.drawPanel = drawPanel;
 
         // 원본 이미지 아이콘 로드
-        ImageIcon icon = new ImageIcon("src/icon/save.png");
+        ImageIcon icon = new ImageIcon(SAVE_ICON_PATH);
         // 새 색상 지정
         Color newColor = Color.black;
 

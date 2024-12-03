@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static global.Constants.*;
+
 /**
  * 초기 화면을 담당하는 프레임
  * 노트 선택, 환경설정, 노트 리스트 뷰어 등의 기능.
@@ -41,13 +43,13 @@ public class HomeFrame extends JFrame implements BluetoothServer.ServerListener 
     	this.state = state;
 
         //자체 설정
-        setTitle("Phonote");
+        setTitle(APP_NAME);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 800);
+        setSize(FRAME_SIZE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         try{
-            setIconImage(ImageIO.read(new File("src/icon/pen.png")));
+            setIconImage(ImageIO.read(new File(APP_ICON_PATH)));
         }catch (IOException e){
             e.printStackTrace();
         }

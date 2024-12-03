@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static global.Constants.DATA_PATH;
+
 public class NotePopupMenu extends JPopupMenu {
 
     Note note;
@@ -55,7 +57,7 @@ public class NotePopupMenu extends JPopupMenu {
                 System.out.println("삭제 동작 실행");
                 // TODO: 삭제 로직 구현
 
-                String folderPath = "c:\\drawing\\data\\"+note.getTitle(); // 삭제하려는 파일 경로
+                String folderPath = DATA_PATH+note.getTitle(); // 삭제하려는 파일 경로
 
                 try {
                     Path pathToDelete = Paths.get(folderPath);

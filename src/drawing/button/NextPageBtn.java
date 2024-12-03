@@ -4,6 +4,7 @@ import StateModel.StateModel;
 import drawing.PageMoveTextField;
 import drawing.PdfPanel;
 import global.BaseButton;
+import global.Constants;
 import service.FileService;
 import drawing.DrawPanel;
 
@@ -12,13 +13,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static global.Constants.NEXT_ICON_PATH;
+
 public class NextPageBtn extends BaseButton {
 	StateModel state;
 	
     public NextPageBtn(StateModel state, PdfPanel pdfPanel, DrawPanel drawPanel, PageMoveTextField pageMoveTextField){
     	this.state = state;
         // 원본 이미지 아이콘 로드
-        ImageIcon icon = new ImageIcon("src/icon/next.png");
+        ImageIcon icon = new ImageIcon(NEXT_ICON_PATH);
         // 새 색상 지정
         Color newColor = Color.black;
 

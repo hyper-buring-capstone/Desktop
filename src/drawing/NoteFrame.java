@@ -1,5 +1,6 @@
 package drawing;
 
+import control.ControlPanel;
 import service.BluetoothServer;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.UUID;
@@ -36,6 +37,8 @@ public class NoteFrame extends JFrame {
 
     Note note;
 
+    ControlPanel controlPanel;
+
     public NoteFrame(StateModel state, Note note, HomeFrame homeFrame) throws IOException {
         this.state = state;
         setTitle("drawing");
@@ -61,7 +64,7 @@ public class NoteFrame extends JFrame {
         // LayeredPane, ScrollPane 설정
     	setTitle("drawing");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setExtendedState(MAXIMIZED_BOTH);
+//        setExtendedState(MAXIMIZED_BOTH); //전체 화면
         setSize(1200, 900);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -79,6 +82,8 @@ public class NoteFrame extends JFrame {
         // DrawPanel 페이지 사이즈 설정
         drawPanel = new DrawPanel(state, note);
 
+        controlPanel=new ControlPanel(state, note);
+
         //statemodel 초기화
         state.setTotalPage(pdfPanel.getTotalPageNum());
 
@@ -90,6 +95,7 @@ public class NoteFrame extends JFrame {
 
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
         jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
+        jLayeredPane.add(controlPanel, JLayeredPane.MODAL_LAYER); //같이 설치해도 되나? 테스트 필요.
 
 
         //스크롤 페인
@@ -100,7 +106,7 @@ public class NoteFrame extends JFrame {
 //        jScrollPane.setMaximumSize(new Dimension(1000,8000));
 //        jScrollPane.setPreferredSize(new Dimension(1000,8000));
 
-        addWindowListener(windowAdapter);
+        addWindowListener(windowAdapter); //창 닫을 때 행동.
 
         add(jScrollPane, BorderLayout.CENTER);
         add(noteTopPanel, BorderLayout.NORTH);
@@ -109,6 +115,22 @@ public class NoteFrame extends JFrame {
         setTitle(note.getTitle());
 
         homeFrame.setVisible(false);
+
+
+        System.out.println(isDoubleBuffered());
+    }
+
+    //컨트롤 박스의 위치 설정
+    public void setControlBoxLoc(int startX, int startY, int endX, int endY){
+        controlPanel.setControlBoxLoc( startX,  startY,  endX,  endY);
+        repaint();
+    }
+
+    //지우개 범위 위치 변경
+    public void setEraserLoc(int x, int y, int diameter){
+        controlPanel.setEraserLoc(x,y,diameter);
+        //repaint();
+
     }
 
     //윈도우 창 닫기 설정
@@ -152,6 +174,8 @@ public class NoteFrame extends JFrame {
     public void tempEnd() {
     	drawPanel.reCanvas();
     }
+
+
 
     @Override
     public void paintComponents(Graphics g) {
