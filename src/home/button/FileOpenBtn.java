@@ -29,6 +29,8 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static global.Constants.DATA_PATH;
+import static global.Constants.FILE_OPEN_BUTTON_COLOR;
 import static service.FileService.getNoteByTitle;
 
 
@@ -42,7 +44,7 @@ public class FileOpenBtn extends BaseButton {
         setMaximumSize(new Dimension(110,10));
         setFont(new Font("Times", Font.PLAIN, 15));
         setForeground(Color.white);
-        setBackground(new Color(120,1,22));
+        setBackground(FILE_OPEN_BUTTON_COLOR);
         setBorderPainted(false);
         setMargin(new Insets(0,0,0,0));
 
@@ -92,8 +94,8 @@ public class FileOpenBtn extends BaseButton {
 
             //디렉토리 생성
             String fileName=file.getName().split("\\.")[0]; //확장자 제거한 이름.
-            FileService.createDirectory("/drawing/data/"+ fileName);
-            FileService.createDirectory("/drawing/data/"+ fileName+"/images");
+            FileService.createDirectory(DATA_PATH+ fileName);
+            FileService.createDirectory(DATA_PATH+ fileName+"/images");
 
             
             //images 폴더에 변환된 pdf이미지를 저장
@@ -105,7 +107,7 @@ public class FileOpenBtn extends BaseButton {
             
             //선 데이터 저장소 초기화
             try {
-                new File("c:\\drawing\\data\\"+fileName+"\\lines.txt").createNewFile();
+                new File(DATA_PATH+fileName+"\\lines.txt").createNewFile();
             } catch (IOException ex) { //저장소가 생기지 않았으면 예외처리.
                 throw new RuntimeException(ex);
             }

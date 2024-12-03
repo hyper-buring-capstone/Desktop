@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static global.Constants.PREV_ICON_PATH;
+
 
 public class PrevPageBtn extends BaseButton {
 	StateModel state;
@@ -21,7 +23,7 @@ public class PrevPageBtn extends BaseButton {
     	this.state = state;
 
         // 원본 이미지 아이콘 로드
-        ImageIcon icon = new ImageIcon("src/icon/prev.png");
+        ImageIcon icon = new ImageIcon(PREV_ICON_PATH);
         // 새 색상 지정
         Color newColor = Color.black;
 

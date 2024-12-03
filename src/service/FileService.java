@@ -17,6 +17,9 @@ import java.util.HexFormat;
 import java.util.List;
 import java.util.Objects;
 
+import static global.Constants.BASE_PATH;
+import static global.Constants.DATA_PATH;
+
 /**
  * 파일 저장/불러오기 담당 서비스
  */
@@ -42,9 +45,11 @@ public class FileService {
 
     //파일 저장소 구조를 초기화함
     public static void initDirectory(){
-        createDirectory("/drawing");
-        createDirectory("/drawing/data");
-        
+//        createDirectory("/drawing");
+//        createDirectory("/drawing/data");
+        createDirectory(BASE_PATH);
+        createDirectory(DATA_PATH);
+
     }
 
     public static void saveImages(File file){
@@ -59,7 +64,7 @@ public class FileService {
 //              imageList.add(image); //리스트에 추가
 
                 //파일 디렉토리 구조에 추가.
-                File outputfile = new File("c:\\drawing\\data\\"+fileName+"\\images\\"+i+".jpg");
+                File outputfile = new File(DATA_PATH+fileName+"\\images\\"+i+".jpg");
                 ImageIO.write(image, "jpg", outputfile);
             }
         } catch (IOException ex) {
@@ -76,7 +81,7 @@ public class FileService {
         String txt = "SOF\n"+fileName+"\n"+ LocalDateTime.now()+"\n"+"EOF"; //메타데이터 저장
 
 
-        String filePath="c:\\drawing\\data\\"+fileName+"\\meta.txt"; //경로 설정
+        String filePath=DATA_PATH+fileName+"\\meta.txt"; //경로 설정
         try{
 
             // BufferedWriter 와 FileWriter를 조합하여 사용 (속도 향상)
@@ -101,7 +106,7 @@ public class FileService {
         String txt = "SOF\n"+fileName+"\n"+ LocalDateTime.now()+"\n"+"EOF"; //메타데이터 저장
 
 
-        String filePath="c:\\drawing\\data\\"+fileName+"\\meta.txt"; //경로 설정
+        String filePath=DATA_PATH+fileName+"\\meta.txt"; //경로 설정
         try{
 
             // BufferedWriter 와 FileWriter를 조합하여 사용 (속도 향상)
@@ -124,7 +129,7 @@ public class FileService {
     public static Note getNoteByTitle(String title){
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("c:\\drawing\\data\\"+title+"\\meta.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(DATA_PATH+title+"\\meta.txt"));
             List<String> metaData=new ArrayList<>(); //메타데이터 담는 리스트.
             String str;
             while ((str = reader.readLine()) != null) { //한 줄씩 읽는 메소드
@@ -132,7 +137,7 @@ public class FileService {
             }
             reader.close();
 
-            Image image=ImageIO.read(new File("c:\\drawing\\data\\"+title+"\\images\\0.jpg"));
+            Image image=ImageIO.read(new File(DATA_PATH+title+"\\images\\0.jpg"));
             return new Note(image,title,LocalDateTime.parse(metaData.get(2))); //노트 생성
         }catch(IOException e){
             e.printStackTrace(); //추후 예외처리 할 것. 파일이 삭제되거나 하는 문제?
@@ -146,7 +151,7 @@ public class FileService {
         List<Note> noteList=new ArrayList<>();
 
 
-        File[] fileList=new File("c:\\drawing\\data").listFiles();
+        File[] fileList=new File(DATA_PATH).listFiles();
 
         for(File file:fileList){
             String fileName=file.getName().split("\\.")[0]; //확장자 제거이름.
@@ -162,7 +167,7 @@ public class FileService {
                 reader.close();
 
                 String title=metaData.get(1);
-                Image image=ImageIO.read(new File("c:\\drawing\\data\\"+title+"\\images\\0.jpg"));
+                Image image=ImageIO.read(new File(DATA_PATH+title+"\\images\\0.jpg"));
                 noteList.add(new Note(image,title,LocalDateTime.parse(metaData.get(2)))); //노트 생성
             }catch(IOException e){
                 e.printStackTrace(); //추후 예외처리 할 것. 파일이 삭제되거나 하는 문제?
@@ -185,7 +190,7 @@ public class FileService {
 //        return lineString;
 //    }
     public static String getSpecificBlock(String noteTitle, int targetPageNumber, int imageWidth, int imageHeight) {
-        File file = new File("c:\\drawing\\data\\" + noteTitle + "\\lines.txt");
+        File file = new File(DATA_PATH + noteTitle + "\\lines.txt");
         String result = "";
 
         try {
@@ -247,8 +252,8 @@ public class FileService {
         // 10 10 .. (points)
         // END
 
-        File file=new File("c:\\drawing\\data\\"+note.getTitle()+"\\lines.txt"); //선 정보가 저장된 파일 불러옴.
-        int totalPageNum= Objects.requireNonNull(new File("c:\\drawing\\data\\" + note.getTitle() + "\\images").listFiles()).length; //이미지 개수(=노트 페이지수)
+        File file=new File(DATA_PATH+note.getTitle()+"\\lines.txt"); //선 정보가 저장된 파일 불러옴.
+        int totalPageNum= Objects.requireNonNull(new File(DATA_PATH + note.getTitle() + "\\images").listFiles()).length; //이미지 개수(=노트 페이지수)
         List<List<PenLine>> penLineLists= new ArrayList<List<PenLine>>(totalPageNum);
 
         for(int i=0; i<totalPageNum; i++){
@@ -256,7 +261,7 @@ public class FileService {
         }
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("c:\\drawing\\data\\"+note.getTitle()+"\\lines.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(DATA_PATH+note.getTitle()+"\\lines.txt"));
 
             String str;
             PenLine penLine = null;
@@ -306,14 +311,14 @@ public class FileService {
     public static void saveLines(Note note,List<List<PenLine>> penLineLists){
 
         String fileName=note.getTitle(); //파일명
-        String filePath="c:\\drawing\\data\\"+fileName+"\\lines.txt"; //경로 설정
+        String filePath=DATA_PATH+fileName+"\\lines.txt"; //경로 설정
 
 
         try {
             new File(filePath).createNewFile();
         }catch (IOException e){
             e.printStackTrace();
-            createDirectory("c:\\drawing\\data\\"+fileName);
+            createDirectory(DATA_PATH+fileName);
         }
 
         // HEADER

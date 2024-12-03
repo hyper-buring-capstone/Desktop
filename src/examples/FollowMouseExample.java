@@ -19,8 +19,8 @@ public class FollowMouseExample extends JPanel implements MouseMotionListener {
         super.paintComponent(g);
         setDoubleBuffered(false);
         // 배경 색상
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        //g.setColor(Color.WHITE);
+       // g.fillRect(0, 0, getWidth(), getHeight());
 
         // 원 그리기
         g.setColor(Color.RED);
@@ -41,6 +41,11 @@ public class FollowMouseExample extends JPanel implements MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
         // 드래그 중에도 동일 동작
         mouseMoved(e);
+    }
+
+    @Override
+    public void update(Graphics g) {
+        paint(g);
     }
 
     public static void main(String[] args) {
