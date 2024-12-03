@@ -24,7 +24,14 @@ public class ControlPanel extends JPanel {
     Image buffImg;
     Graphics buffG;
 
+    StateModel state;
+
+    int imgWidth, imgHeight;
     public ControlPanel(StateModel state, Note note) {
+        //생성자
+        this.state=state;
+        this.imgHeight= state.getImageHeight();
+        this.imgWidth= state.getImageWidth();
 
         int imgHeight=note.getThumbNail().getHeight(null);
         int imgWidth=note.getThumbNail().getWidth(null);
@@ -48,10 +55,13 @@ public class ControlPanel extends JPanel {
 
     //컨트롤 박스의 위치 변경
     public void setControlBoxLoc(int startX, int startY, int endX, int endY){
-        this.boxEndX =endX;
-        this.boxEndY =endY;
-        this.boxStartX =startX;
-        this.boxStartY =startY;
+        this.boxEndX = (int) (endX*imgWidth*0.0001);
+        this.boxEndY = (int) (endY*imgHeight*0.0001);
+        this.boxStartX = (int) (startX*imgWidth*0.0001);
+        this.boxStartY = (int) (startY*imgHeight*0.0001);
+
+//        System.out.println("높이 차이:" + (boxEndY-boxStartY));
+//        System.out.println("너비 차이:" + (boxEndX-boxStartX));
         repaint();
     }
 
@@ -85,7 +95,10 @@ public class ControlPanel extends JPanel {
             g.drawOval(eraseX-diameter/2, eraseY-diameter/2, diameter, diameter);
             isEraser=false;
         }
-        g.drawRect(boxStartX,boxStartY,boxEndX,boxEndY);
+
+
+        ((Graphics2D) g).setStroke(new BasicStroke(1,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1, new float[]{5,1f},0));
+        g.drawRoundRect(boxStartX,boxStartY,boxEndX-boxStartX,boxEndY-boxStartY,20,20);
 
     }
 
@@ -97,6 +110,10 @@ public class ControlPanel extends JPanel {
             g.drawOval(eraseX-diameter/2, eraseY-diameter/2, diameter, diameter);
             isEraser=false;
         }
+
+        ;
+
+
         g.drawRect(boxStartX,boxStartY,boxEndX,boxEndY);
     }
 

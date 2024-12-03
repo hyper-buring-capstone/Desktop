@@ -35,14 +35,16 @@ public class DrawService {
 				isEraser = true;
 			}
 			case HEADER_PANNING -> {
+				//System.out.println(msg);
 				String[] points=msg.split("&&")[1].split(","); //컨트롤 박스 포인트 데이터만 분리.
 				String[] startPoint=points[0].split(" "); //공백으로 분리
 				String[] endPoint=points[1].split(" ");
 
-				int startX=Integer.parseInt(startPoint[0]);
-				int startY=Integer.parseInt(startPoint[1]);
-				int endX=Integer.parseInt(endPoint[0]);
-				int endY=Integer.parseInt(endPoint[1].split("\r")[0]); //맨 끝에 널문자 제거.
+				//넘어오는 값이 float자료형.
+				int startX=(int)Float.parseFloat(startPoint[0]);
+				int startY=(int)Float.parseFloat(startPoint[1]);
+				int endX=(int)Float.parseFloat(endPoint[1]);
+				int endY=(int)Float.parseFloat(endPoint[2].split("\r")[0]); //맨 끝에 널문자 제거.
 
 				/*
 				좌표의 가공이 필요한 경우 수행할 것.
