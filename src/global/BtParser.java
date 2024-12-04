@@ -32,7 +32,14 @@ public class BtParser {
         else if(header.equals("END\r")){
             return MsgType.END;
         }
+        
+        else if(header.equals("HEADER:WIDTH")) {
+        	return MsgType.HEADER_WIDTH;
+        }
 
+        else if(header.equals("HEADER:COLOR")) {
+        	return MsgType.HEADER_COLOR;
+        }
 
         //다 아니면 point라고 가정함.
         else{

@@ -269,11 +269,11 @@ public class FileService {
             while ((str = reader.readLine()) != null) { //한 줄씩 읽어 str에 저장.
                 if(str.equals("HEADER")){ //선의 시작이므로 새 선 객체를 생성함.
                     String info= reader.readLine(); //다음 줄을 읽어 정보를 불러옴.
-                    float width=Float.parseFloat(info.split(" ")[0]); //두께
+                    int width=Integer.parseInt(info.split(" ")[0]); //두께
                     Color color=new Color((int) HexFormat.fromHexDigitsToLong(info.split(" ")[1]),true); //색상
                     pageNum=Integer.parseInt(info.split(" ")[2]); //페이지
                     penLine=new PenLine().builder()
-                            .width(width)
+                            .penWidth(width)
                             .penColor(color)
                             .xList(new ArrayList<>())
                             .yList(new ArrayList<>())

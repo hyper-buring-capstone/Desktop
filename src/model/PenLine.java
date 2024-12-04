@@ -24,10 +24,12 @@ public class PenLine {
      */
 
     PenType penType=PenType.PEN; //펜 타입
+    @Getter
+    @Setter
     Color penColor;
-    float width; //펜 두께
-    int alpha;
-    //int pageNum; //몇 페이지에 기록되는지?
+    @Getter
+    @Setter
+    int penWidth; //펜 두께
 
     List<Integer> xList=new ArrayList<Integer>(); // x좌표
     List<Integer> yList=new ArrayList<Integer>(); // y좌표
@@ -36,6 +38,10 @@ public class PenLine {
     int maxX = 0;
     int minY = 9999;
     int maxY = 0;
+    
+	public PenLine() {
+		
+	}
 
     public void addPoint(int x, int y){
         xList.add(x);
@@ -76,7 +82,7 @@ public class PenLine {
     public boolean isOverlapping(int x, int y, float width) {
     	boolean result = false;
     	for(int i = 0; i < xList.size(); i++) {
-    		double distance = Math.sqrt(Math.pow(Math.abs(xList.get(i) - x), 2) + Math.pow(Math.abs(yList.get(i) - y), 2)) - width - this.width;
+    		double distance = Math.sqrt(Math.pow(Math.abs(xList.get(i) - x), 2) + Math.pow(Math.abs(yList.get(i) - y), 2)) - width - this.penWidth;
     		if(distance < 0) {
     			result = true;
     			break;
@@ -85,10 +91,6 @@ public class PenLine {
     	return result;
     }
 
-    public PenLine(){
-        penColor=Color.BLUE;
-        width=15;
-    }
 
     //저장할 데이터 형식대로 변환함.
     public String toData(int page){
@@ -105,7 +107,7 @@ public class PenLine {
                 penColor.getAlpha());
 
         String data="HEADER\n"
-                + width +" "+ hex +" "+page+"\n";
+                + penWidth +" "+ hex +" "+page+"\n";
 
         for(int i=0; i<xList.size(); i++){
             data=data.concat(xList.get(i) +" "+ yList.get(i)+"\n");

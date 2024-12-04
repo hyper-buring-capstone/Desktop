@@ -24,7 +24,7 @@ public class DrawPanel extends JPanel {
     private Graphics2D g2d; // Graphics2D를 멤버 변수로 추가
     @Getter
     private int pageIndex;
-    @Setter
+//    @Setter
 //    private int maxPageNum;
     //int width;
    // int height; //여기에 값 넣지 말 것. 외부 컴포넌트에서 getHeight()로 값 가져가서 크기 이상해짐.
@@ -159,9 +159,9 @@ public class DrawPanel extends JPanel {
 //    }
 
     //그릴 때 이거 사용함. addline 삭제해도 될듯.
-    public void addPolyLine(int[] xList, int[] yList, int n, float width){
-        g2d.setStroke(new BasicStroke(width*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        g2d.setColor(new Color(40, 123, 144, 80));
+    public void addPolyLine(int[] xList, int[] yList, int n){
+        g2d.setStroke(new BasicStroke(state.getPenWidth()*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.setColor(state.getPenColor());
         //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 0.5f));
 
         g2d.drawPolyline(Arrays.stream(xList).map(x -> x * 5).toArray(),
@@ -180,14 +180,13 @@ public class DrawPanel extends JPanel {
         g2d.setComposite(AlphaComposite.SrcOver); // 다시 그릴 수 있도록 컴포지트 설정
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setColor(Color.BLACK);
         //Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
-        g2d.setColor(new Color(40, 123, 144, 80));
         //g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // 투명도 합성
         Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
-            g2d.setStroke(new BasicStroke(penLine.getWidth()*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+    	    g2d.setColor(new Color(40, 123, 144, 80)); //////////////////
+            g2d.setStroke(new BasicStroke(penLine.getPenWidth()*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     	    g2d.drawPolyline(
     	    		penLine.getXList().stream().mapToInt(x -> x*5).toArray(),
             		penLine.getYList().stream().mapToInt(y -> y*5).toArray(),
@@ -205,8 +204,7 @@ public class DrawPanel extends JPanel {
         for(PenLine penLine: penLineLists.get(pageIndex)){
             addPolyLine(penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
                     penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
-                    penLine.getXList().size(),
-                    penLine.getWidth());
+                    penLine.getXList().size());
         }
     }
     

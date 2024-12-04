@@ -1,5 +1,6 @@
 package StateModel;
 
+import java.awt.Color;
 import java.io.File;
 
 import drawing.NoteFrame;
@@ -20,6 +21,12 @@ public class StateModel {
 	private int imageHeight;
 	private static String lineString;
 	private String noteTitle;
+	@Getter
+	@Setter
+	private Color penColor;
+	@Getter
+	@Setter
+	private int penWidth;
 
 	@Getter
 	@Setter

@@ -1,6 +1,8 @@
 package service;
 
 
+import java.awt.Color;
+
 import StateModel.StateModel;
 import drawing.NoteFrame;
 import global.BtParser;
@@ -75,13 +77,13 @@ public class DrawService {
 								penLine.getX2List(),
 								penLine.getY2List(),
 								2,
-								penLine.getWidth());
+								penLine.getPenWidth());
 					} else {
 						noteFrame.addPolyLine(
 								penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
 								penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
 								size,
-								penLine.getWidth());
+								penLine.getPenWidth());
 					}
 					long endTime = System.nanoTime(); // 성능 측정 완료
 					//System.out.println((endTime - startTime)); // 성능 시간 출력
@@ -93,6 +95,39 @@ public class DrawService {
 					noteFrame.eraseLine(eraserPoint.getX(), eraserPoint.getY(), eraserPoint.getWidth());
 					noteFrame.setEraserLoc(eraserPoint.getX(), eraserPoint.getY(), (int) eraserPoint.getWidth()*2);
 				}
+			}
+			case HEADER_WIDTH -> {
+				switch(msg.split("&&")[1]) {
+					case "ss" -> {
+						penLine.setPenWidth(2);
+						state.setPenWidth(2);
+					}
+					case "s" -> {
+						penLine.setPenWidth(4);
+						state.setPenWidth(4);
+					}
+					case "m" -> {
+						penLine.setPenWidth(6);
+						state.setPenWidth(6);
+					}
+					case "l" -> {
+						penLine.setPenWidth(8);
+						state.setPenWidth(8);
+					}
+					case "ll" -> {
+						penLine.setPenWidth(10);
+						state.setPenWidth(10);
+					}
+				}
+			}
+			case HEADER_COLOR -> {
+				int transparency = Integer.parseInt(msg.split("&&")[1].substring(0,2), 16);
+				int colorRed = Integer.parseInt(msg.split("&&")[1].substring(2, 4), 16);
+				int colorGreen = Integer.parseInt(msg.split("&&")[1].substring(4, 6), 16);
+				int colorBlue = Integer.parseInt(msg.split("&&")[1].substring(6, 8), 16);
+				Color newColor = new Color(colorRed, colorGreen, colorBlue, transparency);
+				penLine.setPenColor(newColor);
+				state.setPenColor(newColor);
 			}
 		}
 
