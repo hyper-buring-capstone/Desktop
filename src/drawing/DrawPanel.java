@@ -185,7 +185,7 @@ public class DrawPanel extends JPanel {
         Iterator<PenLine> iterator = penLineLists.get(pageIndex).iterator();
     	while (iterator.hasNext()) {
     	    PenLine penLine = iterator.next();
-    	    g2d.setColor(new Color(40, 123, 144, 80)); //////////////////
+    	    g2d.setColor(penLine.getPenColor());
             g2d.setStroke(new BasicStroke(penLine.getPenWidth()*scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     	    g2d.drawPolyline(
     	    		penLine.getXList().stream().mapToInt(x -> x*5).toArray(),

@@ -101,13 +101,32 @@ public class PenLine {
         // END
 
         String hex = String.format("%02X%02X%02X%02X",
+        		penColor.getAlpha(),
                 penColor.getRed(),
                 penColor.getGreen(),
-                penColor.getBlue(),
-                penColor.getAlpha());
+                penColor.getBlue());
 
+        String width = "";
+        switch(penWidth) {
+        	case 2 -> {
+        		width = "ss";
+        	}
+        	case 4 -> {
+        		width = "s";
+        	}
+        	case 6 -> {
+        		width = "m";
+        	}
+        	case 8 -> {
+        		width = "l";
+        	}
+        	case 10 -> {
+        		width = "ll";
+        	}
+        }
+        
         String data="HEADER\n"
-                + penWidth +" "+ hex +" "+page+"\n";
+                + width +" "+ hex +" "+page+"\n";
 
         for(int i=0; i<xList.size(); i++){
             data=data.concat(xList.get(i) +" "+ yList.get(i)+"\n");
