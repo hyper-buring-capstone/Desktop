@@ -84,6 +84,10 @@ public class ThumbnailPanel extends JPanel implements Runnable {
                 noteFrame.setVisible(true);
                 loadingFrame.dispose();
             }
+            if(i == imageList.size()-1 && state.getNoteOpen() && i < 5) {
+                noteFrame.setVisible(true);
+                loadingFrame.dispose();
+            }
         }
         if(!state.getNoteOpen()) {
         	noteFrame.setVisible(false);
