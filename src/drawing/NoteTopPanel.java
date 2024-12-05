@@ -30,14 +30,14 @@ public class NoteTopPanel extends JPanel {
 
 
         pageMoveTextField = new PageMoveTextField(state, pdfPanel, drawPanel);
-        JButton nextPageBtn=new NextPageBtn(state, pdfPanel, drawPanel, pageMoveTextField);
-        nextPageBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-        JButton prevPageBtn=new PrevPageBtn(state, pdfPanel, drawPanel, pageMoveTextField);
+//        JButton nextPageBtn=new NextPageBtn(state, pdfPanel, drawPanel, pageMoveTextField);
+//        nextPageBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
+//        JButton prevPageBtn=new PrevPageBtn(state, pdfPanel, drawPanel, pageMoveTextField);
 
         JButton saveBtn=new SaveBtn(drawPanel);
 
-        add(prevPageBtn); //이전 버튼
-        add(nextPageBtn); //다음 버튼
+//        add(prevPageBtn); //이전 버튼
+//        add(nextPageBtn); //다음 버튼
         add(pageMoveTextField); //페이지 무빙
         add(new JLabel("/ "+ pdfPanel.getTotalPageNum() + " "));
         add(saveBtn); // 저장 버튼
