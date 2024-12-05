@@ -72,6 +72,9 @@ public class ThumbnailPanel extends JPanel implements Runnable {
 
         setPreferredSize((new Dimension(200,200*imageList.size()))); //높이 추후에 수정해야 됨.
         for(int i=0; i<imageList.size(); i++){
+        	if(!state.getNoteOpen()) {
+        		break;
+        	}
             ThumbnailBtn thumbnailBtn=new ThumbnailBtn(i, imageList.get(i)); //개당 0.2초
             thumbnailBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
             add(thumbnailBtn);
@@ -82,7 +85,9 @@ public class ThumbnailPanel extends JPanel implements Runnable {
                 loadingFrame.dispose();
             }
         }
-        noteFrame.setVisible(true);
+        if(!state.getNoteOpen()) {
+        	noteFrame.setVisible(false);
+        }
         loadingFrame.dispose();
     }
 
