@@ -118,7 +118,7 @@ public class NoteFrame extends JFrame {
 
 
         // 노트 페이지 썸네일 리스트를 담은 스크롤 페인
-        ThumbnailPanel thumbnailPanel=new ThumbnailPanel(state,note);
+        ThumbnailPanel thumbnailPanel=new ThumbnailPanel(state,note,this);
         JScrollPane thumbnailScrollPane=new JScrollPane(thumbnailPanel
                 ,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
                 ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -131,7 +131,7 @@ public class NoteFrame extends JFrame {
         add(noteTopPanel, BorderLayout.NORTH);
         add(thumbnailScrollPane, BorderLayout.WEST);
 
-        setVisible(true);
+        //setVisible(true);
         setTitle(note.getTitle());
 
         homeFrame.setVisible(false);

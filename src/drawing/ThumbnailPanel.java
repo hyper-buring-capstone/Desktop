@@ -1,6 +1,7 @@
 package drawing;
 
 import StateModel.StateModel;
+import home.LoadingFrame;
 import model.Note;
 import service.FileService;
 
@@ -21,9 +22,12 @@ public class ThumbnailPanel extends JPanel implements Runnable {
     List<Image> imageList;
     Note note;
     StateModel state;
-    public ThumbnailPanel(StateModel state, Note note){
+    LoadingFrame loadingFrame;
+    NoteFrame noteFrame;
+    public ThumbnailPanel(StateModel state, Note note, NoteFrame noteFrame){
         this.note=note;
         this.state=state;
+        this.noteFrame=noteFrame;
 
         //setBackground(Color.white);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // 세로 방향 나열
@@ -33,7 +37,9 @@ public class ThumbnailPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(200,0));
 
 
-
+        //로딩창 띄우기 위해.
+        noteFrame.setVisible(false);
+         loadingFrame=new LoadingFrame();
 
 
         Thread thread=new Thread(this);
@@ -44,14 +50,24 @@ public class ThumbnailPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
+
         imageList= FileService.getImagesByTitle(note.getTitle()); //시간 체크 48p 기준 2.8초
+
+        loadingFrame.setLoadingText("페이지를 구성하는 중이에요");
+
         setPreferredSize((new Dimension(200,200*imageList.size()))); //높이 추후에 수정해야 됨.
         for(int i=0; i<imageList.size(); i++){
             JButton thumbnailBtn=new ThumbnailBtn(i, imageList.get(i)); //개당 0.2초
             thumbnailBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
             add(thumbnailBtn);
             revalidate();
+            if(i==5) {
+                noteFrame.setVisible(true);
+                loadingFrame.dispose();
+            }
         }
+        noteFrame.setVisible(true);
+        loadingFrame.dispose();
     }
 
 
