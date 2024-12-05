@@ -125,6 +125,12 @@ public class ThumbnailPanel extends JPanel implements Runnable {
             }
             ImageIcon thumbNailIcon=new ImageIcon(thumbnail); //정확히는 여기서 시간 많이 소요됨. 0.2초정도
             JLabel thumbNailLabel=new JLabel(thumbNailIcon);
+            
+            // 사이즈 고정
+            thumbNailLabel.setPreferredSize(new Dimension(150, 150));
+            thumbNailLabel.setMaximumSize(new Dimension(150, 150));
+            thumbNailLabel.setMinimumSize(new Dimension(150, 150));
+
             thumbNailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             //번호
