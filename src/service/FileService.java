@@ -272,19 +272,19 @@ public class FileService {
                     int width = 0;
     				switch(info.split(" ")[0]) {
 						case "ss" -> {
-							width = 2;
+							width = 3;
 						}
 						case "s" -> {
-							width = 4;
+							width = 5;
 						}
 						case "m" -> {
-							width = 6;
+							width = 10;
 						}
 						case "l" -> {
-							width = 8;
+							width = 20;
 						}
 						case "ll" -> {
-							width = 10;
+							width = 30;
 						}
     				}
                     Color color=new Color((int) HexFormat.fromHexDigitsToLong(info.split(" ")[1]),true); //색상

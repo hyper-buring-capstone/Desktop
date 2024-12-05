@@ -103,19 +103,19 @@ public class DrawService {
 			case HEADER_WIDTH -> {
 				switch(msg.split("&&")[1].trim()) {
 					case "ss" -> {
-						state.setPenWidth(2);
+						state.setPenWidth(3);
 					}
 					case "s" -> {
-						state.setPenWidth(4);
+						state.setPenWidth(5);
 					}
 					case "m" -> {
-						state.setPenWidth(6);
+						state.setPenWidth(10);
 					}
 					case "l" -> {
-						state.setPenWidth(8);
+						state.setPenWidth(20);
 					}
 					case "ll" -> {
-						state.setPenWidth(10);
+						state.setPenWidth(30);
 					}
 				}
 			}
