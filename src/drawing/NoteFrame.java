@@ -40,6 +40,8 @@ public class NoteFrame extends JFrame {
 
     ControlPanel controlPanel;
 
+    NoteTopPanel noteTopPanel;
+
     public NoteFrame(StateModel state, Note note, HomeFrame homeFrame) throws IOException {
         this.state = state;
         setTitle("drawing");
@@ -57,6 +59,13 @@ public class NoteFrame extends JFrame {
         // 닫을 때 행동
         addWindowListener(windowAdapter);
 
+    }
+
+    public void setPageIndex(int pageIndex) {
+        pdfPanel.setPageIndex(pageIndex);
+        drawPanel.setPageIndex(pageIndex);
+        noteTopPanel.setPageIndex(pageIndex);
+        repaint();
     }
 
     private void initUI(Note note) throws IOException {
@@ -90,7 +99,7 @@ public class NoteFrame extends JFrame {
 
 
         // 상단 버튼 레이아웃 추가
-        NoteTopPanel noteTopPanel =new NoteTopPanel(state, pdfPanel, drawPanel);
+         noteTopPanel =new NoteTopPanel(state, pdfPanel, drawPanel);
         jLayeredPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
@@ -99,7 +108,7 @@ public class NoteFrame extends JFrame {
         jLayeredPane.add(controlPanel, JLayeredPane.MODAL_LAYER); //같이 설치해도 되나? 테스트 필요.
 
 
-        //스크롤 페인
+        // 노트 페이지의 스크롤 페인
         JScrollPane jScrollPane=new JScrollPane(jLayeredPane);
         jScrollPane.setVerticalScrollBarPolicy(jScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setHorizontalScrollBarPolicy(jScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -107,12 +116,23 @@ public class NoteFrame extends JFrame {
 //        jScrollPane.setMaximumSize(new Dimension(1000,8000));
 //        jScrollPane.setPreferredSize(new Dimension(1000,8000));
 
+
+
+        // 노트 페이지 썸네일 리스트를 담은 스크롤 페인
+        ThumbnailPanel thumbnailPanel=new ThumbnailPanel(state,note,this);
+        JScrollPane thumbnailScrollPane=new JScrollPane(thumbnailPanel
+                ,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+                ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        thumbnailScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
+
+
         addWindowListener(windowAdapter); //창 닫을 때 행동.
 
         add(jScrollPane, BorderLayout.CENTER);
         add(noteTopPanel, BorderLayout.NORTH);
+        add(thumbnailScrollPane, BorderLayout.WEST);
 
-        setVisible(true);
+        //setVisible(true);
         setTitle(note.getTitle());
 
         homeFrame.setVisible(false);

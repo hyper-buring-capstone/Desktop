@@ -26,6 +26,16 @@ public class StateModel {
 	@Getter
 	@Setter
 	private int totalPage;
+
+	// 페이지 이동을 한 곳에서 관리.
+	public void setPageIndex(int pageIndex){
+		if(pageIndex<0 || pageIndex>=totalPage){
+			return;
+		}
+		else{
+			noteFrame.setPageIndex(pageIndex);
+		}
+	}
 	
 	public void setNoteOpen(boolean isOpen) {
 		isNoteOpen = isOpen;

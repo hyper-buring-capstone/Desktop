@@ -72,5 +72,10 @@ public class PageMoveTextField extends JTextField {
 
     }
 
+    public void setPageIndex(int pageIndex){
+       setText(String.valueOf(pageIndex+1));
+       repaint();
+    }
+
 
 }
