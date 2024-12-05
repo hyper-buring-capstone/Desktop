@@ -52,6 +52,6 @@ public class NoteTopPanel extends JPanel {
     }
 
     public void setPageIndex(int index){
-        pageMoveTextField.setPageIndex(index);
+        pageNumLabel.setText("" + (index + 1));
     }
 }
