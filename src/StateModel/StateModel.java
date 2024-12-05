@@ -1,5 +1,6 @@
 package StateModel;
 
+import java.awt.Color;
 import java.io.File;
 
 import drawing.NoteFrame;
@@ -20,7 +21,8 @@ public class StateModel {
 	private int imageHeight;
 	private static String lineString;
 	private String noteTitle;
-
+	private Color penColor = new Color(255, 255, 255, 255);
+	private int penWidth = 5;
 	@Getter
 	@Setter
 	private int totalPage;
@@ -105,5 +107,21 @@ public class StateModel {
 	
 	public String getNoteTitle() {
 		return noteTitle;
+	}
+	
+	public void setPenWidth(int width) {
+		this.penWidth = width;
+	}
+	
+	public int getPenWidth() {
+		return penWidth;
+	}
+	
+	public void setPenColor(Color color) {
+		this.penColor = color;
+	}
+	
+	public Color getPenColor() {
+		return penColor;
 	}
 }

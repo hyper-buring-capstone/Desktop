@@ -21,6 +21,7 @@ import service.FileService;
 import service.ServerService;
 
 import java.awt.*;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
@@ -152,6 +153,26 @@ public class NoteFrame extends JFrame {
         //repaint();
 
     }
+    
+//    //마우스 휠 설정
+//    MouseWheelListener mouseWheelListener = new MouseWheelListener() {
+//        @Override
+//        public void mouseWheelMoved(MouseWheelEvent e) {
+//            wheelAccumulated[0] += e.getWheelRotation(); // 휠 회전량 누적
+//            System.out.println("Accumulated: " + wheelAccumulated[0]);
+//
+//            // 임계값을 초과하면 페이지 변경
+//            if (wheelAccumulated[0] >= threshold) {
+//                currentPage[0]++;
+//                wheelAccumulated[0] = 0; // 누적값 초기화
+//                label.setText("Page: " + currentPage[0]);
+//            } else if (wheelAccumulated[0] <= -threshold) {
+//                currentPage[0] = Math.max(1, currentPage[0] - 1); // 페이지 최소값 1로 제한
+//                wheelAccumulated[0] = 0; // 누적값 초기화
+//                label.setText("Page: " + currentPage[0]);
+//            }
+//        }
+//    };
 
     //윈도우 창 닫기 설정
     WindowAdapter windowAdapter=new WindowAdapter() {
@@ -215,7 +236,7 @@ public class NoteFrame extends JFrame {
 //    }
 
     public void addPolyLine(int[] xList, int[] yList, int n, float width){
-    	drawPanel.addPolyLine(xList, yList, n, width);
+    	drawPanel.addPolyLine(xList, yList, n);
         repaint();
     }
     

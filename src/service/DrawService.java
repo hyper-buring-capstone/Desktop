@@ -1,6 +1,8 @@
 package service;
 
 
+import java.awt.Color;
+
 import StateModel.StateModel;
 import drawing.NoteFrame;
 import global.BtParser;
@@ -22,12 +24,15 @@ public class DrawService {
 
 
     public  void drawProcess(String msg, NoteFrame noteFrame){
+    	System.out.println(msg);
 		MsgType msgType=BtParser.getMsgType(msg); //여러 번 조건문 돌면 오버헤드 발생. 최적화했음.
 		// msg의 타입은 무조건 btparser에서 알아오도록 변경(로직 최적화).
 
 		switch (msgType){
 			case HEADER_PEN -> {
 				penLine=new PenLine(); //새 선 객체 생성함.
+				penLine.setPenColor(state.getPenColor());
+				penLine.setPenWidth(state.getPenWidth());
 				noteFrame.callAddPenLine(penLine);
             }
 			case HEADER_ERASER -> {
@@ -61,6 +66,7 @@ public class DrawService {
 			}
 			case POINT -> {
 				if(!isEraser) {
+					System.out.println("혹시 지금 점찍힘?");
 					//컨트롤 박스 offset 보정.
 					/**
 					 * offset 보정을 해도 성능에 영향 없음을 확인함.
@@ -75,13 +81,13 @@ public class DrawService {
 								penLine.getX2List(),
 								penLine.getY2List(),
 								2,
-								penLine.getWidth());
+								penLine.getPenWidth());
 					} else {
 						noteFrame.addPolyLine(
 								penLine.getXList().stream().mapToInt(Integer::intValue).toArray(),
 								penLine.getYList().stream().mapToInt(Integer::intValue).toArray(),
 								size,
-								penLine.getWidth());
+								penLine.getPenWidth());
 					}
 					long endTime = System.nanoTime(); // 성능 측정 완료
 					//System.out.println((endTime - startTime)); // 성능 시간 출력
@@ -93,6 +99,34 @@ public class DrawService {
 					noteFrame.eraseLine(eraserPoint.getX(), eraserPoint.getY(), eraserPoint.getWidth());
 					noteFrame.setEraserLoc(eraserPoint.getX(), eraserPoint.getY(), (int) eraserPoint.getWidth()*2);
 				}
+			}
+			case HEADER_WIDTH -> {
+				switch(msg.split("&&")[1].trim()) {
+					case "ss" -> {
+						state.setPenWidth(3);
+					}
+					case "s" -> {
+						state.setPenWidth(5);
+					}
+					case "m" -> {
+						state.setPenWidth(10);
+					}
+					case "l" -> {
+						state.setPenWidth(20);
+					}
+					case "ll" -> {
+						state.setPenWidth(30);
+					}
+				}
+			}
+			case HEADER_COLOR -> {
+				System.out.println("컬러?");
+				int transparency = Integer.parseInt(msg.split("&&")[1].substring(0,2), 16);
+				int colorRed = Integer.parseInt(msg.split("&&")[1].substring(2, 4), 16);
+				int colorGreen = Integer.parseInt(msg.split("&&")[1].substring(4, 6), 16);
+				int colorBlue = Integer.parseInt(msg.split("&&")[1].substring(6, 8), 16);
+				Color newColor = new Color(colorRed, colorGreen, colorBlue, transparency);
+				state.setPenColor(newColor);
 			}
 		}
 

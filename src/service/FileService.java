@@ -207,7 +207,7 @@ public class FileService {
                     String[] headerParts = line.split(" ");
                     if (headerParts[2].equals(Integer.toString(targetPageNumber))) {
                     	result += "{";
-                    	result += "\"fontsize\" : " + headerParts[0] + ",";
+                    	result += "\"fontsize\" : " + "\"" + headerParts[0]+ "\"" + ",";
                     	result += "\"color\" : " + "\"" + headerParts[1] + "\"" + ",";
                     	result += "\"data\" : " + "[";
                         isLine = true;
@@ -268,11 +268,28 @@ public class FileService {
             while ((str = reader.readLine()) != null) { //한 줄씩 읽어 str에 저장.
                 if(str.equals("HEADER")){ //선의 시작이므로 새 선 객체를 생성함.
                     String info= reader.readLine(); //다음 줄을 읽어 정보를 불러옴.
-                    float width=Float.parseFloat(info.split(" ")[0]); //두께
+                    int width = 0;
+    				switch(info.split(" ")[0]) {
+						case "ss" -> {
+							width = 3;
+						}
+						case "s" -> {
+							width = 5;
+						}
+						case "m" -> {
+							width = 10;
+						}
+						case "l" -> {
+							width = 20;
+						}
+						case "ll" -> {
+							width = 30;
+						}
+    				}
                     Color color=new Color((int) HexFormat.fromHexDigitsToLong(info.split(" ")[1]),true); //색상
                     pageNum=Integer.parseInt(info.split(" ")[2]); //페이지
                     penLine=new PenLine().builder()
-                            .width(width)
+                            .penWidth(width)
                             .penColor(color)
                             .xList(new ArrayList<>())
                             .yList(new ArrayList<>())
