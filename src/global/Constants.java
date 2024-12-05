@@ -17,7 +17,8 @@ public enum Constants {
     public static final Dimension FRAME_SIZE=new Dimension(1000,800);
 
         //색상 관련
-    public static final Color FILE_OPEN_BUTTON_COLOR=new Color(17, 112, 173);
+//    public static final Color FILE_OPEN_BUTTON_COLOR=new Color(17, 112, 173);
+    public static final Color FILE_OPEN_BUTTON_COLOR=new Color(240, 120, 42);
 
         //이미지 경로 관련
         public static final String NEXT_ICON_PATH="src/icon/next.png";
