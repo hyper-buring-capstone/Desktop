@@ -9,6 +9,7 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import StateModel.StateModel;
 import home.HomeFrame;
@@ -122,6 +123,7 @@ public class NoteFrame extends JFrame {
         jLayeredPane.add(controlPanel, JLayeredPane.MODAL_LAYER); //같이 설치해도 되나? 테스트 필요.
 
 
+
         // 노트 페이지의 스크롤 페인
         JScrollPane jScrollPane=new JScrollPane(jLayeredPane);
         jScrollPane.setVerticalScrollBarPolicy(jScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -142,8 +144,31 @@ public class NoteFrame extends JFrame {
 
         addWindowListener(windowAdapter); //창 닫을 때 행동.
 
-        add(jScrollPane, BorderLayout.CENTER);
-        add(noteTopPanel, BorderLayout.NORTH);
+
+        //플로팅 패널
+        FloatingPanel floatingPanel=new FloatingPanel();
+        // 플로팅 패널을 위한 적재 패널 생성
+        JLayeredPane floatingLayeredPane=new JLayeredPane();
+        floatingLayeredPane.setLayout(null);
+
+//        floatingPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+//        floatingPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Toolkit toolkit=Toolkit.getDefaultToolkit();
+        Dimension screenSize=toolkit.getScreenSize();
+        floatingPanel.setBounds(500,50,300,50);
+        jScrollPane.setBounds(0,10, (int) screenSize.getWidth()-200,(int) screenSize.getHeight());
+        //floatingPanel.
+
+//        floatingLayeredPane.setLayout(null);
+//        floatingPanel.setBounds(50, 100, 200, 100);
+////        floatingPanel.setAlignmentX();
+//        jScrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        jScrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
+        floatingLayeredPane.add(floatingPanel, JLayeredPane.PALETTE_LAYER);
+        floatingLayeredPane.add(jScrollPane, JLayeredPane.DEFAULT_LAYER);
+
+        floatingLayeredPane.setBorder(new LineBorder(Color.blue));
+        add(floatingLayeredPane, BorderLayout.CENTER);
         add(thumbnailScrollPane, BorderLayout.WEST);
 
         //setVisible(true);
@@ -200,6 +225,7 @@ public class NoteFrame extends JFrame {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                 }
                 verticalScrollBar.setValue(0);
+
             } else if (e.getWheelRotation() < 0 && currentValue <= minValue) { 
                 // 휠 위로 -> 스크롤이 최소 범위에 도달했을 때
                 FileService.saveLines(drawPanel.getNote(),drawPanel.getPenLineLists()); //저장
@@ -221,6 +247,7 @@ public class NoteFrame extends JFrame {
                 // 기본 스크롤 동작 유지
                 scrollPane.dispatchEvent(e);
             }
+            repaint();
         }
     };
 

@@ -101,6 +101,7 @@ public class NotePanel extends JButton {
 
 
         add(thumbNailLabel);
+        add(Box.createVerticalStrut(20)); // 라벨과 진행 막대 사이 여백)
         add(titleLabel);
         add(modifiedLabel);
 

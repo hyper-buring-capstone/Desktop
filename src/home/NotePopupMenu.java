@@ -32,8 +32,8 @@ public class NotePopupMenu extends JPopupMenu {
         item3.addActionListener(actionListener);
 
         // 메뉴에 아이템 추가
-        add(item1);
-        add(item2);
+//        add(item1);
+//        add(item2);
         add(item3);
 
 
