@@ -112,7 +112,12 @@ public class ThumbnailPanel extends JPanel implements Runnable {
             setBackground(new Color(0,0,0,0));
 
             // 이미지
-            thumbnail=thumbnail.getScaledInstance(150,150,Image.SCALE_AREA_AVERAGING); //크기 조정
+            if(state.getImageWidth() < state.getImageHeight()) {
+                thumbnail=thumbnail.getScaledInstance((150*state.getImageWidth())/state.getImageHeight(),150,Image.SCALE_AREA_AVERAGING); //크기 조정
+            }
+            else {
+                thumbnail=thumbnail.getScaledInstance(150, (150*state.getImageHeight())/state.getImageWidth(),Image.SCALE_AREA_AVERAGING); //크기 조정
+            }
             ImageIcon thumbNailIcon=new ImageIcon(thumbnail); //정확히는 여기서 시간 많이 소요됨. 0.2초정도
             JLabel thumbNailLabel=new JLabel(thumbNailIcon);
             thumbNailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

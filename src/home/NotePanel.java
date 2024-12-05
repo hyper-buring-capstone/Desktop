@@ -82,9 +82,20 @@ public class NotePanel extends JButton {
 
         //썸네일
         //여기서 시간 많이 소요됨. //average: 0.25~0.3초 ,fast: 0.16초 내외. 근데 화질 너무깨짐.
-        Image thumbNail=note.getThumbNail().getScaledInstance(150,150,Image.SCALE_AREA_AVERAGING); //썸네일 축소. 속도 따라서 알고리즘 조정해.
+        Image thumbNail = null;
+        if(note.getThumbNail().getWidth(null) < note.getThumbNail().getHeight(null)) {
+            thumbNail=note.getThumbNail().getScaledInstance((150*note.getThumbNail().getWidth(null))/note.getThumbNail().getHeight(null),150,Image.SCALE_AREA_AVERAGING); //크기 조정
+        }
+        else {
+            thumbNail=note.getThumbNail().getScaledInstance(150, (150*note.getThumbNail().getHeight(null))/note.getThumbNail().getWidth(null),Image.SCALE_AREA_AVERAGING); //크기 조정
+        }
         ImageIcon thumbNailIcon=new ImageIcon(thumbNail); //정확히는 여기서 시간 많이 소요됨. 0.2초정도
         JLabel thumbNailLabel=new JLabel(thumbNailIcon);
+        
+     // JLabel 크기 고정 (전체 크기를 150x150으로 맞춤)
+        thumbNailLabel.setPreferredSize(new Dimension(150, 150));
+        thumbNailLabel.setMaximumSize(new Dimension(150, 150));
+        thumbNailLabel.setMinimumSize(new Dimension(150, 150));
         thumbNailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
