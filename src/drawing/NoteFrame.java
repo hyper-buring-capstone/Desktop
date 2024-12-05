@@ -48,6 +48,8 @@ public class NoteFrame extends JFrame {
 
     NoteTopPanel noteTopPanel;
 
+    FloatingPanel floatingPanel;
+
     public NoteFrame(StateModel state, Note note, HomeFrame homeFrame) throws IOException {
         this.state = state;
         setTitle("drawing");
@@ -70,7 +72,7 @@ public class NoteFrame extends JFrame {
     public void setPageIndex(int pageIndex) {
         pdfPanel.setPageIndex(pageIndex);
         drawPanel.setPageIndex(pageIndex);
-        noteTopPanel.setPageIndex(pageIndex);
+        floatingPanel.setPageIndex(pageIndex);
         thumbnailPanel.setSelected(state.getCurPageNum());
         repaint();
     }
@@ -79,7 +81,6 @@ public class NoteFrame extends JFrame {
         // 기존 코드에 있던 UI 초기화 로직 그대로 유지
         // drawPanel 및 pdfPanel 초기화
         // LayeredPane, ScrollPane 설정
-    	setTitle("drawing");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //        setExtendedState(MAXIMIZED_BOTH); //전체 화면
         setSize(1200, 900);
@@ -120,7 +121,7 @@ public class NoteFrame extends JFrame {
 
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
         jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
-        jLayeredPane.add(controlPanel, JLayeredPane.MODAL_LAYER); //같이 설치해도 되나? 테스트 필요.
+        jLayeredPane.add(controlPanel, JLayeredPane.MODAL_LAYER); //같이 설치해도 되나? 테스트 필요. ㅇㅇ 됨.
 
 
 
@@ -146,7 +147,7 @@ public class NoteFrame extends JFrame {
 
 
         //플로팅 패널
-        FloatingPanel floatingPanel=new FloatingPanel();
+         floatingPanel=new FloatingPanel(state, pdfPanel, drawPanel);
         // 플로팅 패널을 위한 적재 패널 생성
         JLayeredPane floatingLayeredPane=new JLayeredPane();
         floatingLayeredPane.setLayout(null);
@@ -155,8 +156,8 @@ public class NoteFrame extends JFrame {
 //        floatingPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         Toolkit toolkit=Toolkit.getDefaultToolkit();
         Dimension screenSize=toolkit.getScreenSize();
-        floatingPanel.setBounds(500,50,300,50);
-        jScrollPane.setBounds(0,10, (int) screenSize.getWidth()-200,(int) screenSize.getHeight());
+        floatingPanel.setBounds(((int) screenSize.getWidth()-200)/2-150,50,320,70);
+        jScrollPane.setBounds(0,0, (int) screenSize.getWidth()-200,(int) screenSize.getHeight());
         //floatingPanel.
 
 //        floatingLayeredPane.setLayout(null);
@@ -180,6 +181,9 @@ public class NoteFrame extends JFrame {
         System.out.println(isDoubleBuffered());
     }
 
+    public void setPenColorAndWidth(Color color, int width ,boolean isPen){
+        floatingPanel.setColorAndWidth(color, width, isPen);
+    }
     //컨트롤 박스의 위치 설정
     public void setControlBoxLoc(int startX, int startY, int endX, int endY){
         controlPanel.setControlBoxLoc( startX,  startY,  endX,  endY);
@@ -219,7 +223,7 @@ public class NoteFrame extends JFrame {
                 pdfPanel.setPageIndex(curPage+1);
                 state.setCurPageNum(curPage+1);
                 thumbnailPanel.setSelected(state.getCurPageNum());
-                noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
+                floatingPanel.setPageIndex( (state.getCurPageNum() ));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
@@ -237,7 +241,7 @@ public class NoteFrame extends JFrame {
                 pdfPanel.setPageIndex(curPage-1);
                 state.setCurPageNum(curPage-1);
                 thumbnailPanel.setSelected(state.getCurPageNum());
-                noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
+                floatingPanel.setPageIndex(state.getCurPageNum());
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));

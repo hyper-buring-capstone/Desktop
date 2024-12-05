@@ -33,10 +33,12 @@ public class DrawService {
 				penLine=new PenLine(); //새 선 객체 생성함.
 				penLine.setPenColor(state.getPenColor());
 				penLine.setPenWidth(state.getPenWidth());
+				noteFrame.setPenColorAndWidth(state.getPenColor(), state. getPenWidth(), true);
 				noteFrame.callAddPenLine(penLine);
             }
 			case HEADER_ERASER -> {
 				eraserPoint = new EraserPoint(); // 새 지우개 포인트 생성.
+				noteFrame.setPenColorAndWidth(Color.BLACK, 30, false);
 				isEraser = true;
 			}
 			case HEADER_PANNING -> {

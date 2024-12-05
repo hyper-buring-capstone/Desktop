@@ -1,5 +1,6 @@
 package test;
 
+import drawing.SmoothShadowedPanel;
 import global.BtParser;
 import global.Constants;
 import home.LoadingFrame;
@@ -79,6 +80,28 @@ public class TestClass {
         // JPanel을 JFrame에 추가
         frame.add(panel);
         frame.setVisible(true);
+        while(true){
+
+        }
+
+
+    }
+
+    @Test
+    public void 그림자테스트(){
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Smooth Shadow Panel Demo");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(500, 400);
+            frame.setLayout(null);
+
+            SmoothShadowedPanel panel = new SmoothShadowedPanel();
+            panel.setBounds(50, 50, 400, 300); // 위치와 크기 설정
+            panel.setBackground(Color.WHITE); // 패널 배경색 설정
+            frame.add(panel);
+
+            frame.setVisible(true);
+        });
         while(true){
 
         }
