@@ -1,7 +1,13 @@
 package home;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import static global.Constants.APP_ICON_PATH;
+
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class LoadingFrame extends JFrame implements Runnable{
 
@@ -12,6 +18,12 @@ public class LoadingFrame extends JFrame implements Runnable{
         setUndecorated(true); // 기본 테두리 제거
         setSize(500, 300);
         setLocationRelativeTo(null); // 화면 중앙 배치
+        
+        try{
+            setIconImage(ImageIO.read(new File(APP_ICON_PATH)));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
         // 배경을 투명하게 설정
         setBackground(new Color(0, 0, 0, 0));

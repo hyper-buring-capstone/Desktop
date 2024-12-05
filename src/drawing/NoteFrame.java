@@ -4,6 +4,7 @@ import control.ControlPanel;
 import service.BluetoothServer;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.UUID;
+import javax.imageio.ImageIO;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -19,6 +20,8 @@ import model.PenLine;
 import service.DrawService;
 import service.FileService;
 import service.ServerService;
+
+import static global.Constants.APP_ICON_PATH;
 
 import java.awt.*;
 import java.awt.event.MouseWheelListener;
@@ -78,6 +81,12 @@ public class NoteFrame extends JFrame {
         setSize(1200, 900);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        
+        try{
+            setIconImage(ImageIO.read(new File(APP_ICON_PATH)));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
 
         //layeredPane 설정
