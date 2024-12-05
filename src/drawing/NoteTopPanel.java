@@ -29,7 +29,7 @@ public class NoteTopPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10 , 50 , 10 , 50));//내부 패딩
 
 
-        pageMoveTextField = new PageMoveTextField(state, pdfPanel, drawPanel);
+//        pageMoveTextField = new PageMoveTextField(state, pdfPanel, drawPanel);
 //        JButton nextPageBtn=new NextPageBtn(state, pdfPanel, drawPanel, pageMoveTextField);
 //        nextPageBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
 //        JButton prevPageBtn=new PrevPageBtn(state, pdfPanel, drawPanel, pageMoveTextField);
@@ -38,8 +38,8 @@ public class NoteTopPanel extends JPanel {
 
 //        add(prevPageBtn); //이전 버튼
 //        add(nextPageBtn); //다음 버튼
-        add(pageMoveTextField); //페이지 무빙
-        add(new JLabel("/ "+ pdfPanel.getTotalPageNum() + " "));
+//        add(pageMoveTextField); //페이지 무빙
+//        add(new JLabel("/ "+ pdfPanel.getTotalPageNum() + " "));
         add(saveBtn); // 저장 버튼
 
 

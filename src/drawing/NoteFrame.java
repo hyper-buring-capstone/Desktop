@@ -189,13 +189,13 @@ public class NoteFrame extends JFrame {
                 drawPanel.setPageIndex(curPage+1);
                 pdfPanel.setPageIndex(curPage+1);
                 state.setCurPageNum(curPage+1);
-                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage+2));
+//                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage+2));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                     System.out.println(state.getCurPageNum()+1);
                 }
-                verticalScrollBar.setValue(0);
+                verticalScrollBar.setValue(1);
             } else if (e.getWheelRotation() < 0 && currentValue <= minValue) { 
                 // 휠 위로 -> 스크롤이 최소 범위에 도달했을 때
             	System.out.println("되긴함");
@@ -207,12 +207,12 @@ public class NoteFrame extends JFrame {
                 drawPanel.setPageIndex(curPage-1);
                 pdfPanel.setPageIndex(curPage-1);
                 state.setCurPageNum(curPage-1);
-                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage));
+//                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                 }
-                verticalScrollBar.setValue(0);
+                verticalScrollBar.setValue(1);
             } else {
                 // 기본 스크롤 동작 유지
                 scrollPane.dispatchEvent(e);
