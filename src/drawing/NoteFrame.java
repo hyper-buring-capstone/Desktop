@@ -24,6 +24,7 @@ import service.ServerService;
 import static global.Constants.APP_ICON_PATH;
 
 import java.awt.*;
+import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -101,7 +102,7 @@ public class NoteFrame extends JFrame {
         // DrawPanel 페이지 사이즈 설정
         drawPanel = new DrawPanel(state, note);
 
-        controlPanel=new ControlPanel(state, note);
+        controlPanel=new ControlPanel(state, mouseWheelListener, note);
 
         //statemodel 초기화
         state.setTotalPage(pdfPanel.getTotalPageNum());
@@ -162,26 +163,122 @@ public class NoteFrame extends JFrame {
         //repaint();
 
     }
-    
+
+    //마우스 휠 설정
+    MouseWheelListener mouseWheelListener = new MouseWheelListener() {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent e) {
+        	JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
+            if (scrollPane == null) {
+                return; // 스크롤 페인이 없으면 아무 동작도 하지 않음
+            }
+            
+            JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+            int currentValue = verticalScrollBar.getValue();
+            int maxValue = verticalScrollBar.getMaximum() - verticalScrollBar.getVisibleAmount();
+            int minValue = verticalScrollBar.getMinimum();
+
+            if (e.getWheelRotation() > 0 && currentValue >= maxValue) { 
+                // 휠 아래로 -> 스크롤이 최대 범위에 도달했을 때
+            	System.out.println("되긴함");
+                int curPage= state.getCurPageNum();
+                int totalPage=pdfPanel.getTotalPageNum();
+                if(curPage>=totalPage-1){ //마지막 페이지인 경우.
+                    return;
+                }
+                drawPanel.setPageIndex(curPage+1);
+                pdfPanel.setPageIndex(curPage+1);
+                state.setCurPageNum(curPage+1);
+                noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
+//                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage+2));
+                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
+                if(state.getReceiver() != null) {
+                    state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                    System.out.println(state.getCurPageNum()+1);
+                }
+                verticalScrollBar.setValue(0);
+            } else if (e.getWheelRotation() < 0 && currentValue <= minValue) { 
+                // 휠 위로 -> 스크롤이 최소 범위에 도달했을 때
+            	System.out.println("되긴함");
+                int curPage= state.getCurPageNum();
+                int totalPage= pdfPanel.getTotalPageNum();
+                if(curPage<=0){ //첫 페이지인 경우
+                    return;
+                }
+                drawPanel.setPageIndex(curPage-1);
+                pdfPanel.setPageIndex(curPage-1);
+                state.setCurPageNum(curPage-1);
+                noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
+//                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage));
+                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
+                if(state.getReceiver() != null) {
+                    state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+                }
+                verticalScrollBar.setValue(maxValue);
+            } else {
+                // 기본 스크롤 동작 유지
+                scrollPane.dispatchEvent(e);
+            }
+        }
+    };
+//    // 현재 페이지와 휠 누적값
+//    int[] currentPage = {1}; // 현재 페이지
+//    int[] wheelAccumulated = {0}; // 휠 누적값
+//    int threshold = 10; // 임계값 (휠 회전)
+//    
 //    //마우스 휠 설정
 //    MouseWheelListener mouseWheelListener = new MouseWheelListener() {
 //        @Override
 //        public void mouseWheelMoved(MouseWheelEvent e) {
+//        	System.out.println("되긴함");
 //            wheelAccumulated[0] += e.getWheelRotation(); // 휠 회전량 누적
 //            System.out.println("Accumulated: " + wheelAccumulated[0]);
 //
 //            // 임계값을 초과하면 페이지 변경
 //            if (wheelAccumulated[0] >= threshold) {
-//                currentPage[0]++;
+//            	System.out.println("되긴함");
+//                int curPage= state.getCurPageNum();
+//                int totalPage=pdfPanel.getTotalPageNum();
+//                if(curPage>=totalPage-1){ //마지막 페이지인 경우.
+//                    return;
+//                }
+//                drawPanel.setPageIndex(curPage+1);
+//                pdfPanel.setPageIndex(curPage+1);
+//                state.setCurPageNum(curPage+1);
+//                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage+2));
+//                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
+//                if(state.getReceiver() != null) {
+//                    state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+//                    System.out.println(state.getCurPageNum()+1);
+//                }
+//
 //                wheelAccumulated[0] = 0; // 누적값 초기화
-//                label.setText("Page: " + currentPage[0]);
 //            } else if (wheelAccumulated[0] <= -threshold) {
-//                currentPage[0] = Math.max(1, currentPage[0] - 1); // 페이지 최소값 1로 제한
+//            	System.out.println("되긴함");
+//                int curPage= state.getCurPageNum();
+//                int totalPage= pdfPanel.getTotalPageNum();
+//                if(curPage<=0){ //첫 페이지인 경우
+//                    return;
+//                }
+//                drawPanel.setPageIndex(curPage-1);
+//                pdfPanel.setPageIndex(curPage-1);
+//                state.setCurPageNum(curPage-1);
+//                noteTopPanel.pageMoveTextField.setText(String.valueOf(curPage));
+//                state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
+//                if(state.getReceiver() != null) {
+//                    state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
+//                }
 //                wheelAccumulated[0] = 0; // 누적값 초기화
-//                label.setText("Page: " + currentPage[0]);
+//            }
+//            
+//            // 기본 스크롤 이벤트 전달
+//            JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
+//            if (scrollPane != null) {
+//                scrollPane.dispatchEvent(e);
 //            }
 //        }
 //    };
+
 
     //윈도우 창 닫기 설정
     WindowAdapter windowAdapter=new WindowAdapter() {
