@@ -11,7 +11,7 @@ public enum Constants {
     EMPTY("");
 
         //프로그램 명
-    public static final String APP_NAME="Phonote";
+    public static final String APP_NAME="LAVA";
 
     // 사이즈 관련
     public static final Dimension FRAME_SIZE=new Dimension(1000,800);
@@ -26,6 +26,7 @@ public enum Constants {
         public static final String PREV_ICON_PATH="src/icon/prev.png";
         public static final String SAVE_ICON_PATH="src/icon/save.png";
         public static final String APP_ICON_PATH="src/icon/fire_pen.png";
+        public static final String APP_UPSCAILING_ICON_PATH="src/icon/fire_pen_2.png";
 
         //파일 저장 경로 관련
     public static final String BASE_PATH="c:\\Phonote\\";

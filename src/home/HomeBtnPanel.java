@@ -3,11 +3,15 @@ package home;
 import home.button.FileOpenBtn;
 import lombok.Getter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
+import static global.Constants.APP_UPSCAILING_ICON_PATH;
 import static global.Constants.FONT_BOLD;
 
 /**
@@ -32,9 +36,22 @@ public class HomeBtnPanel extends JPanel {
         topPanel.setLayout(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(10 , 50 , 10 , 10));//내부 패딩
        // topPanel.setBorder(new LineBorder(Color.GREEN));
-        JLabel progLabel=new JLabel("Phonote");
+        
+        try {
+			Image icon = ImageIO.read(new File(APP_UPSCAILING_ICON_PATH));
+			icon = icon.getScaledInstance(30,30,Image.SCALE_AREA_AVERAGING);
+			ImageIcon LAVAIcon =new ImageIcon(icon);
+			
+			JLabel iconLabel = new JLabel(LAVAIcon);
+			topPanel.add(iconLabel, BorderLayout.WEST);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        JLabel progLabel=new JLabel("LAVA");
         progLabel.setFont(FONT_BOLD.deriveFont(50f));
-        topPanel.add(progLabel, BorderLayout.WEST);
+        progLabel.setForeground(new Color(242, 59, 60));
+        topPanel.add(progLabel, BorderLayout.CENTER);
 
         bottomPanel.setPreferredSize(new Dimension(0,100));
        //  bottomPanel.setMaximumSize(new Dimension(900,100));
