@@ -2,11 +2,14 @@ package control;
 
 import StateModel.StateModel;
 import model.Note;
+import service.FileService;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 
 
@@ -27,7 +30,7 @@ public class ControlPanel extends JPanel {
     StateModel state;
 
     int imgWidth, imgHeight;
-    public ControlPanel(StateModel state, Note note) {
+    public ControlPanel(StateModel state, MouseWheelListener mouseWheelListener, Note note) {
         //생성자
         this.state=state;
         this.imgHeight= state.getImageHeight();
@@ -41,6 +44,8 @@ public class ControlPanel extends JPanel {
         setPreferredSize(new Dimension(baseSize, baseSize*imgHeight/imgWidth));
         setMaximumSize(new Dimension(baseSize   , baseSize*imgHeight/imgWidth));
         setMinimumSize(new Dimension(baseSize   , baseSize*imgHeight/imgWidth));
+        
+        addMouseWheelListener(mouseWheelListener);
 
 
         //색상 투명화
@@ -75,7 +80,7 @@ public class ControlPanel extends JPanel {
         repaint();
 
     }
-
+    
 
     //이상하게 paintcomponent는 호출이 안 되고 paint만 호출이 됨 ;;
     // 좀 찾아보니깐 lightweight component (단순 그리기) 정도는 repaint -> update() -> paint() 의 스택을 가짐.
