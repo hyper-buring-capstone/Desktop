@@ -40,6 +40,7 @@ public class NoteFrame extends JFrame {
     private StateModel state;
     HomeFrame homeFrame;
     ThumbnailPanel thumbnailPanel;
+    JScrollPane thumbnailScrollPane;
 
     Note note;
 
@@ -134,7 +135,7 @@ public class NoteFrame extends JFrame {
 
         // 노트 페이지 썸네일 리스트를 담은 스크롤 페인
         thumbnailPanel=new ThumbnailPanel(state,note,this);
-        JScrollPane thumbnailScrollPane=new JScrollPane(thumbnailPanel
+        thumbnailScrollPane=new JScrollPane(thumbnailPanel
                 ,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
                 ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         thumbnailScrollPane.getVerticalScrollBar().setUnitIncrement(16); //스크롤바 속도 조정.
@@ -194,6 +195,10 @@ public class NoteFrame extends JFrame {
                 pdfPanel.setPageIndex(curPage+1);
                 state.setCurPageNum(curPage+1);
                 thumbnailPanel.setSelected(state.getCurPageNum());
+                JScrollBar thumbnailScrollBar = thumbnailScrollPane.getVerticalScrollBar();
+                if(state.getCurPageNum() > 3) {
+                	thumbnailScrollBar.setValue(Math.min((thumbnailScrollBar.getValue() + 200), thumbnailScrollBar.getMaximum()));
+                }
                 noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
@@ -211,6 +216,10 @@ public class NoteFrame extends JFrame {
                 pdfPanel.setPageIndex(curPage-1);
                 state.setCurPageNum(curPage-1);
                 thumbnailPanel.setSelected(state.getCurPageNum());
+                JScrollBar thumbnailScrollBar = thumbnailScrollPane.getVerticalScrollBar();
+                if(state.getCurPageNum() < pdfPanel.totalPageNum - 3) {
+                	thumbnailScrollBar.setValue(Math.max((thumbnailScrollBar.getValue() - 200), 0));
+                }
                 noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
