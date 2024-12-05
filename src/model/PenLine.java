@@ -108,19 +108,19 @@ public class PenLine {
 
         String width = "";
         switch(penWidth) {
-        	case 2 -> {
+        	case 3 -> {
         		width = "ss";
         	}
-        	case 4 -> {
+        	case 5 -> {
         		width = "s";
         	}
-        	case 6 -> {
+        	case 10 -> {
         		width = "m";
         	}
-        	case 8 -> {
+        	case 20 -> {
         		width = "l";
         	}
-        	case 10 -> {
+        	case 30 -> {
         		width = "ll";
         	}
         }
