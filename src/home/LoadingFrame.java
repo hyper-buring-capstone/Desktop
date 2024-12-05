@@ -19,7 +19,7 @@ public class LoadingFrame extends JFrame implements Runnable{
     public LoadingFrame(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true); // 기본 테두리 제거
-        setSize(500, 300);
+        setSize(400, 250);
         setLocationRelativeTo(null); // 화면 중앙 배치
         
         try{

@@ -33,8 +33,10 @@ public enum Constants {
         //폰트 경로
     public static final String FONT_REGULAR_PATH = "src/assets/fonts/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Regular.ttf";
     public static final String FONT_BOLD_PATH = "src/assets/fonts/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Bold.ttf";
+    public static final String FONT_LIGHT_PATH = "src/assets/fonts/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Light.ttf";
     public static final Font FONT_REGULAR;
     public static final Font FONT_BOLD;
+    public static final Font FONT_LIGHT;
 
     static {
          try {
@@ -51,6 +53,17 @@ public enum Constants {
         try {
             FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT,
                     new File(FONT_BOLD_PATH));
+        } catch (FontFormatException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static {
+        try {
+            FONT_LIGHT = Font.createFont(Font.TRUETYPE_FONT,
+                    new File(FONT_LIGHT_PATH));
         } catch (FontFormatException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
