@@ -3,6 +3,9 @@ package home;
 import javax.swing.*;
 import java.awt.*;
 
+import static global.Constants.FONT_BOLD;
+import static global.Constants.FONT_REGULAR;
+
 public class LoadingFrame extends JFrame implements Runnable{
 
     JProgressBar jpb;
@@ -37,7 +40,8 @@ public class LoadingFrame extends JFrame implements Runnable{
 
         // 내용 추가
          loadingLabel = new JLabel("노트를 불러오는 중이에요", SwingConstants.CENTER);
-        loadingLabel.setFont(new Font("맑은 고딕", Font.ITALIC, 20));
+
+        loadingLabel.setFont(FONT_REGULAR.deriveFont(Font.ITALIC,20.0f));
         contentPanel.add(loadingLabel, BorderLayout.CENTER);
 
         add(contentPanel);

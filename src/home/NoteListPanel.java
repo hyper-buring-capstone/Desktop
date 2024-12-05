@@ -76,7 +76,7 @@ public class NoteListPanel extends JPanel {
 
     public void addNote(Note newNote){
 
-        NotePanel notePanel=new NotePanel(state, newNote, this, homeFrame); //개당 0.25초 소요
+        NotePanel notePanel=new NotePanel(state, newNote, this, homeFrame); //개당 0.25초 소요                  
         notePanelList.add(notePanel);
         add(notePanel); //gui에 삽입
 

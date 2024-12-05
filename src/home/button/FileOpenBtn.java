@@ -29,8 +29,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static global.Constants.DATA_PATH;
-import static global.Constants.FILE_OPEN_BUTTON_COLOR;
+import static global.Constants.*;
 import static service.FileService.getNoteByTitle;
 
 
@@ -42,7 +41,7 @@ public class FileOpenBtn extends BaseButton {
         //setMaximumSize(new Dimension(100,50));
         setPreferredSize(new Dimension(110,10));
         setMaximumSize(new Dimension(110,10));
-        setFont(new Font("Times", Font.PLAIN, 15));
+        setFont(FONT_REGULAR.deriveFont(15.f));
         setForeground(Color.white);
         setBackground(FILE_OPEN_BUTTON_COLOR);
         setBorderPainted(false);

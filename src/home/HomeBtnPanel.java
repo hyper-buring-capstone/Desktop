@@ -8,6 +8,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+import static global.Constants.FONT_BOLD;
+
 /**
  * 메인 화면 상단의 버튼 리스트
  * (파일 불러오기 , 정렬, 설정 등)
@@ -31,7 +33,7 @@ public class HomeBtnPanel extends JPanel {
         topPanel.setBorder(BorderFactory.createEmptyBorder(10 , 50 , 10 , 10));//내부 패딩
        // topPanel.setBorder(new LineBorder(Color.GREEN));
         JLabel progLabel=new JLabel("Phonote");
-        progLabel.setFont(new Font("Times", Font.BOLD, 50));
+        progLabel.setFont(FONT_BOLD.deriveFont(50f));
         topPanel.add(progLabel, BorderLayout.WEST);
 
         bottomPanel.setPreferredSize(new Dimension(0,100));

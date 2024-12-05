@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static global.Constants.FONT_REGULAR;
 import static service.FileService.saveMeta;
 
 /**
@@ -68,13 +69,13 @@ public class NotePanel extends JButton {
         // 노트 객체로부터 gui 객체 생성
         //노트 제목
         JLabel titleLabel=new JLabel(note.getTitle());
-        titleLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+        titleLabel.setFont(FONT_REGULAR.deriveFont(15.f));
         titleLabel.setPreferredSize(new Dimension(150,50));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //노트 수정일
         modifiedLabel=new JLabel(note.getModified_at().toLocalDate().toString() + " ");
-        modifiedLabel.setFont(new Font("맑은 고딕", Font.ITALIC, 12));
+        modifiedLabel.setFont(FONT_REGULAR.deriveFont(12.f));
         modifiedLabel.setForeground(Color.gray);
         modifiedLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 

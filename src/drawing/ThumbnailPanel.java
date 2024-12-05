@@ -17,6 +17,8 @@ import java.util.List;
 //왼 쪽 썸네일 바로가기의 스크롤.
 //썸네일 불러올 때 다른 쓰레드에서 동기적으로 실행해야
 // 키면서 딜레이 없앨 수 있음.
+//
+
 public class ThumbnailPanel extends JPanel implements Runnable {
 
     List<Image> imageList;
