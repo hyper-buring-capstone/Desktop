@@ -53,7 +53,7 @@ public class ThumbnailPanel extends JPanel implements Runnable {
     @Override
     public void run() {
 
-        imageList= FileService.getImagesByTitle(note.getTitle()); //시간 체크 48p 기준 2.8초
+        imageList= FileService.getImagesByTitle(note.getTitle(), loadingFrame); //시간 체크 48p 기준 2.8초
 
         loadingFrame.setLoadingText("페이지를 구성하는 중이에요");
 

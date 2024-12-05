@@ -1,5 +1,6 @@
 package service;
 
+import home.LoadingFrame;
 import lombok.Synchronized;
 import model.Note;
 import model.PenLine;
@@ -392,6 +393,39 @@ public class FileService {
             for(File file:files){
 
                 imageList.add(ImageIO.read(file));
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+
+
+        return imageList;
+    }
+
+    public static List<Image> getImagesByTitle(String title, LoadingFrame loadingFrame){
+        List<Image> imageList=new ArrayList<>();
+
+
+        File[] files=new File(DATA_PATH+title+"\\images").listFiles();
+        // 숫자대로 정렬되도록 변경.
+        Comparator<File> comparator=new Comparator<File>() {
+            @Override
+            public int compare(File f1, File f2)
+            {
+                return Integer.parseInt(f1.getName().split("\\.")[0])-Integer.parseInt(f2.getName().split("\\.")[0]);
+            }
+        };
+
+        Arrays.sort(files, comparator);
+
+
+        try{
+            int size= files.length;
+            for(int i=0;i< size; i++){
+                loadingFrame.setLoadingValue(i,size);
+                imageList.add(ImageIO.read(files[i]));
+
             }
         }catch (IOException e){
             e.printStackTrace();

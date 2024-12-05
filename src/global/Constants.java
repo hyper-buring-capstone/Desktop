@@ -18,6 +18,7 @@ public enum Constants {
 
         //색상 관련
 //    public static final Color FILE_OPEN_BUTTON_COLOR=new Color(17, 112, 173);
+    public static final Color COLOR_ORANGE=new Color(240, 120, 42);
     public static final Color FILE_OPEN_BUTTON_COLOR=new Color(240, 120, 42);
 
         //이미지 경로 관련
