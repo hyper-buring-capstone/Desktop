@@ -29,7 +29,7 @@ public enum Constants {
         public static final String APP_UPSCAILING_ICON_PATH="src/icon/fire_pen_2.png";
 
         //파일 저장 경로 관련
-    public static final String BASE_PATH="c:\\Phonote\\";
+    public static final String BASE_PATH="c:\\LAVA\\";
     public static final String DATA_PATH=BASE_PATH+"data\\";
 
 
