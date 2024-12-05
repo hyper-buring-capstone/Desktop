@@ -21,7 +21,7 @@ public class EraserPoint extends Point{
     float width;
     
     public EraserPoint() {
-    	width = 5;
+    	width = 23;
     }
     
     public void movePoint(int x, int y) {

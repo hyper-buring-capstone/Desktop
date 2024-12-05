@@ -83,6 +83,8 @@ public class NoteFrame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // 전체 화면으로 설정
+        
         try{
             setIconImage(ImageIO.read(new File(APP_ICON_PATH)));
         }catch (IOException e){
