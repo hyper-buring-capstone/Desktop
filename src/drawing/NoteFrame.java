@@ -39,6 +39,7 @@ public class NoteFrame extends JFrame {
     PdfPanel pdfPanel;
     private StateModel state;
     HomeFrame homeFrame;
+    ThumbnailPanel thumbnailPanel;
 
     Note note;
 
@@ -69,6 +70,7 @@ public class NoteFrame extends JFrame {
         pdfPanel.setPageIndex(pageIndex);
         drawPanel.setPageIndex(pageIndex);
         noteTopPanel.setPageIndex(pageIndex);
+        thumbnailPanel.setSelected(state.getCurPageNum());
         repaint();
     }
 
@@ -131,7 +133,7 @@ public class NoteFrame extends JFrame {
 
 
         // 노트 페이지 썸네일 리스트를 담은 스크롤 페인
-        ThumbnailPanel thumbnailPanel=new ThumbnailPanel(state,note,this);
+        thumbnailPanel=new ThumbnailPanel(state,note,this);
         JScrollPane thumbnailScrollPane=new JScrollPane(thumbnailPanel
                 ,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
                 ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -191,6 +193,7 @@ public class NoteFrame extends JFrame {
                 drawPanel.setPageIndex(curPage+1);
                 pdfPanel.setPageIndex(curPage+1);
                 state.setCurPageNum(curPage+1);
+                thumbnailPanel.setSelected(state.getCurPageNum());
                 noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
@@ -207,6 +210,7 @@ public class NoteFrame extends JFrame {
                 drawPanel.setPageIndex(curPage-1);
                 pdfPanel.setPageIndex(curPage-1);
                 state.setCurPageNum(curPage-1);
+                thumbnailPanel.setSelected(state.getCurPageNum());
                 noteTopPanel.pageNumLabel.setText("" + (state.getCurPageNum() + 1));
                 state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
                 if(state.getReceiver() != null) {
