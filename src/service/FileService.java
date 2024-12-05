@@ -1,5 +1,6 @@
 package service;
 
+import lombok.Synchronized;
 import model.Note;
 import model.PenLine;
 import org.apache.pdfbox.Loader;
@@ -12,10 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HexFormat;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 import static global.Constants.BASE_PATH;
 import static global.Constants.DATA_PATH;
@@ -350,6 +349,40 @@ public class FileService {
         }
 
 
+    }
+
+    // 노트 제목을 인자로 받아 해당 노트의 모든 이미지를 반환.
+    // 새 쓰레드에서 작동.
+    // 이미지 read만 하므로 굳이 lock필요 없을 듯?
+    public static List<Image> getImagesByTitle(String title){
+        List<Image> imageList=new ArrayList<>();
+
+
+        File[] files=new File(DATA_PATH+title+"\\images").listFiles();
+        // 숫자대로 정렬되도록 변경.
+        Comparator<File> comparator=new Comparator<File>() {
+            @Override
+            public int compare(File f1, File f2)
+            {
+                return Integer.parseInt(f1.getName().split("\\.")[0])-Integer.parseInt(f2.getName().split("\\.")[0]);
+            }
+        };
+
+        Arrays.sort(files, comparator);
+
+
+        try{
+            for(File file:files){
+
+                imageList.add(ImageIO.read(file));
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+
+
+        return imageList;
     }
 
 

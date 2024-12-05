@@ -2,6 +2,7 @@ package test;
 
 import global.BtParser;
 import global.Constants;
+import home.LoadingFrame;
 import org.junit.Test;
 
 import static global.Constants.BASE_PATH;
@@ -28,5 +29,14 @@ public class TestClass {
         //경로 끝에 "\\" 있어도 생성 됨.
         createDirectory(BASE_PATH);
         createDirectory(DATA_PATH);
+    }
+
+    @Test
+    public void 로딩창띄우기(){
+        LoadingFrame loadingFrame=new LoadingFrame();
+        loadingFrame.setVisible(true);
+        while(true){
+            ;
+        }
     }
 }
