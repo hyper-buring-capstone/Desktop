@@ -11,8 +11,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-import static global.Constants.APP_UPSCAILING_ICON_PATH;
-import static global.Constants.FONT_BOLD;
+import static global.Constants.*;
 
 /**
  * 메인 화면 상단의 버튼 리스트
@@ -39,7 +38,7 @@ public class HomeBtnPanel extends JPanel {
         
         try {
 			Image icon = ImageIO.read(new File(APP_UPSCAILING_ICON_PATH));
-			icon = icon.getScaledInstance(30,30,Image.SCALE_AREA_AVERAGING);
+			icon = icon.getScaledInstance(70,70,Image.SCALE_AREA_AVERAGING);
 			ImageIcon LAVAIcon =new ImageIcon(icon);
 			
 			JLabel iconLabel = new JLabel(LAVAIcon);
@@ -48,18 +47,21 @@ public class HomeBtnPanel extends JPanel {
 			e.printStackTrace();
 		}
         
-        JLabel progLabel=new JLabel("LAVA");
-        progLabel.setFont(FONT_BOLD.deriveFont(50f));
+        JLabel progLabel=new JLabel(APP_NAME);
+        progLabel.setFont(FONT_REGULAR.deriveFont(50f));
         progLabel.setForeground(new Color(242, 59, 60));
+        progLabel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+//        progLabel.setVerticalAlignment(verticalAlignment);
         topPanel.add(progLabel, BorderLayout.CENTER);
 
         bottomPanel.setPreferredSize(new Dimension(0,100));
+//        bottomPanel.setPreferredSize(new Dimension(0,200));
        //  bottomPanel.setMaximumSize(new Dimension(900,100));
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.setBackground(Color.white);
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10 , 50 , 10 , 50));//내부 패딩
         JLabel myDocLabel=new JLabel("나의 문서");
-        myDocLabel.setFont(new Font("맑은 고딕", Font.BOLD, 30));
+        myDocLabel.setFont(FONT_REGULAR.deriveFont(30f));
 
 
         bottomPanel.add(myDocLabel, BorderLayout.WEST);

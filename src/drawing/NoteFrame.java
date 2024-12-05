@@ -9,6 +9,7 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import StateModel.StateModel;
 import home.HomeFrame;
@@ -48,6 +49,8 @@ public class NoteFrame extends JFrame {
 
     NoteTopPanel noteTopPanel;
 
+    FloatingPanel floatingPanel;
+
     public NoteFrame(StateModel state, Note note, HomeFrame homeFrame) throws IOException {
         this.state = state;
         setTitle("drawing");
@@ -70,7 +73,7 @@ public class NoteFrame extends JFrame {
     public void setPageIndex(int pageIndex) {
         pdfPanel.setPageIndex(pageIndex);
         drawPanel.setPageIndex(pageIndex);
-        noteTopPanel.setPageIndex(pageIndex);
+        floatingPanel.setPageIndex(pageIndex);
         thumbnailPanel.setSelected(state.getCurPageNum());
         repaint();
     }
@@ -120,7 +123,8 @@ public class NoteFrame extends JFrame {
 
         jLayeredPane.add(pdfPanel, JLayeredPane.DEFAULT_LAYER); // pdf를 밑에 배치
         jLayeredPane.add(drawPanel, JLayeredPane.PALETTE_LAYER); // 드로잉을 그 위에 배치
-        jLayeredPane.add(controlPanel, JLayeredPane.MODAL_LAYER); //같이 설치해도 되나? 테스트 필요.
+        jLayeredPane.add(controlPanel, JLayeredPane.MODAL_LAYER); //같이 설치해도 되나? 테스트 필요. ㅇㅇ 됨.
+
 
 
         // 노트 페이지의 스크롤 페인
@@ -143,8 +147,31 @@ public class NoteFrame extends JFrame {
 
         addWindowListener(windowAdapter); //창 닫을 때 행동.
 
-        add(jScrollPane, BorderLayout.CENTER);
-        add(noteTopPanel, BorderLayout.NORTH);
+
+        //플로팅 패널
+         floatingPanel=new FloatingPanel(state, pdfPanel, drawPanel);
+        // 플로팅 패널을 위한 적재 패널 생성
+        JLayeredPane floatingLayeredPane=new JLayeredPane();
+        floatingLayeredPane.setLayout(null);
+
+//        floatingPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+//        floatingPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Toolkit toolkit=Toolkit.getDefaultToolkit();
+        Dimension screenSize=toolkit.getScreenSize();
+        floatingPanel.setBounds(((int) screenSize.getWidth()-200)/2-150,50,320,70);
+        jScrollPane.setBounds(0,0, (int) screenSize.getWidth()-200,(int) screenSize.getHeight());
+        //floatingPanel.
+
+//        floatingLayeredPane.setLayout(null);
+//        floatingPanel.setBounds(50, 100, 200, 100);
+////        floatingPanel.setAlignmentX();
+//        jScrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        jScrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
+        floatingLayeredPane.add(floatingPanel, JLayeredPane.PALETTE_LAYER);
+        floatingLayeredPane.add(jScrollPane, JLayeredPane.DEFAULT_LAYER);
+
+        floatingLayeredPane.setBorder(new LineBorder(Color.blue));
+        add(floatingLayeredPane, BorderLayout.CENTER);
         add(thumbnailScrollPane, BorderLayout.WEST);
 
         //setVisible(true);
@@ -156,6 +183,9 @@ public class NoteFrame extends JFrame {
         System.out.println(isDoubleBuffered());
     }
 
+    public void setPenColorAndWidth(Color color, int width ,boolean isPen){
+        floatingPanel.setColorAndWidth(color, width, isPen);
+    }
     //컨트롤 박스의 위치 설정
     public void setControlBoxLoc(int startX, int startY, int endX, int endY){
         controlPanel.setControlBoxLoc( startX,  startY,  endX,  endY);
@@ -205,7 +235,8 @@ public class NoteFrame extends JFrame {
                     state.getReceiver().Sender("HEADER:PAGE&&" + (state.getCurPageNum()+1));
                 }
                 verticalScrollBar.setValue(0);
-            } else if (e.getWheelRotation() < 0 && currentValue <= minValue) { 
+
+            } else if (e.getWheelRotation() < 0 && currentValue <= minValue) {
                 // 휠 위로 -> 스크롤이 최소 범위에 도달했을 때
                 FileService.saveLines(drawPanel.getNote(),drawPanel.getPenLineLists()); //저장
                 int curPage= state.getCurPageNum();
@@ -230,6 +261,7 @@ public class NoteFrame extends JFrame {
                 // 기본 스크롤 동작 유지
                 scrollPane.dispatchEvent(e);
             }
+            repaint();
         }
     };
 
