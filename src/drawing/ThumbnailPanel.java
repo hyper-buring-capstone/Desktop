@@ -33,7 +33,7 @@ public class ThumbnailPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(200,0));
 
 
-        imageList= FileService.getImagesByTitle(note.getTitle()); //시간 체크 48p 기준 2.8초
+
 
 
         Thread thread=new Thread(this);
@@ -44,7 +44,7 @@ public class ThumbnailPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-
+        imageList= FileService.getImagesByTitle(note.getTitle()); //시간 체크 48p 기준 2.8초
         setPreferredSize((new Dimension(200,200*imageList.size()))); //높이 추후에 수정해야 됨.
         for(int i=0; i<imageList.size(); i++){
             JButton thumbnailBtn=new ThumbnailBtn(i, imageList.get(i)); //개당 0.2초
