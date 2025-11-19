@@ -1,5 +1,6 @@
 package service;
 
+import com.sun.source.tree.PatternTree;
 import home.LoadingFrame;
 import lombok.Synchronized;
 import model.Note;
@@ -9,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.html.parser.Parser;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -16,6 +18,7 @@ import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static global.Constants.BASE_PATH;
 import static global.Constants.DATA_PATH;
@@ -64,7 +67,9 @@ public class FileService {
 //              imageList.add(image); //리스트에 추가
 
                 //파일 디렉토리 구조에 추가.
-                File outputfile = new File(DATA_PATH+fileName+"\\images\\"+i+".jpg");
+                String pathname = DATA_PATH+fileName+File.separator+"images"+File.separator+i+".jpg";
+                System.out.println(pathname);
+                File outputfile = new File(pathname);
                 ImageIO.write(image, "jpg", outputfile);
             }
         } catch (IOException ex) {
@@ -81,7 +86,7 @@ public class FileService {
         String txt = "SOF\n"+fileName+"\n"+ LocalDateTime.now()+"\n"+"EOF"; //메타데이터 저장
 
 
-        String filePath=DATA_PATH+fileName+"\\meta.txt"; //경로 설정
+        String filePath=DATA_PATH+fileName+File.separator+"meta.txt"; //경로 설정
         try{
 
             // BufferedWriter 와 FileWriter를 조합하여 사용 (속도 향상)
@@ -106,7 +111,7 @@ public class FileService {
         String txt = "SOF\n"+fileName+"\n"+ LocalDateTime.now()+"\n"+"EOF"; //메타데이터 저장
 
 
-        String filePath=DATA_PATH+fileName+"\\meta.txt"; //경로 설정
+        String filePath=DATA_PATH+fileName+File.separator+"meta.txt"; //경로 설정
         try{
 
             // BufferedWriter 와 FileWriter를 조합하여 사용 (속도 향상)
@@ -129,7 +134,7 @@ public class FileService {
     public static Note getNoteByTitle(String title){
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(DATA_PATH+title+"\\meta.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(DATA_PATH+title+File.separator+"meta.txt"));
             List<String> metaData=new ArrayList<>(); //메타데이터 담는 리스트.
             String str;
             while ((str = reader.readLine()) != null) { //한 줄씩 읽는 메소드
@@ -137,7 +142,7 @@ public class FileService {
             }
             reader.close();
 
-            Image image=ImageIO.read(new File(DATA_PATH+title+"\\images\\0.jpg"));
+            Image image=ImageIO.read(new File(DATA_PATH+title+File.separator+"images"+File.separator+"0.jpg"));
             return new Note(image,title,LocalDateTime.parse(metaData.get(2))); //노트 생성
         }catch(IOException e){
             e.printStackTrace(); //추후 예외처리 할 것. 파일이 삭제되거나 하는 문제?
@@ -158,7 +163,7 @@ public class FileService {
 
             System.out.println(file.getPath());
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(file.getPath()+"\\meta.txt"));
+                BufferedReader reader = new BufferedReader(new FileReader(file.getPath()+File.separator+"meta.txt"));
                 List<String> metaData=new ArrayList<>(); //메타데이터 담는 리스트.
                 String str;
                 while ((str = reader.readLine()) != null) { //한 줄씩 읽는 메소드
@@ -167,7 +172,7 @@ public class FileService {
                 reader.close();
 
                 String title=metaData.get(1);
-                Image image=ImageIO.read(new File(DATA_PATH+title+"\\images\\0.jpg"));
+                Image image=ImageIO.read(new File(DATA_PATH+title+File.separator+"images"+File.separator+"0.jpg"));
                 noteList.add(new Note(image,title,LocalDateTime.parse(metaData.get(2)))); //노트 생성
             }catch(IOException e){
                 e.printStackTrace(); //추후 예외처리 할 것. 파일이 삭제되거나 하는 문제?
@@ -190,7 +195,7 @@ public class FileService {
 //        return lineString;
 //    }
     public static String getSpecificBlock(String noteTitle, int targetPageNumber, int imageWidth, int imageHeight) {
-        File file = new File(DATA_PATH + noteTitle + "\\lines.txt");
+        File file = new File(DATA_PATH + noteTitle + File.separator+"lines.txt");
         String result = "";
 
         try {
@@ -252,8 +257,8 @@ public class FileService {
         // 10 10 .. (points)
         // END
 
-        File file=new File(DATA_PATH+note.getTitle()+"\\lines.txt"); //선 정보가 저장된 파일 불러옴.
-        int totalPageNum= Objects.requireNonNull(new File(DATA_PATH + note.getTitle() + "\\images").listFiles()).length; //이미지 개수(=노트 페이지수)
+        File file=new File(DATA_PATH+note.getTitle()+File.separator+"lines.txt"); //선 정보가 저장된 파일 불러옴.
+        int totalPageNum= Objects.requireNonNull(new File(DATA_PATH + note.getTitle() + File.separator+"images").listFiles()).length; //이미지 개수(=노트 페이지수)
         List<List<PenLine>> penLineLists= new ArrayList<List<PenLine>>(totalPageNum);
 
         for(int i=0; i<totalPageNum; i++){
@@ -261,7 +266,7 @@ public class FileService {
         }
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(DATA_PATH+note.getTitle()+"\\lines.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(DATA_PATH+note.getTitle()+File.separator+"lines.txt"));
 
             String str;
             PenLine penLine = null;
@@ -328,7 +333,7 @@ public class FileService {
     public static void saveLines(Note note,List<List<PenLine>> penLineLists){
 
         String fileName=note.getTitle(); //파일명
-        String filePath=DATA_PATH+fileName+"\\lines.txt"; //경로 설정
+        String filePath=DATA_PATH+fileName+File.separator+"lines.txt"; //경로 설정
 
 
         try {
@@ -376,13 +381,13 @@ public class FileService {
         List<Image> imageList=new ArrayList<>();
 
 
-        File[] files=new File(DATA_PATH+title+"\\images").listFiles();
+        File[] files=new File(DATA_PATH+title+File.separator+"images").listFiles();
         // 숫자대로 정렬되도록 변경.
         Comparator<File> comparator=new Comparator<File>() {
             @Override
             public int compare(File f1, File f2)
             {
-                return Integer.parseInt(f1.getName().split("\\.")[0])-Integer.parseInt(f2.getName().split("\\.")[0]);
+                return Integer.parseInt(f1.getName().split("\\.")[0]) - Integer.parseInt(f2.getName().split("\\.")[0]);
             }
         };
 
@@ -407,13 +412,13 @@ public class FileService {
         List<Image> imageList=new ArrayList<>();
 
 
-        File[] files=new File(DATA_PATH+title+"\\images").listFiles();
+        File[] files=new File(DATA_PATH+title+File.separator+"images").listFiles();
         // 숫자대로 정렬되도록 변경.
         Comparator<File> comparator=new Comparator<File>() {
             @Override
             public int compare(File f1, File f2)
             {
-                return Integer.parseInt(f1.getName().split("\\.")[0])-Integer.parseInt(f2.getName().split("\\.")[0]);
+                return Integer.parseInt(f1.getName().split("\\.")[0]) - Integer.parseInt(f2.getName().split("\\.")[0]);
             }
         };
 

@@ -29,8 +29,11 @@ public enum Constants {
         public static final String APP_UPSCAILING_ICON_PATH="src/icon/fire_pen_2.png";
 
         //파일 저장 경로 관련
-    public static final String BASE_PATH="c:\\LAVA\\";
-    public static final String DATA_PATH=BASE_PATH+"data\\";
+    public static final String USER_HOME = System.getProperty("user.home");
+    // 결과: /Users/사용자명/LAVA/ (Mac) 또는 C:\Users\사용자명\LAVA\ (Win)
+    public static final String BASE_PATH = USER_HOME + File.separator + "LAVA" + File.separator;
+
+    public static final String DATA_PATH = BASE_PATH + "data" + File.separator;
 
 
         //폰트 경로

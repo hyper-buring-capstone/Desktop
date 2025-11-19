@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static global.Constants.DATA_PATH;
 
@@ -50,7 +51,7 @@ public class PdfPanel extends JPanel {
 
         //이미지 로딩
         // 여기서 실행 시간의 병목 발생.
-        File[] files=new File(DATA_PATH+title+"\\images").listFiles(); //이미지 폴더에 접근
+        File[] files=new File(DATA_PATH+title+File.separator+"images").listFiles(); //이미지 폴더에 접근
         totalPageNum=files.length;
         imageList=new ArrayList<>(totalPageNum);
 
@@ -104,7 +105,9 @@ public class PdfPanel extends JPanel {
 
     // index에 위치한 페이지로 이미지 설정
     private void setImage(int index) throws IOException {
-        this.image=ImageIO.read(new File(DATA_PATH + state.getNoteTitle() + "\\images\\"+index+".jpg"));
+        String pathname = DATA_PATH + state.getNoteTitle() + File.separator+"images"+File.separator+index+".jpg";
+        System.out.println(pathname);
+        this.image=ImageIO.read(new File(pathname));
         state.setCurPageNum(index);
         pageIndex=index;
         repaint();

@@ -106,7 +106,7 @@ public class FileOpenBtn extends BaseButton {
             
             //선 데이터 저장소 초기화
             try {
-                new File(DATA_PATH+fileName+"\\lines.txt").createNewFile();
+                new File(DATA_PATH+fileName+File.separator+"lines.txt").createNewFile();
             } catch (IOException ex) { //저장소가 생기지 않았으면 예외처리.
                 throw new RuntimeException(ex);
             }
