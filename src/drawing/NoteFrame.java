@@ -274,6 +274,11 @@ public class NoteFrame extends JFrame {
         	
             //메모리 초기화
             pdfPanel.removeAllImages();
+            if (thumbnailPanel != null) {
+                thumbnailPanel.removeAllImages(); // 새 메서드 호출
+                thumbnailPanel.removeAll();
+            }
+
             removeAll();
 
 

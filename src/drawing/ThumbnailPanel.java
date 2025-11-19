@@ -62,6 +62,19 @@ public class ThumbnailPanel extends JPanel implements Runnable {
     	}
     }
 
+    public void removeAllImages() {
+        if (imageList != null) {
+            imageList.clear();
+        }
+        // 버튼 리스트도 제거하여 참조를 확실히 끊습니다.
+        if (thumbnailBtnList != null) {
+            thumbnailBtnList.clear();
+        }
+        removeAll(); // 패널에 붙은 컴포넌트도 제거.
+        revalidate();
+        //repaint();
+    }
+
     @Override
     public void run() {
 
