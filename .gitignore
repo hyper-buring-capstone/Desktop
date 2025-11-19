@@ -29,3 +29,16 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### custome
+/data/
+
+# IntelliJ 설정 파일 무시
+*.iml
+
+# 프로그램이 생성하는 데이터 폴더 무시
+c:/
+LAVA/
+data/
+*.jpg
+*.txt
