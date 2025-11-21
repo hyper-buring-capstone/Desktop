@@ -71,11 +71,37 @@ public class NoteFrame extends JFrame {
     }
 
     public void setPageIndex(int pageIndex) {
+
+        FileService.saveLines(drawPanel.getNote(),drawPanel.getPenLineLists()); //저장
+
+        int curPage= state.getCurPageNum();
+        int totalPage=pdfPanel.getTotalPageNum();
+
+        if(pageIndex < 0 || pageIndex >= totalPage){ // [cite: 1148]
+            return;
+        }
+
+        // 1. 페이지 상태 업데이트
+        curPage = pageIndex; // 현재 페이지 번호 업데이트
+
+        // 2. 뷰 업데이트 (NoteFrame에서 대신 처리)
         pdfPanel.setPageIndex(pageIndex);
         drawPanel.setPageIndex(pageIndex);
         floatingPanel.setPageIndex(pageIndex);
-        thumbnailPanel.setSelected(state.getCurPageNum());
-        repaint();
+
+        // 3. 썸네일 업데이트 (NoteFrame에서 대신 처리)
+        thumbnailPanel.setSelected(pageIndex);
+
+        // 4. 모바일 전송을 위한 라인 데이터 업데이트 (HTTP 준비)
+        state.setLineString(FileService.getSpecificBlock(state.getNoteTitle(), state.getCurPageNum(), state.getImageWidth(), state.getImageHeight()));
+
+        // 5. 모바일 전송 알림 (블루투스)
+        if(state.getReceiver() != null) {
+            state.getReceiver().Sender("HEADER:PAGE&&" + (pageIndex+1));
+        }
+
+        // 6. 전체 화면 갱신 요청
+        repaint(); // 화면 갱신 요청
     }
 
     private void initUI(Note note) throws IOException {
